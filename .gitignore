@@ -1,11 +1,12 @@
 *.pdf
-*.ini
-*.old
-*.zip
 *.xlsx
 *.ods
 *.gsheet
 *.ai
 *.jpg
+*.png
 *.json
 *.exe
+*.zip
+*.ini
+*.old
