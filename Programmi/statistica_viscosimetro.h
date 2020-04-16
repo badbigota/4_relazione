@@ -107,3 +107,9 @@ double dstd_media(vector<double> dati, int inizio = 0, int fine = 0)
     }
     return dstd_media_;
 }
+//Errore distribuzione triangolare
+double sigma_dist_tri(double ptl, double coeff_aff)
+{
+    return abs(ptl / coeff_aff) / sqrt(24); //ptl con il coeff aff è doppio di err max
+}
+
