@@ -206,7 +206,7 @@ int main()
 			fout_6 << "#Num\tDelta_tom\t#Err_tom\t#Delta_fab\t#Err_fab\t#Delta_mark\t#Err_mark" << endl;
 			for (int i = 0; i < v[k].delta_misura_tom.size(); i++)
 			{
-				fout_6 << i <<"\t"<< v[k].delta_misura_tom[i] << "\t" << v[k].err_delta_misura_tom[i] << "\t" << v[k].delta_misura_fab[i] << "\t" << v[k].err_delta_misura_fab[i] << "\t" << v[k].delta_misura_mark[i] << "\t" << v[k].err_delta_misura_mark[i] << endl;
+				fout_6 << i+1 <<"\t"<< v[k].delta_misura_tom[i] << "\t" << v[k].err_delta_misura_tom[i] << "\t" << v[k].delta_misura_fab[i] << "\t" << v[k].err_delta_misura_fab[i] << "\t" << v[k].delta_misura_mark[i] << "\t" << v[k].err_delta_misura_mark[i] << endl;
 			}
 		}
 		if ((k == 8))
