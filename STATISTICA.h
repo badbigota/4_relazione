@@ -109,7 +109,7 @@ double dstd_media(vector<double> dati, int inizio = 0, int fine = 0)
 }
 
 //Compatibilità avendo due valori medi e i sigma relativi
-double comp_3(double a, double b, double sigma_a, double sigma_b)
+double compatibility(double a, double b, double sigma_a, double sigma_b)
 {
     return abs(a - b) / sqrt(pow(sigma_a, 2) + pow(sigma_b, 2));
 }
