@@ -42,13 +42,13 @@ set tics back
 set grid nopolar
 set grid xtics nomxtics ytics nomytics noztics nomztics nortics nomrtics \
  nox2tics nomx2tics noy2tics nomy2tics nocbtics nomcbtics
-set grid layerdefault   lt 0 linecolor 0 linewidth 0.500,  lt 0 linecolor 0 linewidth 0.500
+set grid layerdefault   lt 0 linecolor 0 linewidth 0.500 dashtype solid,  lt 0 linecolor 0 linewidth 0.500 dashtype solid
 unset raxis
 set theta counterclockwise right
 set style parallel front  lt black linewidth 2.000 dashtype solid
-set key title "Legenda" font ",10"  center
-set key fixed right top vertical Right noreverse enhanced autotitle box lt black linewidth 1.000 dashtype solid font ",10"
-set key noinvert samplen 4 spacing 1 width 4 height 0 
+set key title "" font ",10"  center
+set key fixed left top vertical Right noreverse enhanced autotitle box lt black linewidth 1.000 dashtype solid font ",10"
+set key noinvert samplen 4 spacing 1 width 0 height 0 
 set key maxcolumns 0 maxrows 0
 set key noopaque
 unset label
@@ -129,7 +129,7 @@ set x2label ""
 set x2label  font "" textcolor lt -1 norotate
 set xrange [ 0.800000 : 10.2000 ] noreverse nowriteback
 set x2range [ 0.00000 : 9.00000 ] noreverse nowriteback
-set ylabel "Tempo medio {/Symbol D}t_{i}=t_{i}-t_{i-1} [{/Symbol m}s]" 
+set ylabel "Tempo medio {/Symbol D}t_{i}=t_{i}-t_{i-1} [ms]" 
 set ylabel  font ",14" textcolor lt -1 rotate
 set y2label "" 
 set y2label  font "" textcolor lt -1 rotate
@@ -167,6 +167,6 @@ set psdir
 set fit brief errorvariables nocovariancevariables errorscaling prescale nowrap v5
 GNUTERM = "qt"
 x = 0.0
-## Last datafile plotted: "6_viscosimetro.txt"
-plot "6_viscosimetro.txt" u 1:2:3 with yerrorbars title "{/Symbol D}t TOM","6_viscosimetro.txt" u 1:4:5 w yerrorbars title "{/Symbol D}t FAB", "6_viscosimetro.txt" u 1:6:7 w yerrorbars title "{/Symbol D}t MARCK"
+## Last datafile plotted: " dati_6_sfera_t_f_m1_m2.txt"
+plot "dati_6_sfera_t_f_m1_m2.txt" u 1:2:3 with yerrorbars pt 7 ps 0.80 title "{/Symbol D}t Operatore A"," dati_6_sfera_t_f_m1_m2.txt" u 1:4:5 w yerrorbars pt 7 ps 0.80 title "{/Symbol D}t Operatore B", " dati_6_sfera_t_f_m1_m2.txt" u 1:6:7 w yerrorbars pt 7 ps 0.80 title "{/Symbol D}t Operatore C"
 #    EOF
