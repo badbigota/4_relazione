@@ -181,12 +181,6 @@ int main()
 	}
 	//FINE PROCESSO LETTURA DATI GREZZI
 
-
-
-
-
-
-
 	//INIZIO PROCESSO CALCOLO DI DELTA T IN DUE MODI PER VISCOS MARC
 
 	//PRIMO METODO
@@ -253,15 +247,15 @@ int main()
 		{
 			for (int i = 0; i < v[k].misura.size(); i++) //per i non speciali singoli
 			{
-				v[k].err_misura.push_back(sigma_dist_tri(frame_incertezza[k] / (fps * 1000.0), 1)); //occhio al 1000 per la trasformazione in millisecondi
+				v[k].err_misura.push_back(sigma_dist_tri((frame_incertezza[k] / fps * 1000.0), 1)); //occhio al 1000 per la trasformazione in millisecondi
 			}
 		}
 		else if ((k == 5)) //caso specifico per visco analizzati da tom e fab ma che non hanno le misre in vector misura
 		{
 			for (int i = 0; i < v[k].misura_fab.size(); i++)
 			{
-				v[k].err_misura_fab.push_back(sigma_dist_tri(frame_incertezza[k] / (fps * 1000.0), 1)); //occhio al 1000 per la trasformazione in millisecondi
-				v[k].err_misura_tom.push_back(sigma_dist_tri(frame_incertezza[k] / (fps * 1000.0), 1)); //occhio al 1000 per la trasformazione in millisecondi
+				v[k].err_misura_fab.push_back(sigma_dist_tri((frame_incertezza[k] / fps * 1000.0), 1)); //occhio al 1000 per la trasformazione in millisecondi
+				v[k].err_misura_tom.push_back(sigma_dist_tri((frame_incertezza[k] / fps * 1000.0), 1)); //occhio al 1000 per la trasformazione in millisecondi
 			}
 		}
 		else if ((k == 8))
@@ -272,13 +266,13 @@ int main()
 
 				if ((i == 1) || (i == 7) || (i == 8) || (i == 9) || (i == 10)) //se siamo in queste misure, avendo fatto la media fra i frame, si usa la propagazione
 				{
-					v[k].err_misura_fab.push_back(sqrt(2) * sigma_dist_tri(frame_incertezza[k] / (fps * 1000.0), 1));
-					v[k].err_misura_tom.push_back(sqrt(2) * sigma_dist_tri(frame_incertezza[k] / (fps * 1000.0), 1));
+					v[k].err_misura_fab.push_back(sqrt(2) * sigma_dist_tri((frame_incertezza[k] / fps * 1000.0), 1));
+					v[k].err_misura_tom.push_back(sqrt(2) * sigma_dist_tri((frame_incertezza[k] / fps * 1000.0), 1));
 				}
 				else
 				{
-					v[k].err_misura_fab.push_back(sigma_dist_tri(frame_incertezza[k] / (fps * 1000.0), 1));
-					v[k].err_misura_tom.push_back(sigma_dist_tri(frame_incertezza[k] / (fps * 1000.0), 1));
+					v[k].err_misura_fab.push_back(sigma_dist_tri((frame_incertezza[k] / fps * 1000.0), 1));
+					v[k].err_misura_tom.push_back(sigma_dist_tri((frame_incertezza[k] / fps * 1000.0), 1));
 				}
 			}
 		}
@@ -308,9 +302,12 @@ int main()
 		}
 	}
 	//FINE CALCOLO DELTA ED ERR PER VISC NON SPECIALI
-
-
-
+	ofstream fout_6("../Grafici/dati_6_sfera_t_f_m1_m2.txt");
+	fout_6 << "#N\t#D_t [ms]\t#E_D_t [ms]\t#D_F [ms]\t#E_D_f [ms]\t#D_m1 [ms]\t#E_D_m1 [ms]\t#D_m2 [ms]\t#E_D_m2 [ms]" << endl; //METTI LE UNITÀ DI MISURA DIO CANCARO
+	for (int i = 0; i < v[5].delta_misura_fab.size(); i++)
+	{
+		fout_6 << i + 1 << "\t" << v[5].delta_misura_tom[i] << "\t" << v[5].err_delta_misura_tom[i] << "\t" << v[5].delta_misura_fab[i] << "\t" << v[5].err_delta_misura_fab[i] << "\t" << v[5].delta_mark_primo_metodo[i] << "\t" << v[5].err_delta_mark_primo_metodo[i] << "\t" << v[5].delta_mark_secondo_metodo[i] << "\t" << v[5].err_delta_mark_secondo_metodo[i] << endl;
+	}
 
 	return 0;
 }
