@@ -1,4 +1,4 @@
-#include <iostream>
+	#include <iostream>
 #include <fstream>
 #include <vector>
 #include <string>
@@ -56,18 +56,23 @@ int main()
 	const double fps = 29.97;
 	double durata_frame = 1.0 / fps;														   //in secondi bisogna convertire in millisec
 	vector<double> frame_incertezza = {9.0, 8.0, 4.0, 4.0, 3.0, 3.0, 2.0, 3.0, 0.0, 2.0, 2.0}; //frame di incertezza per ciascun visco
-
-	//LETTURA
+	vector<double> comp_tf;
+	vector<double> comp_tm;
+	vector<double> comp_fm;
+	double comp_tf_media, comp_tm_media, comp_fm_media;
+	
+	//INIZIO LETTURA DATI GREZZI
 	for (int k = 0; k < v.size(); k++)
-	{										  //INIZIO PROCESSO LETTURA DATI GREZZI
+	{
 		if ((k == 2) || (k == 6) || (k == 7)) //sono 3 7 8 perchè botdello con k (abbiamo contato -1)
 		{									  //misure cronometro
 			for (int j = 1; j <= 5; j++)
 			{
 				ifstream fin_crono("../Dati/Singolo/" + to_string(k + 1) + "/" + to_string(k + 1) + "_" + to_string(j) + ".txt");
+				//ifstream fin_crono("Misure/" + to_string(k + 1) + "/" + to_string(k + 1) + "_" + to_string(j) + ".txt");
 				if (!fin_crono)
 				{
-					cout << "Errore lettura file " << k << endl;
+					cout << "Errore lettura file " << k+1 << endl;
 					return 1;
 				}
 				while (fin_crono >> p) //legge e archivia in misura_mark_iesima il contenuto dei file
@@ -99,6 +104,7 @@ int main()
 		if ((k == 0) || (k == 1) || (k == 3) || (k == 4) || (k == 9) || (k == 10)) //sono i viscosimetri di Fabio e Di Tommaso
 		{
 			ifstream fin_frame("../Dati/Singolo/" + to_string(k + 1) + ".txt");
+			//ifstream fin_frame("Misure/" + to_string(k + 1) + ".txt");
 			while (fin_frame >> p)
 			{
 				v[k].misura.push_back(p);
@@ -112,6 +118,8 @@ int main()
 
 			ifstream fin_6_tom("../Dati/Multiplo/tom/" + to_string(k + 1) + ".txt");
 			ifstream fin_6_fab("../Dati/Multiplo/fab/" + to_string(k + 1) + ".txt");
+			//ifstream fin_6_tom("Misure/6/tom/6.txt");
+			//ifstream fin_6_fab("Misure/6/fab/6.txt");
 
 			while (fin_6_tom >> p) //Legge i file grezzi per tom e fab e archivia i dati nei vettori del 6 viscos.
 			{
@@ -126,6 +134,7 @@ int main()
 			for (int i = 1; i <= 5; i++) //Legge tutti i file di mark e li archivia
 			{
 				ifstream fin_6_mark("../Dati/Multiplo/mar/6_" + to_string(i) + ".txt");
+				//ifstream fin_6_mark("Misure/6/6_" + to_string(i) + ".txt");
 				while (fin_6_mark >> p)
 				{
 					if (i == 1)
@@ -168,6 +177,8 @@ int main()
 		{ //viscosimetro 9, sono solo le misure di Fabio e di Tommaso per il metodo frame by frame
 			ifstream fin_9_fab("../Dati/Multiplo/fab/9.txt");
 			ifstream fin_9_tom("../Dati/Multiplo/tom/9.txt");
+			//ifstream fin_9_fab("Misure/9/fab/9.txt");
+			//ifstream fin_9_tom("Misure/9/tom/9.txt");
 
 			while (fin_9_fab >> p)
 			{
@@ -179,7 +190,7 @@ int main()
 			}
 		}
 	}
-	//FINE PROCESSO LETTURA DATI GREZZI
+	//FINE LETTURA
 
 	//INIZIO PROCESSO CALCOLO DI DELTA T IN DUE MODI PER VISCOS MARC
 
@@ -308,6 +319,28 @@ int main()
 	{
 		fout_6 << i + 1 << "\t" << v[5].delta_misura_tom[i] << "\t" << v[5].err_delta_misura_tom[i] << "\t" << v[5].delta_misura_fab[i] << "\t" << v[5].err_delta_misura_fab[i] << "\t" << v[5].delta_mark_primo_metodo[i] << "\t" << v[5].err_delta_mark_primo_metodo[i] << "\t" << v[5].delta_mark_secondo_metodo[i] << "\t" << v[5].err_delta_mark_secondo_metodo[i] << endl;
 	}
-
+	
+	//COMPATIBILITA'
+	for(int i=0;i<v[5].delta_misura_tom.size();i++){
+		comp_tf.push_back(comp(v[5].delta_misura_tom[i],v[5].delta_misura_fab[i],v[5].err_delta_misura_tom[i],v[5].err_delta_misura_fab[i]));
+		comp_tm.push_back(comp(v[5].delta_misura_tom[i],v[5].delta_mark_primo_metodo[i],v[5].err_delta_misura_tom[i],v[5].err_delta_mark_primo_metodo[i]));
+		comp_fm.push_back(comp(v[5].delta_mark_primo_metodo[i],v[5].delta_misura_fab[i],v[5].err_delta_mark_primo_metodo[i],v[5].err_delta_misura_fab[i]));
+	}
+	cout<<"Compatibilita tom - fab"<<endl;
+	for(auto c:comp_tf)	cout<<c<<endl;
+	cout<<endl<<"Compatibilita tom - mark"<<endl;
+	for(auto d:comp_tm)	cout<<d<<endl;
+	cout<<endl<<"Compatibilita fab - mark"<<endl;
+	for(auto e:comp_fm)	cout<<e<<endl;
+	cout<<endl;
+	//Compatibilit� sulla media dei delta t
+	comp_tf_media=comp(media(v[5].delta_misura_tom),media(v[5].delta_misura_fab),dstd_media(v[5].delta_misura_tom),dstd_media(v[5].delta_misura_fab));
+	comp_tm_media=comp(media(v[5].delta_misura_tom),media(v[5].delta_mark_primo_metodo),dstd_media(v[5].delta_misura_tom),dstd_media(v[5].delta_mark_primo_metodo));
+	comp_fm_media=comp(media(v[5].delta_mark_primo_metodo),media(v[5].delta_misura_fab),dstd_media(v[5].delta_mark_primo_metodo),dstd_media(v[5].delta_misura_fab));
+	cout<<"Compatibilita tom - fab: "<<comp_tf_media<<endl;
+	cout<<"Compatibilita tom - mark: "<<comp_tm_media<<endl;
+	cout<<"Compatibilita fab - mark: "<<comp_fm_media<<endl;
+	
+	
 	return 0;
 }
