@@ -111,11 +111,44 @@ double dstd_media(vector<double> dati, int inizio = 0, int fine = 0)
 //Errore distribuzione triangolare
 double sigma_dist_tri(double ptl, double coeff_aff)
 {
-    return abs(ptl / coeff_aff) / sqrt(24); //ptl con il coeff aff è doppio di err max
+    return abs(ptl / coeff_aff) / sqrt(24); //ptl con il coeff aff ï¿½ doppio di err max
 }
 
-//Compatibilità 
+//Compatibilitï¿½ 
 double comp(double a, double b, double sigma_a, double sigma_b)
 {
     return abs(a - b) / sqrt(pow(sigma_a, 2) + pow(sigma_b, 2));
+}
+
+
+//Media ponderata con errori
+double media_ponderata(vector<double> valori, vector<double> errori, int inizio = 0, int fine = 0)
+{
+    double num = 0, den = 0;
+    if (fine == 0)
+    {
+        fine = valori.size();
+    }
+    if (valori.size() != errori.size())
+    {
+        cout << "dimensione di vettore valori non Ã¨ uguale a quella di vettore errori" << endl;
+        return 1;
+    }
+    for (int i = inizio; i < fine; i++)
+    {
+        num += valori[i] * pow((1 / errori[i]), 2);
+        den += pow((1 / errori[i]), 2);
+    }
+    return num / den;
+}
+
+//Errore medio (media ponderata)
+double errore_media_ponderata(vector<double> errori)
+{
+    double sum = 0;
+    for (auto d : errori)
+    {
+        sum += pow((1 / d), 2);
+    }
+    return (1 / sqrt(sum));
 }
