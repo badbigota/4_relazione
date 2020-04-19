@@ -209,8 +209,8 @@ int main()
 
 				if ((i == 1) || (i == 7) || (i == 8) || (i == 9) || (i == 10)) //se siamo in queste misure, avendo fatto la media fra i frame, si usa la propagazione
 				{
-					v[k].err_misura_fab.push_back(sqrt(2) * sigma_dist_tri((frame_incertezza[k] / fps * 1000.0), 1));
-					v[k].err_misura_tom.push_back(sqrt(2) * sigma_dist_tri((frame_incertezza[k] / fps * 1000.0), 1));
+					v[k].err_misura_fab.push_back((1.0/(sqrt(2))) * sigma_dist_tri((frame_incertezza[k] / fps * 1000.0), 1));
+					v[k].err_misura_tom.push_back((1.0/(sqrt(2))) * sigma_dist_tri((frame_incertezza[k] / fps * 1000.0), 1));
 				}
 				else
 				{
