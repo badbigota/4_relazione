@@ -1,4 +1,4 @@
-	#include <iostream>
+#include <iostream>
 #include <fstream>
 #include <vector>
 #include <string>
@@ -55,12 +55,12 @@ int main()
 	vector<viscosimetro> v(11);
 	const double fps = 29.97;
 	double durata_frame = 1.0 / fps;														   //in secondi bisogna convertire in millisec
-	vector<double> frame_incertezza = {9.0, 8.0, 4.0, 4.0, 3.0, 3.0, 2.0, 3.0, 0.0, 2.0, 2.0}; //frame di incertezza per ciascun visco
+	vector<double> frame_incertezza = {9.0, 8.0, 4.0, 4.0, 3.0, 3.0, 2.0, 3.0, 2.0, 2.0, 2.0}; //frame di incertezza per ciascun visco
 	vector<double> comp_tf;
 	vector<double> comp_tm;
 	vector<double> comp_fm;
 	double comp_tf_media, comp_tm_media, comp_fm_media;
-	
+
 	//INIZIO LETTURA DATI GREZZI
 	for (int k = 0; k < v.size(); k++)
 	{
@@ -72,7 +72,7 @@ int main()
 				//ifstream fin_crono("Misure/" + to_string(k + 1) + "/" + to_string(k + 1) + "_" + to_string(j) + ".txt");
 				if (!fin_crono)
 				{
-					cout << "Errore lettura file " << k+1 << endl;
+					cout << "Errore lettura file " << k + 1 << endl;
 					return 1;
 				}
 				while (fin_crono >> p) //legge e archivia in misura_mark_iesima il contenuto dei file
@@ -159,18 +159,6 @@ int main()
 					}
 				}
 			}
-			//questo è per il grafico
-			//ofstream fout_6("6_viscosimetro.txt");
-			//if (!fout_6)
-			//{
-			//	cout << "Errore scrittura set 6" << endl;
-			//	return 1;
-			//}
-			//fout_6 << "#Num\tDelta_tom\t#Err_tom\t#Delta_fab\t#Err_fab\t#Delta_mark\t#Err_mark" << endl;
-			//for (int i = 0; i < v[k].delta_misura_tom.size(); i++)
-			//{
-			//	fout_6 << i + 1 << "\t" << v[k].delta_misura_tom[i] << "\t" << v[k].err_delta_misura_tom[i] << "\t" << v[k].delta_misura_fab[i] << "\t" << v[k].err_delta_misura_fab[i] << "\t" << v[k].delta_misura_mark[i] << "\t" << v[k].err_delta_misura_mark[i] << endl;
-			//}
 		}
 
 		if ((k == 8))
@@ -193,62 +181,6 @@ int main()
 	//FINE LETTURA
 
 	//INIZIO PROCESSO CALCOLO DI DELTA T IN DUE MODI PER VISCOS MARC
-
-	//PRIMO METODO
-
-	for (int k = 0; k < v.size(); k++)
-	{
-
-		//leggo solo I SILGOLI Di mark (3,6,7,8)
-		if ((k == 2) || (k == 5) || (k == 6) || (k == 7))
-		{
-			for (int i = 0; i < v[k].misura_mark1.size(); i++) //calcolo di tempi medi dai 5 tempi misurati
-			{
-				vector<double> righe;
-				righe.push_back(v[k].misura_mark1[i]);
-				righe.push_back(v[k].misura_mark2[i]);
-				righe.push_back(v[k].misura_mark3[i]);
-				righe.push_back(v[k].misura_mark4[i]);
-				righe.push_back(v[k].misura_mark5[i]);
-				v[k].misura_media_mark.push_back(media(righe));
-				v[k].err_misura_media_mark.push_back(dstd_media(righe));
-			}
-
-			for (int i = 0; i < v[k].misura_media_mark.size() - 1; i++) //calcolo di delta con differenza e di errore con propagazione
-			{
-				v[k].delta_mark_primo_metodo.push_back(v[k].misura_media_mark[i + 1] - v[k].misura_media_mark[i]);
-				v[k].err_delta_mark_primo_metodo.push_back(sqrt(pow(v[k].err_misura_media_mark[i + 1], 2) + pow(v[k].err_misura_media_mark[i], 2)));
-			}
-		}
-	}
-	//FINE PRIMO METODO
-
-	//INIZIO SECONDO METODO
-	for (int k = 0; k < v.size(); k++)
-	{
-		if ((k == 2) || (k == 5) || (k == 6) || (k == 7))
-		{
-			for (int i = 0; i < v[k].misura_mark1.size() - 1; i++)
-			{
-				v[k].delta_mark1.push_back(v[k].misura_mark1[i + 1] - v[k].misura_mark1[i]); //calcolo dei delta t
-				v[k].delta_mark2.push_back(v[k].misura_mark2[i + 1] - v[k].misura_mark2[i]);
-				v[k].delta_mark3.push_back(v[k].misura_mark3[i + 1] - v[k].misura_mark3[i]);
-				v[k].delta_mark4.push_back(v[k].misura_mark4[i + 1] - v[k].misura_mark4[i]);
-				v[k].delta_mark5.push_back(v[k].misura_mark5[i + 1] - v[k].misura_mark5[i]);
-
-				vector<double> righe; //preparazione alla media delta t
-				righe.push_back(v[k].delta_mark1[i]);
-				righe.push_back(v[k].delta_mark2[i]);
-				righe.push_back(v[k].delta_mark3[i]);
-				righe.push_back(v[k].delta_mark4[i]);
-				righe.push_back(v[k].delta_mark5[i]);
-				v[k].delta_mark_secondo_metodo.push_back(media(righe));
-				v[k].err_delta_mark_secondo_metodo.push_back(dstd_media(righe)); //ATTENZIONE CHE QUI NON SIA UN ALTRA STIMA DA USARE
-																				 //TIPO LA MEDIA DELLE VARIANZE
-			}
-		}
-	}
-	//FINE SECONDO METODO
 
 	//AGGIUNTA ERRORI DIST TRIANG SU VISCOSIMETRI ANALIZZATI CON FBF
 	for (int k = 0; k < v.size(); k++)
@@ -290,6 +222,71 @@ int main()
 	}
 	//FINE AGGIUNTA ERRORI SPECIALI
 
+	//PRIMO METODO
+	for (int k = 0; k < v.size(); k++)
+	{
+
+		//leggo solo I SINGOLI Di mark (3,6,7,8)
+		if ((k == 2) || (k == 5) || (k == 6) || (k == 7))
+		{
+			for (int i = 0; i < v[k].misura_mark1.size(); i++) //calcolo di tempi medi dai 5 tempi misurati
+			{
+				vector<double> righe;
+				righe.push_back(v[k].misura_mark1[i]);
+				righe.push_back(v[k].misura_mark2[i]);
+				righe.push_back(v[k].misura_mark3[i]);
+				righe.push_back(v[k].misura_mark4[i]);
+				righe.push_back(v[k].misura_mark5[i]);
+				v[k].misura_media_mark.push_back(media(righe));
+				v[k].err_misura_media_mark.push_back(dstd_media(righe));
+			}
+
+			for (int i = 0; i < v[k].misura_media_mark.size() - 1; i++) //calcolo di delta con differenza e di errore con propagazione
+			{
+				v[k].delta_mark_primo_metodo.push_back(v[k].misura_media_mark[i + 1] - v[k].misura_media_mark[i]);
+				v[k].err_delta_mark_primo_metodo.push_back(sqrt(pow(v[k].err_misura_media_mark[i + 1], 2) + pow(v[k].err_misura_media_mark[i], 2)));
+				//Da decommentare quando sapremo il metodo corretto
+				//if(k!=5){
+				//	v[k].delta_misure.push_back(media(righe));
+				//	v[k].err_delta_misure.push_back(dstd_media(righe));
+				//}
+			}
+		}
+	}
+	//FINE PRIMO METODO
+
+	//INIZIO SECONDO METODO
+	for (int k = 0; k < v.size(); k++)
+	{
+		if ((k == 2) || (k == 5) || (k == 6) || (k == 7))
+		{
+			for (int i = 0; i < v[k].misura_mark1.size() - 1; i++)
+			{
+				v[k].delta_mark1.push_back(v[k].misura_mark1[i + 1] - v[k].misura_mark1[i]); //calcolo dei delta t
+				v[k].delta_mark2.push_back(v[k].misura_mark2[i + 1] - v[k].misura_mark2[i]);
+				v[k].delta_mark3.push_back(v[k].misura_mark3[i + 1] - v[k].misura_mark3[i]);
+				v[k].delta_mark4.push_back(v[k].misura_mark4[i + 1] - v[k].misura_mark4[i]);
+				v[k].delta_mark5.push_back(v[k].misura_mark5[i + 1] - v[k].misura_mark5[i]);
+
+				vector<double> righe; //preparazione alla media delta t
+				righe.push_back(v[k].delta_mark1[i]);
+				righe.push_back(v[k].delta_mark2[i]);
+				righe.push_back(v[k].delta_mark3[i]);
+				righe.push_back(v[k].delta_mark4[i]);
+				righe.push_back(v[k].delta_mark5[i]);
+				v[k].delta_mark_secondo_metodo.push_back(media(righe));
+				v[k].err_delta_mark_secondo_metodo.push_back(dstd_media(righe)); //ATTENZIONE CHE QUI NON SIA UN ALTRA STIMA DA USARE
+																				 //TIPO LA MEDIA DELLE VARIANZE
+																				 //Da decommentare quando sapremo il metodo corretto
+																				 //if(k!=5){
+																				 //	v[k].delta_misure.push_back(media(righe));
+																				 //	v[k].err_delta_misure.push_back(dstd_media(righe));
+																				 //}
+			}
+		}
+	}
+	//FINE SECONDO METODO
+
 	//CALCOLO DI DELTA ED ERR PER TUTTI i viscosimetri non speciali con gli errori dovuti all'incertezza sui frame
 	for (int k = 0; k < v.size(); k++)
 	{
@@ -319,28 +316,101 @@ int main()
 	{
 		fout_6 << i + 1 << "\t" << v[5].delta_misura_tom[i] << "\t" << v[5].err_delta_misura_tom[i] << "\t" << v[5].delta_misura_fab[i] << "\t" << v[5].err_delta_misura_fab[i] << "\t" << v[5].delta_mark_primo_metodo[i] << "\t" << v[5].err_delta_mark_primo_metodo[i] << "\t" << v[5].delta_mark_secondo_metodo[i] << "\t" << v[5].err_delta_mark_secondo_metodo[i] << endl;
 	}
-	
-	//COMPATIBILITA'
-	for(int i=0;i<v[5].delta_misura_tom.size();i++){
-		comp_tf.push_back(comp(v[5].delta_misura_tom[i],v[5].delta_misura_fab[i],v[5].err_delta_misura_tom[i],v[5].err_delta_misura_fab[i]));
-		comp_tm.push_back(comp(v[5].delta_misura_tom[i],v[5].delta_mark_primo_metodo[i],v[5].err_delta_misura_tom[i],v[5].err_delta_mark_primo_metodo[i]));
-		comp_fm.push_back(comp(v[5].delta_mark_primo_metodo[i],v[5].delta_misura_fab[i],v[5].err_delta_mark_primo_metodo[i],v[5].err_delta_misura_fab[i]));
+
+	//CREAZIONE TABELLA DATI GREZZI DI TEMPI GREZZI
+	ofstream fout_grezzi("dati_grezzi_aggregati_tempi.txt");
+	fout_grezzi << "1  \t err_1 \t 2  \t err_2 \t 3  \t err_3 \t 4  \t err_4 \t 5  \t err_5 \t 6_1  \t err_6_1 \t 6_2  \t err_6_2 \t 6_3  \t err_6_3 \t 7  \t err_7 \t 8  \t err_8 \t 9_1  \t err_9_1 \t 9_2  \t err_9_2 \t 10  \t err_10 \t 11  \t err_11" << endl
+				<< "[ms] \t [ms] \t [ms] \t [ms] \t [ms] \t [ms] \t [ms] \t [ms] \t [ms] \t [ms] \t [ms] \t [ms] \t [ms] \t [ms] \t [ms] \t [ms] \t [ms] \t [ms] \t [ms] \t [ms] \t [ms] \t [ms] \t [ms] \t [ms] \t [ms] \t [ms]" << endl;
+	for (int i = 0; i < v[0].misura.size(); i++)
+	{
+		fout_grezzi << v[0].misura[i] << "\t" << v[0].err_misura[i] << "\t"
+					<< v[1].misura[i] << "\t" << v[1].err_misura[i] << "\t"
+					<< v[2].misura_media_mark[i] << "\t" << v[2].err_misura_media_mark[i] << "\t"
+					<< v[3].misura[i] << "\t" << v[3].err_misura[i] << "\t"
+					<< v[4].misura[i] << "\t" << v[4].err_misura[i] << "\t"
+					<< v[5].misura_tom[i] << "\t" << v[5].err_misura_tom[i] << "\t"
+					<< v[5].misura_fab[i] << "\t" << v[5].err_misura_fab[i] << "\t"
+					<< v[5].misura_media_mark[i] << "\t" << v[5].misura_media_mark[i] << "\t"
+					<< v[6].misura_media_mark[i] << "\t" << v[6].err_misura_media_mark[i] << "\t"
+					<< v[7].misura_media_mark[i] << "\t" << v[7].err_misura_media_mark[i] << "\t"
+					<< v[8].misura_tom[i] << "\t" << v[8].err_misura_tom[i] << "\t"
+					<< v[8].misura_fab[i] << "\t" << v[8].err_misura_fab[i] << "\t";
+		if ((i == 1)) //CICOLO CHE STAMPA SOLO I VALORI DI 10 E 11 VISC IN CORRISPONDENZA DELLE GIUSTE TACCHE
+		{			  //BUTTA FUORI SOLO AL MOMENTO GIUSTOs
+			fout_grezzi << v[9].misura[0] << "\t" << v[9].err_misura[0] << "\t" << v[10].misura[0] << "\t" << v[10].err_misura[0] << "\t" << endl;
+		}
+		else if ((i == 10))
+		{
+			fout_grezzi << v[9].misura[1] << "\t" << v[9].err_misura[1] << "\t" << v[10].misura[1] << "\t" << v[10].err_misura[1] << "\t" << endl;
+		}
+		else
+		{
+			fout_grezzi << "ND\tND\tND\tND" << endl;
+		}
 	}
-	cout<<"Compatibilita tom - fab"<<endl;
-	for(auto c:comp_tf)	cout<<c<<endl;
-	cout<<endl<<"Compatibilita tom - mark"<<endl;
-	for(auto d:comp_tm)	cout<<d<<endl;
-	cout<<endl<<"Compatibilita fab - mark"<<endl;
-	for(auto e:comp_fm)	cout<<e<<endl;
-	cout<<endl;
+
+	//COMPATIBILITA' (ATTENZIONE SE USIAMO IL PRIMO METODO PER MARK O IL SECONDO)
+	for (int i = 0; i < v[5].delta_misura_tom.size(); i++)
+	{
+		comp_tf.push_back(comp(v[5].delta_misura_tom[i], v[5].delta_misura_fab[i], v[5].err_delta_misura_tom[i], v[5].err_delta_misura_fab[i]));
+		comp_tm.push_back(comp(v[5].delta_misura_tom[i], v[5].delta_mark_primo_metodo[i], v[5].err_delta_misura_tom[i], v[5].err_delta_mark_primo_metodo[i]));
+		comp_fm.push_back(comp(v[5].delta_mark_primo_metodo[i], v[5].delta_misura_fab[i], v[5].err_delta_mark_primo_metodo[i], v[5].err_delta_misura_fab[i]));
+	}
+	cout << "Compatibilita tom - fab" << endl;
+	for (auto c : comp_tf)
+	{
+		cout << c << endl;
+	}
+	cout << endl
+		 << "Compatibilita tom - mark" << endl;
+	for (auto d : comp_tm)
+	{
+		cout << d << endl;
+	}
+	cout << endl
+		 << "Compatibilita fab - mark" << endl;
+	for (auto e : comp_fm)
+	{
+		cout << e << endl;
+	}
+	cout << endl;
 	//Compatibilit� sulla media dei delta t
-	comp_tf_media=comp(media(v[5].delta_misura_tom),media(v[5].delta_misura_fab),dstd_media(v[5].delta_misura_tom),dstd_media(v[5].delta_misura_fab));
-	comp_tm_media=comp(media(v[5].delta_misura_tom),media(v[5].delta_mark_primo_metodo),dstd_media(v[5].delta_misura_tom),dstd_media(v[5].delta_mark_primo_metodo));
-	comp_fm_media=comp(media(v[5].delta_mark_primo_metodo),media(v[5].delta_misura_fab),dstd_media(v[5].delta_mark_primo_metodo),dstd_media(v[5].delta_misura_fab));
-	cout<<"Compatibilita tom - fab: "<<comp_tf_media<<endl;
-	cout<<"Compatibilita tom - mark: "<<comp_tm_media<<endl;
-	cout<<"Compatibilita fab - mark: "<<comp_fm_media<<endl;
+	comp_tf_media = comp(media(v[5].delta_misura_tom), media(v[5].delta_misura_fab), dstd_media(v[5].delta_misura_tom), dstd_media(v[5].delta_misura_fab));
+	comp_tm_media = comp(media(v[5].delta_misura_tom), media(v[5].delta_mark_primo_metodo), dstd_media(v[5].delta_misura_tom), dstd_media(v[5].delta_mark_primo_metodo));
+	comp_fm_media = comp(media(v[5].delta_mark_primo_metodo), media(v[5].delta_misura_fab), dstd_media(v[5].delta_mark_primo_metodo), dstd_media(v[5].delta_misura_fab));
+	cout << "Compatibilita tom - fab: " << comp_tf_media << endl;
+	cout << "Compatibilita tom - mark: " << comp_tm_media << endl;
+	cout << "Compatibilita fab - mark: " << comp_fm_media << endl;
+
+	//VISCOSIMETRO 6 - PROCEDO CON L'ANALISI PER IL CONFRONTO DEL CALCOLO DI UN UNICO SET DI VALORI
+	for (int i = 0; i < v[5].delta_misura_tom.size(); i++) //V[5] perchè stiamo considerando il viscosimetro numero 6
+	{
+		vector<double> righe;
+		righe.push_back(v[5].delta_misura_tom[i]);
+		righe.push_back(v[5].delta_misura_fab[i]);
+		righe.push_back(v[5].delta_mark_primo_metodo[i]); // cambia se vuoi il secondo metodo
+		vector<double> err_righe;
+		err_righe.push_back(v[5].err_delta_misura_tom[i]);
+		err_righe.push_back(v[5].err_delta_misura_fab[i]);
+		err_righe.push_back(v[5].err_delta_mark_primo_metodo[i]); //cambia se vuoi il secondo metodo
+		v[5].delta_misura.push_back(media_ponderata(righe, err_righe));
+		v[5].err_delta_misura.push_back(errore_media_ponderata(err_righe));
+	}
 	
+	//VISCOSIMETRO 9 - PROCEDO CON L'ANALISI PER IL CONFRONTO DEL CALCOLO DI UN UNICO SET DI VALORI
+	for (int i = 0; i < v[8].delta_misura_tom.size(); i++) //V[9] perchè stiamo considerando il viscosimetro numero 9
+	{
+		vector<double> righe;
+		righe.push_back(v[8].delta_misura_tom[i]);
+		righe.push_back(v[8].delta_misura_fab[i]);
+		vector<double> err_righe;
+		err_righe.push_back(v[8].err_delta_misura_tom[i]);
+		err_righe.push_back(v[8].err_delta_misura_fab[i]);
+		v[8].delta_misura.push_back(media_ponderata(righe, err_righe));
+		v[8].err_delta_misura.push_back(errore_media_ponderata(err_righe));
+	}
+	//FINE GENERAZIONE DELTA T E ERR DELTA T PER TUTTI I VISCOSIMETRI
 	
+
 	return 0;
 }
