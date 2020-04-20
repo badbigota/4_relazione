@@ -48,6 +48,7 @@ struct viscosimetro
 
 	vector<double> asse_x; // è un vettore di media di tempi per l'asse delle x dei graficiù
 	vector<double> velocity;
+	vector<double> err_velocity;
 };
 
 int main()
@@ -430,16 +431,18 @@ int main()
 	//FINE GENERAZIONE ASSE X GRAFICI VELOCITÀ
 
 	//INIZIO GENEREAZIONE VELOCITÀ
-	double delta_x = 50.0; //definita in millimetri
+	double delta_x = 50.0;	  //definita in millimetri
+	double err_delta_x = 0.0; //DIPENDE DALLO SPESSORE DELLA TACCA E PARLLASSE E PROSPETTIVA
 	for (int k = 0; k < v.size(); k++)
 	{
 		ofstream fout_vel("../Grafici_Velocity/dis_visc_" + to_string(k + 1) + "_velocity.txt");
 		fout_vel << "#T_intermedio[ms]\t#Vel_media[mm/ms]" << endl;
 		for (int i = 0; i < v[k].delta_misura.size(); i++)
 		{
-			if (i%2 == 0)
+			if (i % 2 == 0) //calcoliamo solo quelle pari o dispari, dipende da cosa intendi
 			{
 				v[k].velocity.push_back(delta_x / v[k].delta_misura[i]);
+				//v[k].err_velocity.push_back(sqrt(pow((err_delta_x/v[k].delta_misura[i]),2)+pow(,2)))
 				fout_vel << v[k].asse_x[i] << "\t" << delta_x / v[k].delta_misura[i] << endl;
 			}
 		}
