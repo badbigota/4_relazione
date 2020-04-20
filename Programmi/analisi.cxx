@@ -222,7 +222,7 @@ int main()
 	}
 	//FINE AGGIUNTA ERRORI SPECIALI
 
-	//PRIMO METODO
+	//PRIMO METODO OBSOLETO, MA LASCIARE PERCHÈ FORSE SERVE PER FARE DEI CONTI DOPO NELLA RELAZIONE
 	for (int k = 0; k < v.size(); k++)
 	{
 
@@ -255,7 +255,7 @@ int main()
 	}
 	//FINE PRIMO METODO
 
-	//INIZIO SECONDO METODO
+	//INIZIO SECONDO METODO CIOÈ PER QUELLI DI MARK
 	for (int k = 0; k < v.size(); k++)
 	{
 		if ((k == 2) || (k == 5) || (k == 6) || (k == 7))
@@ -277,11 +277,11 @@ int main()
 				v[k].delta_mark_secondo_metodo.push_back(media(righe));
 				v[k].err_delta_mark_secondo_metodo.push_back(dstd_media(righe)); //ATTENZIONE CHE QUI NON SIA UN ALTRA STIMA DA USARE
 																				 //TIPO LA MEDIA DELLE VARIANZE
-																				 //Da decommentare quando sapremo il metodo corretto
-																				 //if(k!=5){
-																				 //	v[k].delta_misure.push_back(media(righe));
-																				 //	v[k].err_delta_misure.push_back(dstd_media(righe));
-																				 //}
+				//Da decommentare quando sapremo il metodo corretto
+				if(k!=5){
+					v[k].delta_misura.push_back(media(righe));
+					v[k].err_delta_misura.push_back(dstd_media(righe));
+				}
 			}
 		}
 	}
@@ -399,7 +399,7 @@ int main()
 	}
 
 	//VISCOSIMETRO 9 - PROCEDO CON L'ANALISI PER IL CONFRONTO DEL CALCOLO DI UN UNICO SET DI VALORI
-	for (int i = 0; i < v[8].delta_misura_tom.size(); i++) //V[9] perchè stiamo considerando il viscosimetro numero 9
+	for (int i = 0; i < v[8].delta_misura_tom.size(); i++) //V[8] perchè stiamo considerando il viscosimetro numero 9
 	{
 		vector<double> righe;
 		righe.push_back(v[8].delta_misura_tom[i]);
