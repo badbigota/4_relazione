@@ -46,7 +46,8 @@ struct viscosimetro
 	vector<double> err_misura_fab; //contengono gli errori dei viscosimetri multipli di fab e tom
 	vector<double> err_misura_tom; //contengono gli errori dei viscosimetri multipli di fab e tom
 
-	//double ptl_frame_in_sec;
+	vector<double> asse_x; // è un vettore di media di tempi per l'asse delle x dei graficiù
+	vector<double> velocity;
 };
 
 int main()
@@ -275,10 +276,11 @@ int main()
 				righe.push_back(v[k].delta_mark4[i]);
 				righe.push_back(v[k].delta_mark5[i]);
 				v[k].delta_mark_secondo_metodo.push_back(media(righe));
-				v[k].err_delta_mark_secondo_metodo.push_back(dstd_media(righe)); //ATTENZIONE CHE QUI NON SIA UN ALTRA STIMA DA USARE
-																				 //TIPO LA MEDIA DELLE VARIANZE
-				//Da decommentare quando sapremo il metodo corretto
-				if(k!=5){
+				v[k].err_delta_mark_secondo_metodo.push_back(dstd_media(righe)); //ATTENZIONE CHE QUI NON SIA UN ALTRA STIMA DA USARE //TIPO LA MEDIA DELLE VARIANZE
+
+				//Da decommentare quando sapremo il metodo corretto, evita di restituire le genriche anche per il 6
+				if (k != 5)
+				{
 					v[k].delta_misura.push_back(media(righe));
 					v[k].err_delta_misura.push_back(dstd_media(righe));
 				}
@@ -331,7 +333,7 @@ int main()
 					<< v[4].misura[i] << "\t" << v[4].err_misura[i] << "\t"
 					<< v[5].misura_tom[i] << "\t" << v[5].err_misura_tom[i] << "\t"
 					<< v[5].misura_fab[i] << "\t" << v[5].err_misura_fab[i] << "\t"
-					<< v[5].misura_media_mark[i] << "\t" << v[5].misura_media_mark[i] << "\t"
+					<< v[5].misura_media_mark[i] << "\t" << v[5].err_misura_media_mark[i] << "\t"
 					<< v[6].misura_media_mark[i] << "\t" << v[6].err_misura_media_mark[i] << "\t"
 					<< v[7].misura_media_mark[i] << "\t" << v[7].err_misura_media_mark[i] << "\t"
 					<< v[8].misura_tom[i] << "\t" << v[8].err_misura_tom[i] << "\t"
@@ -411,6 +413,39 @@ int main()
 		v[8].err_delta_misura.push_back(errore_media_ponderata(err_righe));
 	}
 	//FINE GENERAZIONE DELTA T E ERR DELTA T PER TUTTI I VISCOSIMETRI
+
+	//INIZIO GENERAZIONE "T MEDI" ASSSE X GRAFICI VELOCITÀ
+	for (int k = 0; k < v.size(); k++)
+	{
+		double somma_cumulativa = 0;
+		for (int i = 0; i < v[k].delta_misura.size(); i++)
+		{
+			v[k].asse_x.push_back(somma_cumulativa + v[k].delta_misura[i] / 2);
+			cout << somma_cumulativa + v[k].delta_misura[i] / 2 << endl;
+			somma_cumulativa = somma_cumulativa + v[k].delta_misura[i];
+		}
+		cout << endl
+			 << endl;
+	}
+	//FINE GENERAZIONE ASSE X GRAFICI VELOCITÀ
+
+	//INIZIO GENEREAZIONE VELOCITÀ
+	double delta_x = 50.0; //definita in millimetri
+	for (int k = 0; k < v.size(); k++)
+	{
+		ofstream fout_vel("../Grafici_Velocity/dis_visc_" + to_string(k + 1) + "_velocity.txt");
+		fout_vel << "#T_intermedio[ms]\t#Vel_media[mm/ms]" << endl;
+		for (int i = 0; i < v[k].delta_misura.size(); i++)
+		{
+			if (i%2 == 0)
+			{
+				v[k].velocity.push_back(delta_x / v[k].delta_misura[i]);
+				fout_vel << v[k].asse_x[i] << "\t" << delta_x / v[k].delta_misura[i] << endl;
+			}
+		}
+	}
+
+	//FINE GENERAZIONE VELOCITÀ
 
 	return 0;
 }
