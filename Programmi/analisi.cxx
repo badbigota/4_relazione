@@ -430,25 +430,79 @@ int main()
 	}
 	//FINE GENERAZIONE ASSE X GRAFICI VELOCITÀ
 
-	//INIZIO GENEREAZIONE VELOCITÀ
-	double delta_x = 50.0;	  //definita in millimetri
-	double err_delta_x = 0.0; //DIPENDE DALLO SPESSORE DELLA TACCA E PARLLASSE E PROSPETTIVA
+	//INIZIO MEDIA VARIANZE, solo per i delta v statisticamente indipendenti per il calcolo delle velocità, di quelli di marco
 	for (int k = 0; k < v.size(); k++)
 	{
-		ofstream fout_vel("../Grafici_Velocity/dis_visc_" + to_string(k + 1) + "_velocity.txt");
-		fout_vel << "#T_intermedio[ms]\t#Vel_media[mm/ms]" << endl;
-		for (int i = 0; i < v[k].delta_misura.size(); i++)
+		if ((k == 2) || (k == 6) || (k == 7))
 		{
-			if (i % 2 == 0) //calcoliamo solo quelle pari o dispari, dipende da cosa intendi
+			double sum_variance = 0;
+			for (int i = 0; i < v[k].err_delta_misura.size(); i++)
 			{
-				v[k].velocity.push_back(delta_x / v[k].delta_misura[i]);
-				//v[k].err_velocity.push_back(sqrt(pow((err_delta_x/v[k].delta_misura[i]),2)+pow(,2)))
-				fout_vel << v[k].asse_x[i] << "\t" << delta_x / v[k].delta_misura[i] << endl;
+				if (i % 2 == 0)
+				{
+					sum_variance += pow(v[k].err_delta_misura[i], 2);
+				}
+			}
+			double media_var = sum_variance / 5;
+		}
+		if (k == 5)
+		{
+		}
+	}
+	//FINE MEDIA VARIANZE
+
+	//INIZIO GENEREAZIONE VELOCITÀ
+	double delta_x = 50.0;										//definita in millimetri
+	double delta_x_10_e_11 = 500.0;								//definita in millimetri
+	double err_delta_x = sqrt(2) * sigma_dist_tri(1.5875, 1.0); //DIPENDE DALLO SPESSORE DELLA TACCA E PARLLASSE E PROSPETTIVA
+
+	for (int k = 0; k < v.size(); k++)
+	{
+		if ((k != 9) || (k != 10)) //IL CICLO È PER AVERE IL GIUSTO DELTA X
+		{
+			ofstream fout_vel("../Grafici_Velocity/visc_" + to_string(k + 1) + "_v.txt");
+			fout_vel << "#T_intermedio[ms]\t#Vel_media[mm/ms]\t#err_vel_med[mm/ms]" << endl;
+			for (int i = 0; i < v[k].delta_misura.size(); i++)
+			{
+				double err_vel = sqrt(pow((err_delta_x / v[k].delta_misura[i]), 2) + pow(delta_x * v[k].err_delta_misura[i] / pow(v[k].delta_misura[i], 2), 2));
+				double vel = delta_x / v[k].delta_misura[i];
+				if (i % 2 == 0)
+				{ //mette nel vettore solo le velocità indipendenti
+					v[k].velocity.push_back(vel);
+					v[k].err_velocity.push_back(err_vel);
+				}
+				fout_vel << v[k].asse_x[i] << "\t" << vel << "\t" << err_vel << endl;
+			}
+		}
+		else if ((k == 9) || (k == 10)) //SOLO QUESTI DUE HANNO UN DELTA X MOLTO PIÙ GRANDE
+		{
+			ofstream fout_vel("../Grafici_Velocity/visc_" + to_string(k + 1) + "_v.txt");
+			fout_vel << "#T_intermedio[ms]\t#Vel_media[mm/ms]\t#err_vel_med[mm/ms]" << endl;
+			for (int i = 0; i < v[k].delta_misura.size(); i++)
+			{
+				double err_vel = sqrt(pow((err_delta_x / v[k].delta_misura[i]), 2) + pow(delta_x_10_e_11 * v[k].err_delta_misura[i] / pow(v[k].delta_misura[i], 2), 2));
+				double vel = delta_x_10_e_11 / v[k].delta_misura[i];
+				if (i % 2 == 0)
+				{ //mette nel vettore solo le velocità indipendenti
+					v[k].velocity.push_back(vel);
+					v[k].err_velocity.push_back(err_vel);
+				}
+				fout_vel << v[k].asse_x[i] << "\t" << vel << "\t" << err_vel << endl;
 			}
 		}
 	}
 
 	//FINE GENERAZIONE VELOCITÀ
+
+	//STAMPA DELTA T
+	//for (int k = 0; k < v.size(); k++)
+	//{
+	//	ofstream fout_dtm("../Grafici/" + to_string(k+1) + "deltat_medi.txt");
+	//	for (int i = 0; i < v[k].delta_misura.size(); i++)
+	//	{
+	//		fout_dtm << v[k].delta_misura[i] << endl;
+	//	}
+	//}
 
 	return 0;
 }
