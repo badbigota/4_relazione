@@ -114,12 +114,11 @@ double sigma_dist_tri(double ptl, double coeff_aff)
     return abs(ptl / coeff_aff) / sqrt(24); //ptl con il coeff aff � doppio di err max
 }
 
-//Compatibilit� 
+//Compatibilit�
 double comp(double a, double b, double sigma_a, double sigma_b)
 {
     return abs(a - b) / sqrt(pow(sigma_a, 2) + pow(sigma_b, 2));
 }
-
 
 //Media ponderata con errori
 double media_ponderata(vector<double> valori, vector<double> errori, int inizio = 0, int fine = 0)
@@ -151,4 +150,62 @@ double errore_media_ponderata(vector<double> errori)
         sum += pow((1 / d), 2);
     }
     return (1 / sqrt(sum));
+}
+
+//Calcolo di Delta con errori tutti diversi
+double delta(vector<double> dati_x, vector<double> errori_y)
+{
+    double delta_d_ = 0;
+    double sum_1 = 0, sum_2 = 0, sum_3 = 0;
+    for (int i = 0; i < dati_x.size(); i++)
+    {
+        sum_1 = sum_1 + (1 / pow(errori_y[i], 2));
+        sum_2 = sum_2 + (pow(dati_x[i], 2) / pow(errori_y[i], 2));
+        sum_3 = sum_3 + (dati_x[i] / pow(errori_y[i], 2));
+    }
+    delta_d_ = sum_1 * sum_2 - pow(sum_3, 2);
+    return delta_d_;
+}
+
+//Coeff. a di y=a+bx con errori tutti diversi (intercetta)
+double a_intercetta(vector<double> dati_x, vector<double> dati_y, vector<double> errori_y)
+{
+    double a_intercetta_d_ = 0;
+    double sum_1 = 0, sum_2 = 0, sum_3 = 0, sum_4 = 0;
+    for (int i = 0; i < dati_x.size(); i++)
+    {
+        sum_1 = sum_1 + pow((dati_x[i] / errori_y[i]), 2);
+        sum_2 = sum_2 + (dati_y[i] / pow(errori_y[i], 2));
+        sum_3 = sum_3 + (dati_x[i] / pow(errori_y[i], 2));
+        sum_4 = sum_4 + ((dati_x[i] * dati_y[i]) / pow(errori_y[i], 2));
+    }
+    a_intercetta_d_ = (1 / delta(dati_x, errori_y)) * (sum_1 * sum_2 - sum_3 * sum_4);
+    return a_intercetta_d_;
+}
+//Coeff. b di y=a+bx con errori tutti diversi (coeff. ang.)
+double b_angolare(vector<double> dati_x, vector<double> dati_y, vector<double> errori_y)
+{
+    double b_angolare_d_ = 0;
+    double sum_1 = 0, sum_2 = 0, sum_3 = 0, sum_4 = 0;
+    for (int i = 0; i < dati_x.size(); i++)
+    {
+        sum_1 = sum_1 + (1 / pow(errori_y[i], 2));
+        sum_2 = sum_2 + ((dati_x[i] * dati_y[i]) / (pow(errori_y[i], 2)));
+        sum_3 = sum_3 + ((dati_x[i]) / (pow(errori_y[i], 2)));
+        sum_4 = sum_4 + (dati_y[i] / pow(errori_y[i], 2));
+    }
+    b_angolare_d_ = (1 / delta(dati_x, errori_y)) * (sum_1 * sum_2 - sum_3 * sum_4);
+    return b_angolare_d_;
+}
+
+//Test CHi quadro per interpolazione lineare
+double test_chi(vector<double> dati_x, vector<double> dati_y, vector<double> err_dati_y)
+{
+    double somma_contributi = 0;
+    double a = a_intercetta(dati_x, dati_y, err_dati_y);
+    double b = b_angolare(dati_x, dati_y, err_dati_y);
+    for (int i = 0; i < dati_x.size(); i++)
+    {
+        somma_contributi = somma_contributi + (pow(((dati_y[i] - a - b * dati_x[i]) / err_dati_y[i]), 2)); //aggiunta di scarto normalizzato
+    }
 }
