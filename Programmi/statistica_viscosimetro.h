@@ -209,3 +209,152 @@ double test_chi(vector<double> dati_x, vector<double> dati_y, vector<double> err
         somma_contributi = somma_contributi + (pow(((dati_y[i] - a - b * dati_x[i]) / err_dati_y[i]), 2)); //aggiunta di scarto normalizzato
     }
 }
+
+//Delta (chi-quadro) [errori tutti uguali o del tutto assenti]
+double delta_err_uguali(vector<double> dati_x, int inizio = 0, int fine = 0)
+{
+    double delta_;
+    double size = 0;
+    double sum_1 = 0, sum_2 = 0;
+    if (fine == 0)
+    {
+        size = dati_x.size();
+        for (auto d : dati_x)
+        {
+            sum_1 = sum_1 + pow(d, 2);
+            sum_2 = sum_2 + d;
+        }
+        delta_ = size * sum_1 - pow(sum_2, 2);
+    }
+    else if (fine != 0)
+    {
+        for (int i = inizio; i < fine; i++)
+        {
+            size++;
+            sum_1 = sum_1 + pow(dati_x.at(i), 2);
+            sum_2 = sum_2 + dati_x.at(i);
+        }
+        delta_ = size * sum_1 - pow(sum_2, 2);
+    }
+
+    return delta_;
+}
+
+//Coefficiente a di y=a+bx (intercetta)
+double a_intercetta_err_uguali(vector<double> dati_x, vector<double> dati_y)
+{
+    double coeff_a;
+    double delta_;
+    double sum_1 = 0, sum_2 = 0, sum_3 = 0, sum_4 = 0;
+
+    if (dati_y.size() != dati_x.size())
+    {
+        cout << endl
+             << "Dimensione di vettore per dati ascisse è diversa da dimensione vettore dati ordinate" << endl;
+    }
+
+    for (int i = 0; i < dati_x.size(); i++)
+    {
+        sum_1 = sum_1 + pow(dati_x.at(i), 2);
+        sum_2 = sum_2 + dati_y.at(i);
+        sum_3 = sum_3 + dati_x.at(i);
+        sum_4 = sum_4 + (dati_x.at(i) * dati_y.at(i));
+    }
+    delta_ = delta_err_uguali(dati_x);
+    coeff_a = (1 / delta_) * (sum_1 * sum_2 - sum_3 * sum_4);
+    return coeff_a;
+}
+
+//Coefficiente b di y=a+bx (coeff. angolare)
+double b_angolare_err_uguali(vector<double> dati_x, vector<double> dati_y)
+{
+    double coeff_b;
+    double delta_;
+    int size = 0;
+    double sum_1 = 0, sum_2 = 0, sum_3 = 0;
+    if (dati_y.size() != dati_x.size())
+    {
+        cout << endl
+             << "Dimensione di vettore per dati ascisse è diversa da dimensione vettore dati ordinate" << endl;
+    }
+
+    for (int i = 0; i < dati_x.size(); i++)
+    {
+        sum_1 = sum_1 + dati_x.at(i) * dati_y.at(i);
+        sum_2 = sum_2 + dati_x.at(i);
+        sum_3 = sum_3 + dati_y.at(i);
+    }
+    delta_ = delta_err_uguali(dati_x);
+    size = dati_x.size();
+    coeff_b = (1 / delta_) * (size * sum_1 - sum_2 * sum_3);
+
+    return coeff_b;
+}
+
+/*
+INIZIO CHI QUADRO CON SIGMA Y A POSTERIORI
+*/
+
+//Sigma y a posteriori
+double sigma_y_posteriori(vector<double> dati_x, vector<double> dati_y, int inizio = 0, int fine = 0)
+{
+    double sigma_y;
+    double a, b;
+    int size = 0;
+    double numeratore = 0;
+    if (dati_x.size() != dati_y.size())
+    {
+        cout << "Vettori forniti non della stessa dimensione" << endl;
+    }
+    a = a_intercetta_err_uguali(dati_x, dati_y);
+    b = b_angolare_err_uguali(dati_x, dati_y);
+    size = dati_x.size();
+    for (int i = 0; i < dati_x.size(); i++)
+    {
+        numeratore = numeratore + pow((dati_y.at(i) - a - b * dati_x.at(i)), 2);
+    }
+    sigma_y = sqrt(numeratore / (size - 2));
+
+    return sigma_y;
+}
+
+//Errore su coeff. a di y=a+bx con sigma y a posteriori (intercetta)
+double sigma_a_posteriori(vector<double> dati_x, vector<double> dati_y)
+{
+    double sigma_a_;
+    double sigma_y;
+    double delta_;
+    double sum = 0;
+
+        sigma_y = sigma_y_posteriori(dati_x, dati_y);
+        delta_ = delta_err_uguali(dati_x);
+        for (auto d : dati_x)
+        {
+            sum = sum + pow(d, 2);
+        }
+        sigma_a_ = sigma_y * sqrt(sum / delta_);
+
+    
+    return sigma_a_;
+}
+
+//Errore su coeff. b con sigma y a posteriori(coeff. angolare)
+double sigma_b_posteriori(vector<double> dati_x, vector<double> dati_y)
+{
+    double sigma_b_p;
+    double sigma_y;
+    double delta_;
+    int size = 0;
+
+    sigma_y = sigma_y_posteriori(dati_x, dati_y);
+    size = dati_x.size();
+    delta_ = delta_err_uguali(dati_x);
+    sigma_b_p = sigma_y * sqrt(size / delta_);
+
+    return sigma_b_p;
+}
+
+
+/*
+FINE TUTTI I CHI QUADRO POSSIBILI 
+*/
