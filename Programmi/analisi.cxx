@@ -54,7 +54,13 @@ struct viscosimetro
 	vector<double> tempi_passaggio; //serve per il metodo stima velocità tramite reciproco coeff ang
 	vector<double> err_tempi_passaggio;
 
-	double v_media;
+	//3 metodi per stima v lim
+	double v_lim_interpolazione_t_x;
+	double err_v_lim_interpolazione_t_x;
+	double v_media_tutte;
+	double err_v_media_tutte;
+	double v_media_occhio;
+	double err_v_media_occhio;
 };
 
 int main()
@@ -381,10 +387,11 @@ int main()
 	//CONTROLLO SU DELTA TEMPI PER TUTTI VISC
 	for (int k = 0; k < v.size(); k++)
 	{
+		ofstream fout_de("../Grafici_Velocity/delta_t_" + to_string(k + 1) + ".txt");
+		fout_de<<"#Delta_t[ms]"<<endl;
 		for (int i = 0; i < v[k].delta_misura.size(); i++)
 		{
-			ofstream fout_de("delta_" + to_string(k + 1) + ".txt");
-			fout_de << "\t" << v[k].delta_misura[i] << endl;
+			fout_de << v[k].delta_misura[i] << endl;
 		}
 	}
 	//FINE CONTROLLO SU TEMPI VISC
@@ -428,15 +435,6 @@ int main()
 			}
 		}
 	}
-	cout << v[0].tempi_passaggio.size() << "\t" << v[0].err_tempi_passaggio.size() << endl;
-	cout << v[1].tempi_passaggio.size() << "\t" << v[1].err_tempi_passaggio.size() << endl;
-	cout << v[2].tempi_passaggio.size() << "\t" << v[2].err_tempi_passaggio.size() << endl;
-	cout << v[3].tempi_passaggio.size() << "\t" << v[3].err_tempi_passaggio.size() << endl;
-	cout << v[4].tempi_passaggio.size() << "\t" << v[4].err_tempi_passaggio.size() << endl;
-	cout << v[5].tempi_passaggio.size() << "\t" << v[5].err_tempi_passaggio.size() << endl;
-	cout << v[6].tempi_passaggio.size() << "\t" << v[6].err_tempi_passaggio.size() << endl;
-	cout << v[7].tempi_passaggio.size() << "\t" << v[7].err_tempi_passaggio.size() << endl;
-	cout << v[8].tempi_passaggio.size() << "\t" << v[8].err_tempi_passaggio.size() << endl;
 
 	//FINE GENE TEMPI PASSAGGIO
 
@@ -491,8 +489,8 @@ int main()
 			{
 				double err_vel = sqrt(pow((err_delta_x / v[k].delta_misura[i]), 2) + pow(delta_x * v[k].err_delta_misura[i] / pow(v[k].delta_misura[i], 2), 2));
 				double vel = delta_x / v[k].delta_misura[i];
-				if (i % 2 == 0)
-				{ //mette nel vettore solo le velocità indipendenti
+				if (i % 2 == 1) //PRENDO LE VELOCITÀ PARI
+				{				//mette nel vettore solo le velocità indipendenti
 					v[k].velocity.push_back(vel);
 					v[k].err_velocity.push_back(err_vel);
 				}
@@ -501,6 +499,7 @@ int main()
 				err_dummy_for_chi.push_back(err_vel);
 				v[k].test_chi_t_v = test_chi(v[k].asse_x, dummy_for_chi, err_dummy_for_chi); //FA CHI QUADRO CON TUTTE LE VELOCITÀ
 			}
+			//cout<<v[k].test_chi_t_v<<endl;
 		}
 		else if ((k == 9) || (k == 10)) //SOLO QUESTI DUE HANNO UN DELTA X MOLTO PIÙ GRANDE
 		{
@@ -525,21 +524,54 @@ int main()
 	STIME DI V LIMITE
 	******************************************************/
 
+	// 1 metodo: interpolazione x vs t
 	//GRAFICI SPAZIO (ASSE X) E TEMPO (ASSE Y)
-	//C'È ANCORA UN PROBLEMA CON QUELLI SOLO DI MARK E NON SO PERCHÈ FORSE PER ERRORI DEL FIT
 	vector<double> pos_x = {25, 75, 125, 175, 225, 275, 325, 375, 425, 475, 525}; //millimetri
-	for (int k = 0; k < v.size() - 2; k++)
+	cout << "V_lim\tErr\tErr_%" << endl;
+	v[2].err_tempi_passaggio[0] = media(v[2].err_tempi_passaggio); //perchè altrimenti non riesce il chi quadro e non so perchè
+	v[6].err_tempi_passaggio[0] = media(v[2].err_tempi_passaggio); //perchè altrimenti non riesce il chi quadro
+	v[7].err_tempi_passaggio[0] = media(v[2].err_tempi_passaggio); //perchè altrimenti non riesce il chi quadro
+	for (int k = 0; k < v.size() - 2; k++)						   //eccetto gli ultimi due
 	{
-		//cout<<pos_x.size()<<"\t"<<v[k].tempi_passaggio.size()<<"\t"<<v[k].err_tempi_passaggio.size()<<endl;
-		ofstream fout_tom_v("velo_" + to_string(k + 1) + ".txt");
+		ofstream fout_tom_v("../Grafici_Velocity/x_t_" + to_string(k + 1) + ".txt");
 		for (int i = 0; i < v[k].tempi_passaggio.size(); i++)
 		{
 			fout_tom_v << pos_x[i] << "\t" << v[k].tempi_passaggio[i] << "\t" << v[k].err_tempi_passaggio[i] << endl;
 		}
-		cout << 1. / b_angolare(pos_x, v[k].tempi_passaggio, v[k].err_tempi_passaggio) << "\t";
-		cout << test_chi(pos_x, v[k].tempi_passaggio, v[k].err_tempi_passaggio) << endl; //tst su tempo pos
+		v[k].v_lim_interpolazione_t_x = 1. / b_angolare(pos_x, v[k].tempi_passaggio, v[k].err_tempi_passaggio);
+		double err_tempi = sqrt(pow(media(v[k].err_tempi_passaggio), 2) * pow(1. / b_angolare(pos_x, v[k].tempi_passaggio, v[k].err_tempi_passaggio), 4)); //propagazione errori su velocità
+		v[k].err_v_lim_interpolazione_t_x = err_tempi;
+		//cout << v[k].v_lim_interpolazione_t_x << "\t" << err_tempi << "\t" << err_tempi / v[k].v_lim_interpolazione_t_x * 100 << endl;
 	}
 	//FINE GENERAZIONE GRAFICO SPAZIO TEMPO
+
+	// 2 metodo: con tutte le pari o dispari
+	//VELOCITA' LIMITE : STIMA CON MEDIA
+	for (int k = 0; k < v.size(); k++)
+	{
+		v[k].v_media_tutte = media(v[k].velocity);
+		v[k].err_v_media_tutte = dstd_media(v[k].velocity);
+	}
+
+	// 3 metodo: togliendo ad occhio quelle che non sono su retta, con quelle pari o dispari
+	cout << endl
+		 << endl;
+	for (int k = 0; k < v.size(); k++)
+	{
+		if ((k == 0) || (k == 1)) //FACCIAMO LA REIEZIONE
+		{
+			v[k].velocity.erase(v[k].velocity.begin()); //tolgo il primo elemento
+			v[k].v_media_occhio = media(v[k].velocity);
+			v[k].err_v_media_occhio = dstd_media(v[k].velocity);
+		}
+	}
+
+	//stampa per confronto ad occhio
+	for (int k = 0; k < v.size(); k++)
+	{
+		cout << v[k].v_media_tutte << "\t" << v[k].err_v_media_tutte << "\t" << v[k].err_v_media_tutte / v[k].v_media_tutte * 100 << "|\t" << v[k].v_media_occhio << "\t" << v[k].err_v_media_occhio << "\t" << v[k].err_v_media_occhio / v[k].v_media_occhio * 100;
+		cout << "|\t" << v[k].v_lim_interpolazione_t_x << "\t" << v[k].err_v_lim_interpolazione_t_x << "\t" << v[k].err_v_lim_interpolazione_t_x / v[k].v_lim_interpolazione_t_x * 100 << endl;
+	}
 
 	return 0;
 }
