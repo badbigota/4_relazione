@@ -61,6 +61,10 @@ struct viscosimetro
 	double err_v_media_tutte;
 	double v_media_occhio;
 	double err_v_media_occhio;
+
+	//Stime viscosità
+	double viscosity;
+	double err_viscosity;
 };
 
 int main()
@@ -322,6 +326,39 @@ int main()
 		fout_6 << i + 1 << "\t" << v[5].delta_misura_tom[i] << "\t" << v[5].err_delta_misura_tom[i] << "\t" << v[5].delta_misura_fab[i] << "\t" << v[5].err_delta_misura_fab[i] << "\t" << v[5].delta_mark_secondo_metodo[i] << "\t" << v[5].err_delta_mark_secondo_metodo[i] << endl;
 	}
 
+	//CREAZIONE TABELLA DATI GREZZI DI TEMPI GREZZI
+	ofstream fout_grezzi("dati_grezzi_aggregati_tempi.txt");
+	fout_grezzi << "1  \t err_1 \t 2  \t err_2 \t 3  \t err_3 \t 4  \t err_4 \t 5  \t err_5 \t 6_1  \t err_6_1 \t 6_2  \t err_6_2 \t 6_3  \t err_6_3 \t 7  \t err_7 \t 8  \t err_8 \t 9_1  \t err_9_1 \t 9_2  \t err_9_2 \t 10  \t err_10 \t 11  \t err_11" << endl
+				<< "[ms] \t [ms] \t [ms] \t [ms] \t [ms] \t [ms] \t [ms] \t [ms] \t [ms] \t [ms] \t [ms] \t [ms] \t [ms] \t [ms] \t [ms] \t [ms] \t [ms] \t [ms] \t [ms] \t [ms] \t [ms] \t [ms] \t [ms] \t [ms] \t [ms] \t [ms]" << endl;
+	for (int i = 0; i < v[0].misura.size(); i++)
+	{
+		fout_grezzi << v[0].misura[i] << "\t" << v[0].err_misura[i] << "\t"
+					<< v[1].misura[i] << "\t" << v[1].err_misura[i] << "\t"
+					<< v[2].misura_media_mark[i] << "\t" << v[2].err_misura_media_mark[i] << "\t"
+					<< v[3].misura[i] << "\t" << v[3].err_misura[i] << "\t"
+					<< v[4].misura[i] << "\t" << v[4].err_misura[i] << "\t"
+					<< v[5].misura_tom[i] << "\t" << v[5].err_misura_tom[i] << "\t"
+					<< v[5].misura_fab[i] << "\t" << v[5].err_misura_fab[i] << "\t"
+					<< v[5].misura_media_mark[i] << "\t" << v[5].err_misura_media_mark[i] << "\t"
+					<< v[6].misura_media_mark[i] << "\t" << v[6].err_misura_media_mark[i] << "\t"
+					<< v[7].misura_media_mark[i] << "\t" << v[7].err_misura_media_mark[i] << "\t"
+					<< v[8].misura_tom[i] << "\t" << v[8].err_misura_tom[i] << "\t"
+					<< v[8].misura_fab[i] << "\t" << v[8].err_misura_fab[i] << "\t";
+		if ((i == 1)) //CICOLO CHE STAMPA SOLO I VALORI DI 10 E 11 VISC IN CORRISPONDENZA DELLE GIUSTE TACCHE
+		{			  //BUTTA FUORI SOLO AL MOMENTO GIUSTOs
+			fout_grezzi << v[9].misura[0] << "\t" << v[9].err_misura[0] << "\t" << v[10].misura[0] << "\t" << v[10].err_misura[0] << "\t" << endl;
+		}
+		else if ((i == 10))
+		{
+			fout_grezzi << v[9].misura[1] << "\t" << v[9].err_misura[1] << "\t" << v[10].misura[1] << "\t" << v[10].err_misura[1] << "\t" << endl;
+		}
+		else
+		{
+			fout_grezzi << "ND\tND\tND\tND" << endl;
+		}
+	}
+	//FINE CREAZIONE TABELLA DATI GREZZI
+
 	//COMPATIBILITA' per visc condiviso tra tutti operatori
 	for (int i = 0; i < v[5].delta_misura_tom.size(); i++)
 	{
@@ -388,7 +425,7 @@ int main()
 	for (int k = 0; k < v.size(); k++)
 	{
 		ofstream fout_de("../Grafici_Velocity/delta_t_" + to_string(k + 1) + ".txt");
-		fout_de<<"#Delta_t[ms]"<<endl;
+		fout_de << "#Delta_t[ms]" << endl;
 		for (int i = 0; i < v[k].delta_misura.size(); i++)
 		{
 			fout_de << v[k].delta_misura[i] << endl;
@@ -564,6 +601,11 @@ int main()
 			v[k].v_media_occhio = media(v[k].velocity);
 			v[k].err_v_media_occhio = dstd_media(v[k].velocity);
 		}
+		else
+		{
+			v[k].v_media_occhio = media(v[k].velocity); //non cambia un cazzo rispetto alla media di prima, ma serve almeno per avere vettori non vuoti
+			v[k].err_v_media_occhio = dstd_media(v[k].velocity);
+		}
 	}
 
 	//stampa per confronto ad occhio
@@ -571,6 +613,13 @@ int main()
 	{
 		cout << v[k].v_media_tutte << "\t" << v[k].err_v_media_tutte << "\t" << v[k].err_v_media_tutte / v[k].v_media_tutte * 100 << "|\t" << v[k].v_media_occhio << "\t" << v[k].err_v_media_occhio << "\t" << v[k].err_v_media_occhio / v[k].v_media_occhio * 100;
 		cout << "|\t" << v[k].v_lim_interpolazione_t_x << "\t" << v[k].err_v_lim_interpolazione_t_x << "\t" << v[k].err_v_lim_interpolazione_t_x / v[k].v_lim_interpolazione_t_x * 100 << endl;
+	}
+
+	//CALCOLO DI VISCOSITÀ
+	for (int k = 0; k < v.size(); k++)
+	{
+		v[k].viscosity = 1;
+		//v[k].err_viscosity=;//propagazione
 	}
 
 	return 0;
