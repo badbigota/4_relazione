@@ -49,6 +49,12 @@ struct viscosimetro
 	vector<double> asse_x; // è un vettore di media di tempi per l'asse delle x dei graficiù
 	vector<double> velocity;
 	vector<double> err_velocity;
+
+	double test_chi_t_v;
+	vector<double> tempi_passaggio; //serve per il metodo stima velocità tramite reciproco coeff ang
+	vector<double> err_tempi_passaggio;
+
+	double v_media;
 };
 
 int main()
@@ -182,8 +188,6 @@ int main()
 	}
 	//FINE LETTURA
 
-	//INIZIO PROCESSO CALCOLO DI DELTA T IN DUE MODI PER VISCOS MARC
-
 	//AGGIUNTA ERRORI DIST TRIANG SU VISCOSIMETRI ANALIZZATI CON FBF
 	for (int k = 0; k < v.size(); k++)
 	{
@@ -224,10 +228,11 @@ int main()
 	}
 	//FINE AGGIUNTA ERRORI SPECIALI
 
+	//INIZIO PROCESSO CALCOLO DI DELTA T IN DUE MODI PER VISCOS MARC
+
 	//PRIMO METODO OBSOLETO, MA LASCIARE PERCHÈ FORSE SERVE PER FARE DEI CONTI DOPO NELLA RELAZIONE
 	for (int k = 0; k < v.size(); k++)
 	{
-
 		//leggo solo I SINGOLI Di mark (3,6,7,8)
 		if ((k == 2) || (k == 5) || (k == 6) || (k == 7))
 		{
@@ -242,17 +247,6 @@ int main()
 				v[k].misura_media_mark.push_back(media(righe));
 				v[k].err_misura_media_mark.push_back(dstd_media(righe));
 			}
-
-			//for (int i = 0; i < v[k].misura_media_mark.size() - 1; i++) //calcolo di delta con differenza e di errore con //propagazione
-			//{
-			//	v[k].delta_mark_primo_metodo.push_back(v[k].misura_media_mark[i + 1] - v[k].misura_media_mark[i]);
-			//	v[k].err_delta_mark_primo_metodo.push_back(sqrt(pow(v[k].err_misura_media_mark[i + 1], 2) + pow(v[k].//err_misura_media_mark[i], 2)));
-			//	//Da decommentare quando sapremo il metodo corretto
-			//	//if(k!=5){
-			//	//	v[k].delta_misure.push_back(media(righe));
-			//	//	v[k].err_delta_misure.push_back(dstd_media(righe));
-			//	//}
-			//}
 		}
 	}
 	//FINE PRIMO METODO
@@ -312,6 +306,7 @@ int main()
 			}
 		}
 	}
+
 	//FINE CALCOLO DELTA ED ERR PER VISC NON SPECIALI
 	ofstream fout_6("../Grafici/dati_6_sfera_t_f_m1_m2.txt");
 	fout_6 << "#N\t#D_t [ms]\t#E_D_t [ms]\t#D_F [ms]\t#E_D_f [ms]\t#D_m2 [ms]\t#E_D_m2 [ms]" << endl;
@@ -321,39 +316,7 @@ int main()
 		fout_6 << i + 1 << "\t" << v[5].delta_misura_tom[i] << "\t" << v[5].err_delta_misura_tom[i] << "\t" << v[5].delta_misura_fab[i] << "\t" << v[5].err_delta_misura_fab[i] << "\t" << v[5].delta_mark_secondo_metodo[i] << "\t" << v[5].err_delta_mark_secondo_metodo[i] << endl;
 	}
 
-	//CREAZIONE TABELLA DATI GREZZI DI TEMPI GREZZI
-	ofstream fout_grezzi("dati_grezzi_aggregati_tempi.txt");
-	fout_grezzi << "1  \t err_1 \t 2  \t err_2 \t 3  \t err_3 \t 4  \t err_4 \t 5  \t err_5 \t 6_1  \t err_6_1 \t 6_2  \t err_6_2 \t 6_3  \t err_6_3 \t 7  \t err_7 \t 8  \t err_8 \t 9_1  \t err_9_1 \t 9_2  \t err_9_2 \t 10  \t err_10 \t 11  \t err_11" << endl
-				<< "[ms] \t [ms] \t [ms] \t [ms] \t [ms] \t [ms] \t [ms] \t [ms] \t [ms] \t [ms] \t [ms] \t [ms] \t [ms] \t [ms] \t [ms] \t [ms] \t [ms] \t [ms] \t [ms] \t [ms] \t [ms] \t [ms] \t [ms] \t [ms] \t [ms] \t [ms]" << endl;
-	for (int i = 0; i < v[0].misura.size(); i++)
-	{
-		fout_grezzi << v[0].misura[i] << "\t" << v[0].err_misura[i] << "\t"
-					<< v[1].misura[i] << "\t" << v[1].err_misura[i] << "\t"
-					<< v[2].misura_media_mark[i] << "\t" << v[2].err_misura_media_mark[i] << "\t"
-					<< v[3].misura[i] << "\t" << v[3].err_misura[i] << "\t"
-					<< v[4].misura[i] << "\t" << v[4].err_misura[i] << "\t"
-					<< v[5].misura_tom[i] << "\t" << v[5].err_misura_tom[i] << "\t"
-					<< v[5].misura_fab[i] << "\t" << v[5].err_misura_fab[i] << "\t"
-					<< v[5].misura_media_mark[i] << "\t" << v[5].err_misura_media_mark[i] << "\t"
-					<< v[6].misura_media_mark[i] << "\t" << v[6].err_misura_media_mark[i] << "\t"
-					<< v[7].misura_media_mark[i] << "\t" << v[7].err_misura_media_mark[i] << "\t"
-					<< v[8].misura_tom[i] << "\t" << v[8].err_misura_tom[i] << "\t"
-					<< v[8].misura_fab[i] << "\t" << v[8].err_misura_fab[i] << "\t";
-		if ((i == 1)) //CICOLO CHE STAMPA SOLO I VALORI DI 10 E 11 VISC IN CORRISPONDENZA DELLE GIUSTE TACCHE
-		{			  //BUTTA FUORI SOLO AL MOMENTO GIUSTOs
-			fout_grezzi << v[9].misura[0] << "\t" << v[9].err_misura[0] << "\t" << v[10].misura[0] << "\t" << v[10].err_misura[0] << "\t" << endl;
-		}
-		else if ((i == 10))
-		{
-			fout_grezzi << v[9].misura[1] << "\t" << v[9].err_misura[1] << "\t" << v[10].misura[1] << "\t" << v[10].err_misura[1] << "\t" << endl;
-		}
-		else
-		{
-			fout_grezzi << "ND\tND\tND\tND" << endl;
-		}
-	}
-
-	//COMPATIBILITA' (ATTENZIONE SE USIAMO IL PRIMO METODO PER MARK O IL SECONDO)
+	//COMPATIBILITA' per visc condiviso tra tutti operatori
 	for (int i = 0; i < v[5].delta_misura_tom.size(); i++)
 	{
 		comp_tf.push_back(comp(v[5].delta_misura_tom[i], v[5].delta_misura_fab[i], v[5].err_delta_misura_tom[i], v[5].err_delta_misura_fab[i]));
@@ -415,6 +378,68 @@ int main()
 	}
 	//FINE GENERAZIONE DELTA T E ERR DELTA T PER TUTTI I VISCOSIMETRI
 
+	//CONTROLLO SU DELTA TEMPI PER TUTTI VISC
+	for (int k = 0; k < v.size(); k++)
+	{
+		for (int i = 0; i < v[k].delta_misura.size(); i++)
+		{
+			ofstream fout_de("delta_" + to_string(k + 1) + ".txt");
+			fout_de << "\t" << v[k].delta_misura[i] << endl;
+		}
+	}
+	//FINE CONTROLLO SU TEMPI VISC
+
+	//INIZIO GENERAZIONE TEMPI PASSAGGIO, TUTTI CON 0
+	for (int k = 0; k < v.size(); k++)
+	{
+		for (int i = 0; i < v[k].delta_misura.size() + 1; i++) //è definito per tutti, ora però aggiungi uno per recuperare la tacca perduta
+		{
+			if ((k == 8)) //condivisi tom fab
+			{
+				double tom_i = v[k].misura_tom[i] - v[k].misura_tom[0];
+				double fab_i = v[k].misura_fab[i] - v[k].misura_fab[0];
+				double err_tom_i = sqrt(pow(v[k].err_misura_tom[i], 2) + pow(v[k].err_misura_tom[0], 2));
+				double err_fab_i = sqrt(pow(v[k].err_misura_fab[i], 2) + pow(v[k].err_misura_fab[0], 2));
+				v[k].tempi_passaggio.push_back(media({tom_i, fab_i}));
+				v[k].err_tempi_passaggio.push_back(0.5 * sqrt(pow(err_tom_i, 2) + pow(err_fab_i, 2)));
+			}
+			else if ((k == 5)) //condiviso con mark
+			{
+				double tom_i = v[k].misura_tom[i] - v[k].misura_tom[0];
+				double fab_i = v[k].misura_fab[i] - v[k].misura_fab[0];
+				double err_tom_i = sqrt(pow(v[k].err_misura_tom[i], 2) + pow(v[k].err_misura_tom[0], 2));
+				double err_fab_i = sqrt(pow(v[k].err_misura_fab[i], 2) + pow(v[k].err_misura_fab[0], 2));
+				v[k].tempi_passaggio.push_back(media({tom_i, fab_i, v[k].misura_media_mark[i]}));
+				v[k].err_tempi_passaggio.push_back(1.0 / 3.0 * sqrt(pow(err_tom_i, 2) + pow(err_fab_i, 2) + pow(v[k].err_misura_media_mark[i], 2)));
+			}
+			else if ((k == 2) || (k == 6) || (k == 7)) //solo di mark
+			{
+				v[k].tempi_passaggio.push_back(v[k].misura_media_mark[i]); //grandezze già definite in ex primo metodo
+				v[k].err_tempi_passaggio.push_back(v[k].err_misura_media_mark[i]);
+			}
+			else if ((k == 9) || (k == 10))
+			{
+				continue;
+			}
+			else //singolo
+			{
+				v[k].tempi_passaggio.push_back(v[k].misura[i] - v[k].misura[0]);
+				v[k].err_tempi_passaggio.push_back(sqrt(pow(v[k].err_misura[0], 2) + pow(v[k].err_misura[i], 2))); //propagazione su errore
+			}
+		}
+	}
+	cout << v[0].tempi_passaggio.size() << "\t" << v[0].err_tempi_passaggio.size() << endl;
+	cout << v[1].tempi_passaggio.size() << "\t" << v[1].err_tempi_passaggio.size() << endl;
+	cout << v[2].tempi_passaggio.size() << "\t" << v[2].err_tempi_passaggio.size() << endl;
+	cout << v[3].tempi_passaggio.size() << "\t" << v[3].err_tempi_passaggio.size() << endl;
+	cout << v[4].tempi_passaggio.size() << "\t" << v[4].err_tempi_passaggio.size() << endl;
+	cout << v[5].tempi_passaggio.size() << "\t" << v[5].err_tempi_passaggio.size() << endl;
+	cout << v[6].tempi_passaggio.size() << "\t" << v[6].err_tempi_passaggio.size() << endl;
+	cout << v[7].tempi_passaggio.size() << "\t" << v[7].err_tempi_passaggio.size() << endl;
+	cout << v[8].tempi_passaggio.size() << "\t" << v[8].err_tempi_passaggio.size() << endl;
+
+	//FINE GENE TEMPI PASSAGGIO
+
 	//INIZIO GENERAZIONE "T MEDI" ASSSE X GRAFICI VELOCITÀ
 	for (int k = 0; k < v.size(); k++)
 	{
@@ -422,11 +447,8 @@ int main()
 		for (int i = 0; i < v[k].delta_misura.size(); i++)
 		{
 			v[k].asse_x.push_back(somma_cumulativa + v[k].delta_misura[i] / 2);
-			cout << somma_cumulativa + v[k].delta_misura[i] / 2 << endl;
 			somma_cumulativa = somma_cumulativa + v[k].delta_misura[i];
 		}
-		cout << endl
-			 << endl;
 	}
 	//FINE GENERAZIONE ASSE X GRAFICI VELOCITÀ
 
@@ -458,6 +480,9 @@ int main()
 
 	for (int k = 0; k < v.size(); k++)
 	{
+		vector<double> dummy_for_chi;
+		vector<double> err_dummy_for_chi;
+
 		if ((k != 9) || (k != 10)) //IL CICLO È PER AVERE IL GIUSTO DELTA X
 		{
 			ofstream fout_vel("../Grafici_Velocity/visc_" + to_string(k + 1) + "_v.txt");
@@ -472,6 +497,9 @@ int main()
 					v[k].err_velocity.push_back(err_vel);
 				}
 				fout_vel << v[k].asse_x[i] << "\t" << vel << "\t" << err_vel << endl;
+				dummy_for_chi.push_back(vel);
+				err_dummy_for_chi.push_back(err_vel);
+				v[k].test_chi_t_v = test_chi(v[k].asse_x, dummy_for_chi, err_dummy_for_chi); //FA CHI QUADRO CON TUTTE LE VELOCITÀ
 			}
 		}
 		else if ((k == 9) || (k == 10)) //SOLO QUESTI DUE HANNO UN DELTA X MOLTO PIÙ GRANDE
@@ -491,18 +519,27 @@ int main()
 			}
 		}
 	}
-
 	//FINE GENERAZIONE VELOCITÀ
 
-	//STAMPA DELTA T
-	//for (int k = 0; k < v.size(); k++)
-	//{
-	//	ofstream fout_dtm("../Grafici/" + to_string(k+1) + "deltat_medi.txt");
-	//	for (int i = 0; i < v[k].delta_misura.size(); i++)
-	//	{
-	//		fout_dtm << v[k].delta_misura[i] << endl;
-	//	}
-	//}
+	/******************************************************
+	STIME DI V LIMITE
+	******************************************************/
+
+	//GRAFICI SPAZIO (ASSE X) E TEMPO (ASSE Y)
+	//C'È ANCORA UN PROBLEMA CON QUELLI SOLO DI MARK E NON SO PERCHÈ FORSE PER ERRORI DEL FIT
+	vector<double> pos_x = {25, 75, 125, 175, 225, 275, 325, 375, 425, 475, 525}; //millimetri
+	for (int k = 0; k < v.size() - 2; k++)
+	{
+		//cout<<pos_x.size()<<"\t"<<v[k].tempi_passaggio.size()<<"\t"<<v[k].err_tempi_passaggio.size()<<endl;
+		ofstream fout_tom_v("velo_" + to_string(k + 1) + ".txt");
+		for (int i = 0; i < v[k].tempi_passaggio.size(); i++)
+		{
+			fout_tom_v << pos_x[i] << "\t" << v[k].tempi_passaggio[i] << "\t" << v[k].err_tempi_passaggio[i] << endl;
+		}
+		cout << 1. / b_angolare(pos_x, v[k].tempi_passaggio, v[k].err_tempi_passaggio) << "\t";
+		cout << test_chi(pos_x, v[k].tempi_passaggio, v[k].err_tempi_passaggio) << endl; //tst su tempo pos
+	}
+	//FINE GENERAZIONE GRAFICO SPAZIO TEMPO
 
 	return 0;
 }
