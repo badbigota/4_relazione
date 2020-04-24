@@ -5,6 +5,8 @@
 #include "statistica_viscosimetro.h"
 using namespace std;
 
+double inch_to_mm(double inch);
+
 struct viscosimetro
 {
 	vector<double> misura;
@@ -510,7 +512,7 @@ int main()
 
 	//INIZIO GENEREAZIONE VELOCITÀ
 	double delta_x = 50.0;										//definita in millimetri
-	double delta_x_10_e_11 = 500.0;								//definita in millimetri
+	double delta_x_10_e_11 = 450.0;								//definita in millimetri, unica delta t tra seconda e ultima tacca
 	double err_delta_x = sqrt(2) * sigma_dist_tri(1.5875, 1.0); //DIPENDE DALLO SPESSORE DELLA TACCA E PARLLASSE E PROSPETTIVA
 
 	for (int k = 0; k < v.size(); k++)
@@ -538,23 +540,21 @@ int main()
 			}
 			//cout<<v[k].test_chi_t_v<<endl;
 		}
-		else if ((k == 9) || (k == 10)) //SOLO QUESTI DUE HANNO UN DELTA X MOLTO PIÙ GRANDE
+		if ((k == 9) || (k == 10)) //SOLO QUESTI DUE HANNO UN DELTA X MOLTO PIÙ GRANDE
 		{
 			ofstream fout_vel("../Grafici_Velocity/visc_" + to_string(k + 1) + "_v.txt");
 			fout_vel << "#T_intermedio[ms]\t#Vel_media[mm/ms]\t#err_vel_med[mm/ms]" << endl;
 			for (int i = 0; i < v[k].delta_misura.size(); i++)
 			{
-				double err_vel = sqrt(pow((err_delta_x / v[k].delta_misura[i]), 2) + pow(delta_x_10_e_11 * v[k].err_delta_misura[i] / pow(v[k].delta_misura[i], 2), 2));
 				double vel = delta_x_10_e_11 / v[k].delta_misura[i];
-				if (i % 2 == 0)
-				{ //mette nel vettore solo le velocità indipendenti
-					v[k].velocity.push_back(vel);
-					v[k].err_velocity.push_back(err_vel);
-				}
+				double err_vel = sqrt(pow((err_delta_x / v[k].delta_misura[i]), 2) + pow(delta_x_10_e_11 * v[k].err_delta_misura[i] / pow(v[k].delta_misura[i], 2), 2));
+				v[k].velocity.push_back(vel);
+				v[k].err_velocity.push_back(err_vel);
 				fout_vel << v[k].asse_x[i] << "\t" << vel << "\t" << err_vel << endl;
 			}
 		}
 	}
+
 	//FINE GENERAZIONE VELOCITÀ
 
 	/******************************************************
@@ -564,11 +564,10 @@ int main()
 	// 1 metodo: interpolazione x vs t
 	//GRAFICI SPAZIO (ASSE X) E TEMPO (ASSE Y)
 	vector<double> pos_x = {25, 75, 125, 175, 225, 275, 325, 375, 425, 475, 525}; //millimetri
-	cout << "V_lim\tErr\tErr_%" << endl;
-	v[2].err_tempi_passaggio[0] = media(v[2].err_tempi_passaggio); //perchè altrimenti non riesce il chi quadro e non so perchè
-	v[6].err_tempi_passaggio[0] = media(v[2].err_tempi_passaggio); //perchè altrimenti non riesce il chi quadro
-	v[7].err_tempi_passaggio[0] = media(v[2].err_tempi_passaggio); //perchè altrimenti non riesce il chi quadro
-	for (int k = 0; k < v.size() - 2; k++)						   //eccetto gli ultimi due
+	v[2].err_tempi_passaggio[0] = media(v[2].err_tempi_passaggio);				  //perchè altrimenti non riesce il chi quadro e non so perchè
+	v[6].err_tempi_passaggio[0] = media(v[2].err_tempi_passaggio);				  //perchè altrimenti non riesce il chi quadro
+	v[7].err_tempi_passaggio[0] = media(v[2].err_tempi_passaggio);				  //perchè altrimenti non riesce il chi quadro
+	for (int k = 0; k < v.size() - 2; k++)										  //eccetto gli ultimi due
 	{
 		ofstream fout_tom_v("../Grafici_Velocity/x_t_" + to_string(k + 1) + ".txt");
 		for (int i = 0; i < v[k].tempi_passaggio.size(); i++)
@@ -578,7 +577,6 @@ int main()
 		v[k].v_lim_interpolazione_t_x = 1. / b_angolare(pos_x, v[k].tempi_passaggio, v[k].err_tempi_passaggio);
 		double err_tempi = sqrt(pow(media(v[k].err_tempi_passaggio), 2) * pow(1. / b_angolare(pos_x, v[k].tempi_passaggio, v[k].err_tempi_passaggio), 4)); //propagazione errori su velocità
 		v[k].err_v_lim_interpolazione_t_x = err_tempi;
-		//cout << v[k].v_lim_interpolazione_t_x << "\t" << err_tempi << "\t" << err_tempi / v[k].v_lim_interpolazione_t_x * 100 << endl;
 	}
 	//FINE GENERAZIONE GRAFICO SPAZIO TEMPO
 
@@ -586,8 +584,16 @@ int main()
 	//VELOCITA' LIMITE : STIMA CON MEDIA
 	for (int k = 0; k < v.size(); k++)
 	{
-		v[k].v_media_tutte = media(v[k].velocity);
-		v[k].err_v_media_tutte = dstd_media(v[k].velocity);
+		if (k < 9) //eccetto gli utlimi due
+		{
+			v[k].v_media_tutte = media(v[k].velocity);
+			v[k].err_v_media_tutte = dstd_media(v[k].velocity);
+		}
+		if ((k == 9) || (k == 10))
+		{
+			v[k].v_media_tutte = media(v[k].velocity);
+			v[k].err_v_media_tutte = v[k].err_velocity[0];
+		}
 	}
 
 	// 3 metodo: togliendo ad occhio quelle che non sono su retta, con quelle pari o dispari
@@ -609,18 +615,52 @@ int main()
 	}
 
 	//stampa per confronto ad occhio
+	cout << "V_lim|\tErr|\tErr_%" << endl;
 	for (int k = 0; k < v.size(); k++)
 	{
-		cout << v[k].v_media_tutte << "\t" << v[k].err_v_media_tutte << "\t" << v[k].err_v_media_tutte / v[k].v_media_tutte * 100 << "|\t" << v[k].v_media_occhio << "\t" << v[k].err_v_media_occhio << "\t" << v[k].err_v_media_occhio / v[k].v_media_occhio * 100;
+		cout << k + 1 << "|\t" << v[k].v_media_tutte << "\t" << v[k].err_v_media_tutte << "\t" << v[k].err_v_media_tutte / v[k].v_media_tutte * 100 << "|\t" << v[k].v_media_occhio << "\t" << v[k].err_v_media_occhio << "\t" << v[k].err_v_media_occhio / v[k].v_media_occhio * 100;
 		cout << "|\t" << v[k].v_lim_interpolazione_t_x << "\t" << v[k].err_v_lim_interpolazione_t_x << "\t" << v[k].err_v_lim_interpolazione_t_x / v[k].v_lim_interpolazione_t_x * 100 << endl;
 	}
 
 	//CALCOLO DI VISCOSITÀ
+	vector<double> diametro = {1.5, inch_to_mm(2.0 / 32.0), 2.0, inch_to_mm(3.0 / 32.0), inch_to_mm(4.0 / 32.0), inch_to_mm(5.0 / 32.0), inch_to_mm(6.0 / 32.0), inch_to_mm(7.0 / 32.0), inch_to_mm(8.0 / 32.0), inch_to_mm(8.0 / 32.0), inch_to_mm(9.0 / 32.0)};
+	double err_diametro = 0.01; //mm
+
+	double dens_sap = 1.032; //g/cm^3
+	double err_dens_sap = 0.001;
+
+	double dens_acc = 7.870; //g/cm^3
+	double err_dens_acc = 0.005;
+
+	double g = 9.806; //m/s^2
+	double err_g = 0.001;
+	ofstream fout_visc("../Grafici_Velocity/visc_eta.txt");
+	ofstream fout_fit_visc_1("../Grafici_Velocity/visc_fit_1.txt");
+	ofstream fout_fit_visc_2("../Grafici_Velocity/visc_fit_2.txt");
+	fout_visc << "#N\t#Visc[MISSING]\t#Err_visc[MISSING]" << endl;
+	fout_fit_visc_1<<"#Diam^+2[mm]\t#Vel^+1[ND]\t#Err_vel^+1[ND]"<<endl;
+	fout_fit_visc_2<<"#Diam^-2[mm]\t#Vel^-1[ND]\t#Err_vel^-1[ND]"<<endl;
 	for (int k = 0; k < v.size(); k++)
 	{
-		v[k].viscosity = 1;
-		//v[k].err_viscosity=;//propagazione
+		double speed = v[k].v_media_tutte;		   //per ora è così da scegliere quella giusta seconodo criterio
+		double err_speed = v[k].err_v_media_tutte; //da cambiare con quello appropriato
+		double d_diam = g * (dens_acc - dens_sap) * 2.0 * diametro[k] / (18.0 * speed);
+		double d_g = (pow(diametro[k], 2) * (dens_acc - dens_sap) / 18.0 * speed);
+		double d_dens_sap = pow(diametro[k], 2) * g / (18.0 * speed);
+		double d_dens_acc = pow(diametro[k], 2) * g / (18.0 * speed);
+		double d_vel = pow(diametro[k], 2) * g * (dens_acc - dens_sap) / (18.0 * pow(speed, 2));
+		v[k].viscosity = (pow(diametro[k], 2) * g * (dens_acc - dens_sap) / (18 * speed));
+		v[k].err_viscosity = sqrt(pow(d_diam * err_diametro, 2) + pow(d_g * err_g, 2) + pow(d_dens_sap * err_dens_sap, 2) + pow(d_dens_acc * err_dens_acc, 2) + pow(d_vel * err_speed, 2)); //propagazione
+		cout << k + 1 << "|\t" << v[k].viscosity << "\t" << v[k].err_viscosity << endl;
+		fout_visc << k + 1 << "\t" << v[k].viscosity << "\t" << v[k].err_viscosity << endl;
+		fout_fit_visc_1<<pow(diametro[k],2)<<"\t"<<speed<<"\t"<<err_speed<<endl;
+		fout_fit_visc_2<<pow(diametro[k],-2)<<"\t"<<pow(speed,-1)<<endl;//qui serve fare la propagazione errori?
 	}
 
 	return 0;
+}
+
+double inch_to_mm(double inch)
+{
+	return 25.4 * inch;
 }
