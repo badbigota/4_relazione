@@ -50,6 +50,7 @@ struct viscosimetro
 
 	vector<double> asse_x; // è un vettore di media di tempi per l'asse delle x dei graficiù
 	vector<double> asse_x_new;
+	vector<double> err_asse_x_dispari;
 	vector<double> velocity;
 	vector<double> velocity_2; //per vedere cambiamento intermedio
 	vector<double> err_velocity_2;
@@ -62,8 +63,8 @@ struct viscosimetro
 	//3 metodi per stima v lim
 	double v_lim_interpolazione_t_x;
 	double err_v_lim_interpolazione_t_x;
-	double v_media_tutte;
-	double err_v_media_tutte;
+	double v_media_dispari;
+	double err_v_media_dispari;
 	double v_media_occhio;
 	double err_v_media_occhio;
 
@@ -80,7 +81,13 @@ struct viscosimetro
 
 	double accelerazione;
 	double err_accelerazione;
-	vector <double> compa_inst;
+	vector<double> compa_inst;
+
+	//Calcolo sigma posteriori
+	double sigma_post;
+
+	//calcolo variazione percentuale accc
+	vector<double> variaz_percent_accel;
 };
 
 int main()
@@ -419,18 +426,26 @@ int main()
 	//cout << "Compatibilita fab - mark: " << comp_fm_media << endl;
 
 	//VISCOSIMETRO 6 - PROCEDO CON L'ANALISI PER IL CONFRONTO DEL CALCOLO DI UN UNICO SET DI VALORI
+	ofstream lout_tu("../Grafici_Velocity/delta_t_tutti.txt");
+	lout_tu << "Tom"
+			<< "\t"
+			<< "Fab"
+			<< "\t"
+			<< "Mark" << endl;
 	for (int i = 0; i < v[5].delta_misura_tom.size(); i++) //V[5] perchè stiamo considerando il viscosimetro numero 6
 	{
 		vector<double> righe;
 		righe.push_back(v[5].delta_misura_tom[i]);
 		righe.push_back(v[5].delta_misura_fab[i]);
-		righe.push_back(v[5].delta_mark_secondo_metodo[i]); // cambia se vuoi il secondo metodo
+		righe.push_back(v[5].delta_mark_secondo_metodo[i]);
 		vector<double> err_righe;
 		err_righe.push_back(v[5].err_delta_misura_tom[i]);
 		err_righe.push_back(v[5].err_delta_misura_fab[i]);
-		err_righe.push_back(v[5].err_delta_mark_secondo_metodo[i]); //cambia se vuoi il secondo metodo
+		err_righe.push_back(v[5].err_delta_mark_secondo_metodo[i]);
 		v[5].delta_misura.push_back(media_ponderata(righe, err_righe));
 		v[5].err_delta_misura.push_back(errore_media_ponderata(err_righe));
+
+		lout_tu << v[5].delta_misura_tom[i] << "\t" << v[5].err_delta_misura_tom[i] << "\t" << v[5].delta_misura_fab[i] << "\t" << v[5].err_delta_misura_fab[i] << "\t" << v[5].delta_mark_secondo_metodo[i] << "\t" << v[5].err_delta_mark_secondo_metodo[i] << endl;
 	}
 
 	//VISCOSIMETRO 9 - PROCEDO CON L'ANALISI PER IL CONFRONTO DEL CALCOLO DI UN UNICO SET DI VALORI
@@ -515,37 +530,38 @@ int main()
 	//FINE GENERAZIONE ASSE X GRAFICI VELOCITÀ
 
 	//INIZIO MEDIA VARIANZE, solo per i delta v statisticamente indipendenti per il calcolo delle velocità, di quelli di marco
-	for (int k = 0; k < v.size(); k++)
-	{
-		if ((k == 2) || (k == 6) || (k == 7))
-		{
-			double sum_variance = 0;
-			for (int i = 0; i < v[k].err_delta_misura.size(); i++)
-			{
-				if ((i % 2 == 0))
-				{
-					sum_variance += pow(v[k].err_delta_misura[i], 2);
-				}
-			}
-			double media_var = sum_variance / 5;
-		}
-		if (k == 5)
-		{
-		}
-	}
+	//for (int k = 0; k < v.size(); k++)
+	//{
+	//	if ((k == 2) || (k == 6) || (k == 7))
+	//	{
+	//		double sum_variance = 0;
+	//		for (int i = 0; i < v[k].err_delta_misura.size(); i++)
+	//		{
+	//			if ((i % 2 == 0))
+	//			{
+	//				sum_variance += pow(v[k].err_delta_misura[i], 2);
+	//			}
+	//		}
+	//		double media_var = sum_variance / 5;
+	//	}
+	//	if (k == 5)
+	//	{
+	//	}
+	//}
 	//FINE MEDIA VARIANZE
 
-	//INIZIO GENEREAZIONE TUTTE LE VELOCITÀ
+	//INIZIO GENEREAZIONE TUTTE LE VELOCITÀ E VALUTAZIONE CHI QUADRO SU DISPARI
 	double delta_x = 50.0;										//definita in millimetri
 	double delta_x_10_e_11 = 450.0;								//definita in millimetri, unica delta t tra seconda e ultima tacca
-	double err_delta_x = sqrt(2) * sigma_dist_tri(1.5875, 1.0); //DIPENDE DALLO SPESSORE DELLA TACCA E PARLLASSE E PROSPETTIVA
+	double err_delta_x = sqrt(2) * sigma_dist_tri(1.5875, 1.0); //DIPENDE DALLO SPESSORE DELLA TACCA E PARLLASSE E PROSPETTIVA della pallina 2
+	double err_x = sigma_dist_tri(1.5875, 1.0);
 	cout << "TEST CHI CON TEMPI E VELOCITÀ" << endl;
 
 	for (int k = 0; k < v.size() - 2; k++) //per visc da 1 a 9
 	{
 		for (int l = 0; l < v[k].asse_x.size(); l++)
 		{
-			if ((l % 2 == 1)) //prende solo i dispari
+			if ((l % 2 == 0)) //prende solo i dispari
 			{
 				v[k].asse_x_new.push_back(v[k].asse_x[l]);
 			}
@@ -556,8 +572,9 @@ int main()
 		for (int i = 0; i < v[k].delta_misura.size(); i++)
 		{
 			double vel = delta_x / v[k].delta_misura[i];
-			double err_vel = sqrt(pow((err_delta_x / v[k].delta_misura[i]), 2) + pow(delta_x * v[k].err_delta_misura[i] / pow(v[k].delta_misura[i], 2), 2));
-			if (i % 2 == 1) //PRENDO LE VELOCITÀ dispari
+			double err_vel = sqrt(pow((err_delta_x / v[k].delta_misura[i]), 2) + pow(delta_x * v[k].err_delta_misura[i] / pow(v[k].delta_misura[i], 2), 2)); //errori a priori
+
+			if (i % 2 == 0) //PRENDO LE VELOCITÀ dispari
 			{
 				v[k].velocity.push_back(vel);
 				v[k].err_velocity.push_back(err_vel);
@@ -569,6 +586,7 @@ int main()
 		v[k].test_chi_t_v = test_chi(v[k].asse_x_new, v[k].velocity, v[k].err_velocity); //FA CHI QUADRO CON TUTTE LE VELOCITÀ
 		cout << "chi test" << k + 1 << "\t" << v[k].test_chi_t_v << endl;
 	}
+
 	for (int k = 9; k < v.size(); k++)
 	{
 		ofstream fout_vel("../Grafici_Velocity/visc_" + to_string(k + 1) + "_v.txt");
@@ -582,78 +600,36 @@ int main()
 			fout_vel << "\t" << vel << "\t" << err_vel << endl;
 		}
 	}
-	//	//FINE GENERAZIONE VELOCITÀ
+	//FINE GENERAZIONE VELOCITÀ  E CHI QUADRO
 
-	//COME VERIFICARE SE CAMBIANO O MENO LE VELOCITÃ: test chi su v t fallisce, troppo picoclo perchè su indip, test chi su x t troppo grande perchè errori sottostimati, valuto quanto cambiano nel campione, se il cambiamente è entro errore, è costante, altrimenti fanculo
-	cout << "Confronto cambiamento vel Err_%_var_vel vs. Err_%_med" << endl;
-	for (int k = 0; k < v.size() - 2; k++)
-	{
-		double max_vel = v[k].velocity_2[0];
-		double min_vel = v[k].velocity_2[0];
-		for (auto c : v[k].velocity_2)
-		{
-			if (c > max_vel)
-			{
-				max_vel = c;
-			}
-			if (c < min_vel)
-			{
-				min_vel = c;
-			}
-		}
-
-		vector<double> errs;
-		for (int i = 0; i < v[k].err_velocity_2.size(); i++)
-		{
-			errs.push_back(v[k].err_velocity_2[i] / v[k].velocity_2[i] * 100);
-		}
-		double errs_perce = media(errs);
-		cout << k + 1 << " " << (max_vel - min_vel) / min_vel * 100 << " vs. " << errs_perce << endl;
-	}
-
-	//	/******************************************************
-	//	STIME DI V LIMITE
-	//	******************************************************/
-
-	//	// 1 metodo: interpolazione x vs t
-	//	//GRAFICI SPAZIO (ASSE X) E TEMPO (ASSE Y)
-	vector<double> pos_x = {25.0, 75.0, 125.0, 175., 225., 275., 325., 375., 425., 475., 525.}; //millimetri
-	v[2].err_tempi_passaggio[0] = media(v[2].err_tempi_passaggio);								//perchè altrimenti non riesce il chi quadro e non so perchè
-	v[6].err_tempi_passaggio[0] = media(v[2].err_tempi_passaggio);								//perchè altrimenti non riesce il chi quadro
-	v[7].err_tempi_passaggio[0] = media(v[2].err_tempi_passaggio);								//perchè altrimenti non riesce il chi quadro
-	for (int k = 0; k < v.size() - 2; k++)														//eccetto gli ultimi due
-	{
-		ofstream fout_tom_v("../Grafici_Velocity/x_t_" + to_string(k + 1) + ".txt");
-		for (int i = 0; i < v[k].tempi_passaggio.size(); i++)
-		{
-			fout_tom_v << pos_x[i] << "\t" << v[k].tempi_passaggio[i] << "\t" << v[k].err_tempi_passaggio[i] << endl;
-		}
-		v[k].v_lim_interpolazione_t_x = 1. / b_angolare(pos_x, v[k].tempi_passaggio, v[k].err_tempi_passaggio);
-		double err_tempi = sqrt(pow(media(v[k].err_tempi_passaggio), 2) * pow(1. / b_angolare(pos_x, v[k].tempi_passaggio, v[k].err_tempi_passaggio), 4)); //propagazione errori su velocità
-		v[k].err_v_lim_interpolazione_t_x = err_tempi;
-		cout << "test xvst " << k + 1 << " " << test_chi(pos_x, v[k].tempi_passaggio, v[k].err_tempi_passaggio) << " " << v[k].v_lim_interpolazione_t_x << endl;
-	}
-	//FINE GENERAZIONE GRAFICO SPAZIO TEMPO
-
-	// 2 metodo: con tutte le pari o dispari
-	//VELOCITA' LIMITE : STIMA CON MEDIA
+	//VELOCITA' LIMITE : STIMA CON MEDIA DELLE VELOCITA' DISPARI
 	for (int k = 0; k < v.size(); k++)
 	{
 		if (k < 9) //eccetto gli utlimi due
 		{
-			v[k].v_media_tutte = media(v[k].velocity);
-			v[k].err_v_media_tutte = dstd_media(v[k].velocity);
+			v[k].v_media_dispari = media(v[k].velocity);
+			v[k].err_v_media_dispari = dstd_media(v[k].velocity);
 		}
 		if ((k == 9) || (k == 10))
 		{
-			v[k].v_media_tutte = media(v[k].velocity);
-			v[k].err_v_media_tutte = v[k].err_velocity[0];
+			v[k].v_media_dispari = media(v[k].velocity);
+			v[k].err_v_media_dispari = v[k].err_velocity[0];
 		}
 	}
 
-	//*************INSERIRE REIEZIONE SE SERVE*************************notion
+	//TEMPO CARATTERISTICO TAU
+	// è in millisecondi
+	cout << "TAU[ms]" << endl;
+	for (int k = 0; k < v.size(); k++)
+	{
+		double tau = dens_acc * v[k].v_media_dispari / (g * (dens_acc - dens_sap));
+		cout << k + 1 << "|\t" << tau << endl;
+	}
+	//FINE TEMPO CARATTERISTICO TAU
 
-	//
+	//ACCELERAZIONI ISTANTANEE
+
+	//sistema errori per i viscosimteri che non ne hanno
 	for (int i = 0; i < v[5].err_misura.size(); i++)
 	{
 		v[5].err_misura.pop_back();
@@ -663,7 +639,7 @@ int main()
 	vector<double> err_medio_6_prop;
 	for (int i = 1; i < v[5].misura_media_mark.size(); i++) //plotwist: in realtà i è i+1 nelle formule di fab
 	{
-		vector<double> err_dei_vari_operatori{v[5].err_misura_media_mark[i], v[5].err_misura_fab[i], v[5].err_misura_fab[i]};
+		vector<double> err_dei_vari_operatori{v[5].err_misura_media_mark[i], v[5].err_misura_fab[i], v[5].err_misura_tom[i]};
 		err_medio_6.push_back(dstd_media(err_dei_vari_operatori));
 		if (i == 1)
 		{
@@ -681,7 +657,7 @@ int main()
 	vector<double> err_medio_9_prop;
 	for (int i = 1; i < v[8].err_misura_fab.size(); i++)
 	{
-		vector<double> err_dei_vari_operatori{v[8].err_misura_fab[i], v[8].err_misura_fab[i]};
+		vector<double> err_dei_vari_operatori{v[8].err_misura_fab[i], v[8].err_misura_tom[i]};
 		err_medio_9.push_back(dstd_media(err_dei_vari_operatori));
 		if (i == 1)
 		{
@@ -694,88 +670,170 @@ int main()
 			v[8].err_misura.push_back(0.5 * sqrt(pow(err_medio_9_prop[i], 2) + pow(err_medio_9_prop[i - 1], 2)));
 		}
 	}
+	//fine sistemazione errori
 
 	//CALCOLO ACCELERAZIONE
 	cout << "ACCELERAZIONE" << endl;
 	for (int k = 0; k < v.size() - 2; k++)
 	{
 		//cout << "Errori t Viscosimetro " << k + 1 << endl;
-		vector<double> asse_x_pari; //genero vettore asse x prendendo solo i pari
-		vector<double> err_asse_x_pari;
+		vector<double> asse_x_dispari; //genero vettore asse x prendendo solo i pari
+		vector<double> err_asse_x_dispari;
 		for (int i = 0; i < v[k].asse_x.size(); i++)
 		{
 			if ((k == 2) || (k == 6) || (k == 7))
 			{
-				//cout << v[k].err_misura_media_mark[i] << endl;
+
 				if ((i % 2 == 0))
 				{
-					asse_x_pari.push_back(v[k].asse_x[i]);
-					err_asse_x_pari.push_back(0.5 * sqrt(pow(v[k].err_misura_media_mark[i + 1], 2) + pow(v[k].err_misura_media_mark[i], 2)));
-					//cout<<err_asse_x_pari.size()<<endl;
+					asse_x_dispari.push_back(v[k].asse_x[i]);
+					err_asse_x_dispari.push_back(0.5 * sqrt(pow(v[k].err_misura_media_mark[i + 1], 2) + pow(v[k].err_misura_media_mark[i], 2)));
 				}
 			}
 			else
 			{
-				//cout << v[k].err_misura[i] << endl;
+
 				if ((i % 2 == 0))
 				{
-					asse_x_pari.push_back(v[k].asse_x[i]);
-					err_asse_x_pari.push_back(0.5 * sqrt(pow(v[k].err_misura[i + 1], 2) + pow(v[k].err_misura[i], 2)));
-					//cout<<err_asse_x_pari.size()<<endl;
+					asse_x_dispari.push_back(v[k].asse_x[i]);
+					err_asse_x_dispari.push_back(0.5 * sqrt(pow(v[k].err_misura[i + 1], 2) + pow(v[k].err_misura[i], 2)));
 				}
 			}
 		}
-		//cout << asse_x_pari.size() << v[k].velocity.size() << v[k].err_velocity.size() << endl;
-		//cout << k + 1 << "|\t" << b_angolare(asse_x_pari, v[k].velocity, v[k].err_velocity) << endl;
-		v[k].accelerazione = b_angolare(asse_x_pari, v[k].velocity, v[k].err_velocity);
-		v[k].err_accelerazione = sigma_b_posteriori(asse_x_pari, v[k].velocity);
+		//cout << k + 1 << "|\t" << b_angolare(asse_x_dispari, v[k].velocity, v[k].err_velocity) << endl;
+		v[k].accelerazione = b_angolare(asse_x_dispari, v[k].velocity, v[k].err_velocity);
+		v[k].err_accelerazione = sigma_b_posteriori(asse_x_dispari, v[k].velocity);
 
 		//creazione accelerazioni istantanee
 		//stima accelerazione delle singole tacce
 
 		for (int f = 0; f < v[k].velocity.size() - 1; f++)
 		{
-			v[k].acc_istant.push_back((v[k].velocity[f + 1] - v[k].velocity[f]) / (asse_x_pari[f + 1] - asse_x_pari[f]));
-			v[k].err_acc_istant.push_back(sqrt(pow((-1. / pow(asse_x_pari[f], 2)), 2) * pow(err_asse_x_pari[f], 2) * (pow((v[k].velocity[f + 1] - v[k].velocity[f]), 2)) + pow((-1. / asse_x_pari[f]), 2) * pow(v[k].err_velocity[f + 1], 2) + pow((-1. / asse_x_pari[f]), 2) * pow(v[k].err_velocity[f], 2)));
+			v[k].acc_istant.push_back((v[k].velocity[f + 1] - v[k].velocity[f]) / (asse_x_dispari[f + 1] - asse_x_dispari[f]));
+			v[k].err_acc_istant.push_back(sqrt(pow((-1. / pow(asse_x_dispari[f], 2)), 2) * pow(err_asse_x_dispari[f], 2) * (pow((v[k].velocity[f + 1] - v[k].velocity[f]), 2)) + pow((-1. / asse_x_dispari[f]), 2) * pow(v[k].err_velocity[f + 1], 2) + pow((-1. / asse_x_dispari[f]), 2) * pow(v[k].err_velocity[f], 2)));
 		}
 
-
-
 		//INIZIO CALCOLO COMPATTIBILITÀ TRA ISTANTANEA E GENERALE
-		for(int i=0; i<v[k].acc_istant.size(); i++){
-
-			v[k].compa_inst.push_back(comp(v[k].acc_istant[i],v[k].err_acc_istant[i],v[k].accelerazione, v[k].err_accelerazione));
-			cout << "Accelerazione" << "\t" << v[k].acc_istant[i] << "\t" << v[k].err_acc_istant[i] << "\t" << v[k].compa_inst[i]<<endl;
-
+		for (int i = 0; i < v[k].acc_istant.size(); i++)
+		{
+			v[k].compa_inst.push_back(comp(v[k].acc_istant[i], v[k].err_acc_istant[i], v[k].accelerazione, v[k].err_accelerazione));
+			cout << "Accelerazione"
+				 << "\t" << v[k].acc_istant[i] << "\t" << v[k].err_acc_istant[i] << "\t" << v[k].compa_inst[i] << endl;
 		}
 		cout << endl;
 	}
 	//FINE ACCELERAZIONE
 
+	//VARIAZIONE PERCENTUALE AL RAGGIUNGIMENTO DELLA VELOCITÀ LIMITE
+	cout << "VARIAZ PERCE ACCEL =)" << endl;
+	for (int k = 0; k < v.size() - 2; k++) //solo su i primi 9
+	{
+		for (int i = 0; i < v[k].acc_istant.size(); i++)
+		{
+			v[k].variaz_percent_accel.push_back((v[k].acc_istant[i] / (g_primo - v[k].acc_istant[i])) * 100);
+
+			cout << k + 1 << " " << v[k].variaz_percent_accel[i] << "%" << endl;
+		}
+		cout << endl;
+	}
+
+	//VARIAZIONE PERCENTUALE AL RAGGIUNGIMENTO DELLA VELOCITÀ LIMITE
+	//controllo errori per metterli nel grafico
+	vector<double> pos_x = {25.0, 75.0, 125.0, 175., 225., 275., 325., 375., 425., 475., 525.}; //millimetri
+	v[2].err_tempi_passaggio[0] = media(v[2].err_tempi_passaggio);								//perchè altrimenti non riesce il chi quadro e non so perchè
+	v[6].err_tempi_passaggio[0] = media(v[2].err_tempi_passaggio);								//perchè altrimenti non riesce il chi quadro
+	v[7].err_tempi_passaggio[0] = media(v[2].err_tempi_passaggio);								//perchè altrimenti non riesce il chi quadro
+	cout << "Cofronto errori % per grafico" << endl;
+	cout << "Err_posizione\tErr_tempo" << endl;
+	for (int k = 0; k < v.size() - 2; k++)
+	{
+		cout << "Numero viscosimetro" << k + 1 << endl;
+		for (int i = 0; i < v[k].tempi_passaggio.size(); i++)
+		{
+			string op = "<";
+			if (err_x / pos_x[i] > v[k].err_tempi_passaggio[i] / v[k].tempi_passaggio[i])
+			{
+				op = ">";
+			}
+			cout << err_x / pos_x[i] * 100 << " " + op + " " << v[k].err_tempi_passaggio[i] / v[k].tempi_passaggio[i] * 100 << endl;
+		}
+	}
+
+	////COME VERIFICARE SE CAMBIANO O MENO LE VELOCITÃ: test chi su v t fallisce, troppo picoclo perchè su indip, test chi su x t troppo grande perchè errori sottostimati, valuto quanto cambiano nel campione, se il cambiamente è entro errore, è costante, altrimenti fanculo
+	//cout << "Confronto cambiamento vel Err_%_var_vel vs. Err_%_med" << endl;
+	//for (int k = 0; k < v.size() - 2; k++)
+	//{
+	//	double max_vel = v[k].velocity_2[0];
+	//	double min_vel = v[k].velocity_2[0];
+	//	for (auto c : v[k].velocity_2)
+	//	{
+	//		if (c > max_vel)
+	//		{
+	//			max_vel = c;
+	//		}
+	//		if (c < min_vel)
+	//		{
+	//			min_vel = c;
+	//		}
+	//	}
+	//
+	//	vector<double> errs;
+	//	for (int i = 0; i < v[k].err_velocity_2.size(); i++)
+	//	{
+	//		errs.push_back(v[k].err_velocity_2[i] / v[k].velocity_2[i] * 100);
+	//	}
+	//	double errs_perce = media(errs);
+	//	//cout << k + 1 << " " << (max_vel - min_vel) / min_vel * 100 << " vs. " << errs_perce << endl;
+	//	//cout << k + 1 << " " << dstd_media(v[k].velocity_2) / media(v[k].velocity_2) * 100 << " vs " << errs_perce << endl;
+	//	cout << k + 1 << " " << (max_vel - min_vel) / media(v[k].velocity_2) * 100 << " vs" << errs_perce << endl;
+	//}
+
+	//	// 1 metodo: interpolazione x vs t
+	//	//GRAFICI SPAZIO (ASSE X) E TEMPO (ASSE Y)
+	vector<double> pos_x_2 = {0, 50.0, 100.0, 150., 200., 250., 300., 350., 400., 450., 500.};
+	cout << "TEST CHI SU X VS T PER STIMA V LIM" << endl;
+	for (int k = 0; k < v.size() - 2; k++) //eccetto gli ultimi due
+	{
+		int quanti_ne_tolgo = 3;
+		vector<double> copia_tempi_passaggio = v[k].tempi_passaggio;
+		vector<double> copia_err_tempi_passaggio = v[k].err_tempi_passaggio;
+		vector<double> copia_pos_x_2 = pos_x_2;
+
+		copia_tempi_passaggio.erase(copia_tempi_passaggio.begin(), copia_tempi_passaggio.begin() + quanti_ne_tolgo);
+		copia_err_tempi_passaggio.erase(copia_err_tempi_passaggio.begin(), copia_err_tempi_passaggio.begin() + quanti_ne_tolgo);
+		copia_pos_x_2.erase(copia_pos_x_2.begin(), copia_pos_x_2.begin() + quanti_ne_tolgo);
+		vector<double> errore_pos_x_2(8, err_x);
+		cout << "ChiTest " << k + 1 <<  " : " << test_chi(copia_pos_x_2, copia_tempi_passaggio, copia_err_tempi_passaggio) << "\t" << test_chi(copia_tempi_passaggio, copia_pos_x_2, errore_pos_x_2 ) << endl;
+	}
+	//FINE GENERAZIONE GRAFICO SPAZIO TEMPO
+
+	//	/******************************************************
+	//	STIME DI V LIMITE
+	//	******************************************************/
+
+	for (int k = 0; k < v.size() - 2; k++) //eccetto gli ultimi due
+	{
+		v[k].v_lim_interpolazione_t_x = 1. / b_angolare(pos_x_2, v[k].tempi_passaggio, v[k].err_tempi_passaggio);
+		double err_tempi = sqrt(pow(media(v[k].err_tempi_passaggio), 2) * pow(1. / b_angolare(pos_x_2, v[k].tempi_passaggio, v[k].err_tempi_passaggio), 4)); //propagazione errori su velocità
+		v[k].err_v_lim_interpolazione_t_x = err_tempi;
+	}
+
+	
+
 	//3 metodo con correzione di acc
 	for (int k = 0; k < v.size(); k++)
 	{
-		v[k].v_lim_corretta = v[k].v_media_tutte / (1. - v[k].accelerazione / g_primo);
+		v[k].v_lim_corretta = v[k].v_media_dispari / (1. - v[k].accelerazione / g_primo);
 		//v[k].err_v_lim_corretta=;//cazzo di propagazione
 	}
 
 	//stampa per confronto ad occhio
-	cout << "V_lim|\tErr|\tErr_%" << endl;
+	//cout << "V_lim|\tErr|\tErr_%" << endl;
 	for (int k = 0; k < v.size(); k++)
 	{
-		cout << k + 1 << "|\t" << v[k].v_media_tutte << "\t" << v[k].err_v_media_tutte << "\t" << v[k].err_v_media_tutte / v[k].v_media_tutte * 100 << "|\t" << v[k].v_lim_corretta << "\t" << v[k].err_v_lim_corretta << "\t" << v[k].err_v_lim_corretta / v[k].v_lim_corretta * 100;
-		cout << "|\t" << v[k].v_lim_interpolazione_t_x << "\t" << v[k].err_v_lim_interpolazione_t_x << "\t" << v[k].err_v_lim_interpolazione_t_x / v[k].v_lim_interpolazione_t_x * 100 << endl;
+		//cout << k + 1 << "|\t" << v[k].v_media_dispari << "\t" << v[k].err_v_media_dispari << "\t" << v[k].err_v_media_dispari / v[k].v_media_dispari * 100 << "|\t" << v[k].v_lim_corretta << "\t" << v[k].err_v_lim_corretta << "\t" << v[k].err_v_lim_corretta / v[k].v_lim_corretta * 100;
+		//cout << "|\t" << v[k].v_lim_interpolazione_t_x << "\t" << v[k].err_v_lim_interpolazione_t_x << "\t" << v[k].err_v_lim_interpolazione_t_x / v[k].v_lim_interpolazione_t_x * 100 << endl;
 	}
-
-	//TEMPO CARATTERISTICO TAU
-	cout << "TAU" << endl;
-	for (int k = 0; k < v.size(); k++)
-	{
-		double tau = dens_acc * v[k].v_media_tutte / (g * (dens_acc - dens_sap));
-		cout << k + 1 << "|\t" << tau << endl;
-	}
-
-	//FINE TEMPO CARATTERISTICO TAU
 
 	//CALCOLO DI VISCOSITÀ
 	vector<double> diametro = {1.5, inch_to_mm(2.0 / 32.0), 2.0, inch_to_mm(3.0 / 32.0), inch_to_mm(4.0 / 32.0), inch_to_mm(5.0 / 32.0), inch_to_mm(6.0 / 32.0), inch_to_mm(7.0 / 32.0), inch_to_mm(8.0 / 32.0), inch_to_mm(8.0 / 32.0), inch_to_mm(9.0 / 32.0)};
@@ -787,10 +845,9 @@ int main()
 	fout_fit_visc_2 << "#Diam^-2[mm]\t#Vel^-1[ND]\t#Err_vel^-1[ND]" << endl;
 	for (int k = 0; k < v.size(); k++)
 	{
-		double speed = v[k].v_media_tutte;		   //per ora è così da scegliere quella giusta seconodo criterio
-		double err_speed = v[k].err_v_media_tutte; //da cambiare con quello appropriato
-		double d_diam = g * (dens_acc - dens_sap) *
-						2.0 * diametro[k] / (18.0 * speed);
+		double speed = v[k].v_media_dispari;		 //per ora è così da scegliere quella giusta seconodo criterio
+		double err_speed = v[k].err_v_media_dispari; //da cambiare con quello appropriato
+		double d_diam = g * (dens_acc - dens_sap) * 2.0 * diametro[k] / (18.0 * speed);
 		double d_g = (pow(diametro[k], 2) * (dens_acc - dens_sap) / 18.0 * speed);
 		double d_dens_sap = pow(diametro[k], 2) * g / (18.0 * speed);
 		double d_dens_acc = pow(diametro[k], 2) * g / (18.0 * speed);
@@ -803,6 +860,8 @@ int main()
 		fout_fit_visc_2 << pow(diametro[k], -2) << "\t" << pow(speed, -1) << endl; //qui serve fare la propagazione errori?
 	}
 	//FINE CALCOLO VISCOSITÀ
+	cout << endl
+		 << endl;
 
 	return 0;
 }
