@@ -326,15 +326,14 @@ double sigma_a_posteriori(vector<double> dati_x, vector<double> dati_y)
     double delta_;
     double sum = 0;
 
-        sigma_y = sigma_y_posteriori(dati_x, dati_y);
-        delta_ = delta_err_uguali(dati_x);
-        for (auto d : dati_x)
-        {
-            sum = sum + pow(d, 2);
-        }
-        sigma_a_ = sigma_y * sqrt(sum / delta_);
+    sigma_y = sigma_y_posteriori(dati_x, dati_y);
+    delta_ = delta_err_uguali(dati_x);
+    for (auto d : dati_x)
+    {
+        sum = sum + pow(d, 2);
+    }
+    sigma_a_ = sigma_y * sqrt(sum / delta_);
 
-    
     return sigma_a_;
 }
 
@@ -354,7 +353,16 @@ double sigma_b_posteriori(vector<double> dati_x, vector<double> dati_y)
     return sigma_b_p;
 }
 
-
+//Errore su coeff. b di y=a+bx con errori tutti diversi (coeff. ang.)
+double sigma_b(vector<double> dati_x, vector<double> dati_y, vector<double> errori_y)
+{
+    double sum = 0;
+    for (int i = 0; i < dati_x.size(); i++)
+    {
+        sum = sum + (1 / pow(errori_y[i], 2));
+    }
+    return sqrt((1 / delta(dati_x, errori_y)) * sum);
+}
 /*
 FINE TUTTI I CHI QUADRO POSSIBILI 
 */
