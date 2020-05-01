@@ -63,10 +63,14 @@ struct viscosimetro
 	//3 metodi per stima v lim
 	double v_lim_interpolazione_t_x;
 	double err_v_lim_interpolazione_t_x;
+	double v_lim_interpolazione_x_t;
+	double err_v_lim_interpolazione_x_t;
 	double v_media_dispari;
 	double err_v_media_dispari;
 	double v_media_occhio;
 	double err_v_media_occhio;
+	double v_lim;
+	double err_v_lim;
 
 	double v_lim_corretta;
 	double err_v_lim_corretta;
@@ -578,6 +582,7 @@ int main()
 			{
 				v[k].velocity.push_back(vel);
 				v[k].err_velocity.push_back(err_vel);
+				//cout<<"FAB"<<v[k].velocity[i]<<endl;
 			}
 			v[k].velocity_2.push_back(vel);
 			v[k].err_velocity_2.push_back(err_vel);
@@ -788,13 +793,12 @@ int main()
 	//	cout << k + 1 << " " << (max_vel - min_vel) / media(v[k].velocity_2) * 100 << " vs" << errs_perce << endl;
 	//}
 
-	//	// 1 metodo: interpolazione x vs t
 	//	//GRAFICI SPAZIO (ASSE X) E TEMPO (ASSE Y)
 	vector<double> pos_x_2 = {0, 50.0, 100.0, 150., 200., 250., 300., 350., 400., 450., 500.};
+	int quanti_ne_tolgo = 3;
 	cout << "TEST CHI SU X VS T PER STIMA V LIM" << endl;
 	for (int k = 0; k < v.size() - 2; k++) //eccetto gli ultimi due
 	{
-		int quanti_ne_tolgo = 3;
 		vector<double> copia_tempi_passaggio = v[k].tempi_passaggio;
 		vector<double> copia_err_tempi_passaggio = v[k].err_tempi_passaggio;
 		vector<double> copia_pos_x_2 = pos_x_2;
@@ -803,65 +807,92 @@ int main()
 		copia_err_tempi_passaggio.erase(copia_err_tempi_passaggio.begin(), copia_err_tempi_passaggio.begin() + quanti_ne_tolgo);
 		copia_pos_x_2.erase(copia_pos_x_2.begin(), copia_pos_x_2.begin() + quanti_ne_tolgo);
 		vector<double> errore_pos_x_2(8, err_x);
-		cout << "ChiTest " << k + 1 <<  " : " << test_chi(copia_pos_x_2, copia_tempi_passaggio, copia_err_tempi_passaggio) << "\t" << test_chi(copia_tempi_passaggio, copia_pos_x_2, errore_pos_x_2 ) << endl;
+		cout << "ChiTest " << k + 1 << " : " << test_chi(copia_pos_x_2, copia_tempi_passaggio, copia_err_tempi_passaggio) << "\t" << test_chi(copia_tempi_passaggio, copia_pos_x_2, errore_pos_x_2) << endl;
 	}
 	//FINE GENERAZIONE GRAFICO SPAZIO TEMPO
 
 	//	/******************************************************
 	//	STIME DI V LIMITE
 	//	******************************************************/
-
+	cout << "V lim con interpolazione ultimi dati" << endl
+		 << "Visc vl_xt evl_xt epvl_xt vl_tx evl_tx epvl_tx " << endl;
 	for (int k = 0; k < v.size() - 2; k++) //eccetto gli ultimi due
 	{
-		v[k].v_lim_interpolazione_t_x = 1. / b_angolare(pos_x_2, v[k].tempi_passaggio, v[k].err_tempi_passaggio);
-		double err_tempi = sqrt(pow(media(v[k].err_tempi_passaggio), 2) * pow(1. / b_angolare(pos_x_2, v[k].tempi_passaggio, v[k].err_tempi_passaggio), 4)); //propagazione errori su velocità
-		v[k].err_v_lim_interpolazione_t_x = err_tempi;
+		vector<double> copia_tempi_passaggio = v[k].tempi_passaggio;
+		vector<double> copia_err_tempi_passaggio = v[k].err_tempi_passaggio;
+		vector<double> copia_pos_x_2 = pos_x_2;
+
+		copia_tempi_passaggio.erase(copia_tempi_passaggio.begin(), copia_tempi_passaggio.begin() + quanti_ne_tolgo);
+		copia_err_tempi_passaggio.erase(copia_err_tempi_passaggio.begin(), copia_err_tempi_passaggio.begin() + quanti_ne_tolgo);
+		copia_pos_x_2.erase(copia_pos_x_2.begin(), copia_pos_x_2.begin() + quanti_ne_tolgo);
+		vector<double> errore_pos_x_2(8, err_x);
+
+		//primo modo: t in asse y, x in asse x
+		v[k].v_lim_interpolazione_x_t = 1. / b_angolare(copia_pos_x_2, copia_tempi_passaggio, copia_err_tempi_passaggio);
+		double err_tempi_x_t = sqrt((sigma_b_posteriori(copia_pos_x_2, copia_tempi_passaggio), 2) * pow(1. / b_angolare(copia_pos_x_2, copia_tempi_passaggio, copia_err_tempi_passaggio), 4)); //propagazione errori su velocità
+		v[k].err_v_lim_interpolazione_x_t = err_tempi_x_t;
+
+		//secondo modo: x in asse y, t in asse t (più facile)
+		v[k].v_lim_interpolazione_t_x = b_angolare(copia_tempi_passaggio, copia_pos_x_2, errore_pos_x_2);
+		double err_tempi_t_x = sigma_b_posteriori(copia_tempi_passaggio, copia_pos_x_2); //propagazione errori su velocità
+		v[k].err_v_lim_interpolazione_t_x = err_tempi_t_x;
+
+		double err_percent_x_t = v[k].err_v_lim_interpolazione_x_t / v[k].v_lim_interpolazione_x_t * 100;
+		double err_percent_t_x = v[k].err_v_lim_interpolazione_t_x / v[k].v_lim_interpolazione_t_x * 100;
+		cout << "V\t" << k + 1 << "\t" << v[k].v_lim_interpolazione_x_t << "\t" << v[k].err_v_lim_interpolazione_x_t << "\t" << err_percent_x_t << "\t" << v[k].v_lim_interpolazione_t_x << "\t" << v[k].err_v_lim_interpolazione_t_x << "\t" << err_percent_t_x << endl;
 	}
+	//fine stima velocità
 
-	
-
-	//3 metodo con correzione di acc
-	for (int k = 0; k < v.size(); k++)
+	cout << endl
+		 << "V lim finale, prendendo quella giusta" << endl;
+	for (int k = 0; k < v.size() - 2; k++)
 	{
-		v[k].v_lim_corretta = v[k].v_media_dispari / (1. - v[k].accelerazione / g_primo);
-		//v[k].err_v_lim_corretta=;//cazzo di propagazione
+		if (k < 6) //prende quella giusta
+		{
+			v[k].v_lim = v[k].v_lim_interpolazione_t_x;
+			v[k].err_v_lim = v[k].err_v_lim_interpolazione_t_x;
+		}
+		else //prende delle due quella giusta
+		{
+			v[k].v_lim = v[k].v_lim_interpolazione_x_t;
+			v[k].err_v_lim = v[k].err_v_lim_interpolazione_x_t;
+		}
+		cout << "V " << k + 1 << "\t" << v[k].v_lim << "\t" << v[k].err_v_lim << endl;
 	}
 
 	//stampa per confronto ad occhio
 	//cout << "V_lim|\tErr|\tErr_%" << endl;
-	for (int k = 0; k < v.size(); k++)
-	{
-		//cout << k + 1 << "|\t" << v[k].v_media_dispari << "\t" << v[k].err_v_media_dispari << "\t" << v[k].err_v_media_dispari / v[k].v_media_dispari * 100 << "|\t" << v[k].v_lim_corretta << "\t" << v[k].err_v_lim_corretta << "\t" << v[k].err_v_lim_corretta / v[k].v_lim_corretta * 100;
-		//cout << "|\t" << v[k].v_lim_interpolazione_t_x << "\t" << v[k].err_v_lim_interpolazione_t_x << "\t" << v[k].err_v_lim_interpolazione_t_x / v[k].v_lim_interpolazione_t_x * 100 << endl;
-	}
+	//for (int k = 0; k < v.size(); k++)
+	//{
+	//cout << k + 1 << "|\t" << v[k].v_media_dispari << "\t" << v[k].err_v_media_dispari << "\t" << v[k].err_v_media_dispari / v[k].v_media_dispari * 100 << "|\t" << v[k].v_lim_corretta << "\t" << v[k].err_v_lim_corretta << "\t" << v[k].err_v_lim_corretta / v[k].v_lim_corretta * 100;
+	//cout << "|\t" << v[k].v_lim_interpolazione_t_x << "\t" << v[k].err_v_lim_interpolazione_t_x << "\t" << v[k].err_v_lim_interpolazione_t_x / v[k].v_lim_interpolazione_t_x * 100 << endl;
+	//}
 
-	//CALCOLO DI VISCOSITÀ
+	//CALCOLO DI VISCOSITÀ E VERIFICA LEGGE
 	vector<double> diametro = {1.5, inch_to_mm(2.0 / 32.0), 2.0, inch_to_mm(3.0 / 32.0), inch_to_mm(4.0 / 32.0), inch_to_mm(5.0 / 32.0), inch_to_mm(6.0 / 32.0), inch_to_mm(7.0 / 32.0), inch_to_mm(8.0 / 32.0), inch_to_mm(8.0 / 32.0), inch_to_mm(9.0 / 32.0)};
-	ofstream fout_visc("../Grafici_Velocity/visc_eta.txt");
-	ofstream fout_fit_visc_1("../Grafici_Velocity/visc_fit_1.txt");
-	ofstream fout_fit_visc_2("../Grafici_Velocity/visc_fit_2.txt");
+	ofstream fout_visc("../Grafici_VerificaLegge/visc_eta.txt");
+	ofstream fout_fit_visc_1("../Grafici_VerificaLegge/visc_fit_1.txt");
+	ofstream fout_fit_visc_2("../Grafici_VerificaLegge/visc_fit_2.txt");
 	fout_visc << "#N\t#Visc[MISSING]\t#Err_visc[MISSING]" << endl;
-	fout_fit_visc_1 << "#Diam^+2[mm]\t#Vel^+1[ND]\t#Err_vel^+1[ND]" << endl;
-	fout_fit_visc_2 << "#Diam^-2[mm]\t#Vel^-1[ND]\t#Err_vel^-1[ND]" << endl;
+	fout_fit_visc_1 << "#Diam^+2[mm^2]\t#Vel^+1[mm/ms]\t#Err_vel^+1[mm/ms]" << endl;
+	fout_fit_visc_2 << "#Diam^-2[1/mm^2]\t#Vel^-1[ms/mm]\t#Err_vel^-1[ms/mm]" << endl;
 	for (int k = 0; k < v.size(); k++)
 	{
-		double speed = v[k].v_media_dispari;		 //per ora è così da scegliere quella giusta seconodo criterio
-		double err_speed = v[k].err_v_media_dispari; //da cambiare con quello appropriato
-		double d_diam = g * (dens_acc - dens_sap) * 2.0 * diametro[k] / (18.0 * speed);
-		double d_g = (pow(diametro[k], 2) * (dens_acc - dens_sap) / 18.0 * speed);
-		double d_dens_sap = pow(diametro[k], 2) * g / (18.0 * speed);
-		double d_dens_acc = pow(diametro[k], 2) * g / (18.0 * speed);
-		double d_vel = pow(diametro[k], 2) * g * (dens_acc - dens_sap) / (18.0 * pow(speed, 2));
-		v[k].viscosity = (pow(diametro[k], 2) * g * (dens_acc - dens_sap) / (18 * speed));
-		v[k].err_viscosity = sqrt(pow(d_diam * err_diametro, 2) + pow(d_g * err_g, 2) + pow(d_dens_sap * err_dens_sap, 2) + pow(d_dens_acc * err_dens_acc, 2) + pow(d_vel * err_speed, 2)); //propagazione
+		//double speed = v[k].v_media_dispari;		 //per ora è così da scegliere quella giusta secondo criterio
+		//double err_speed = v[k].err_v_media_dispari; //da cambiare con quello appropriato
+		double d_diam = g * (dens_acc - dens_sap) * 2.0 * diametro[k] / (18.0 * v[k].v_lim);
+		double d_g = (pow(diametro[k], 2) * (dens_acc - dens_sap) / 18.0 * v[k].v_lim);
+		double d_dens_sap = pow(diametro[k], 2) * g / (18.0 * v[k].v_lim);
+		double d_dens_acc = pow(diametro[k], 2) * g / (18.0 * v[k].v_lim);
+		double d_vel = pow(diametro[k], 2) * g * (dens_acc - dens_sap) / (18.0 * pow(v[k].v_lim, 2));
+		v[k].viscosity = (pow(diametro[k], 2) * g * (dens_acc - dens_sap) / (18 * v[k].v_lim));
+		v[k].err_viscosity = sqrt(pow(d_diam * err_diametro, 2) + pow(d_g * err_g, 2) + pow(d_dens_sap * err_dens_sap, 2) + pow(d_dens_acc * err_dens_acc, 2) + pow(d_vel * v[k].err_v_lim, 2)); //propagazione
 		cout << k + 1 << "|\t" << v[k].viscosity << "\t" << v[k].err_viscosity << endl;
 		fout_visc << k + 1 << "\t" << v[k].viscosity << "\t" << v[k].err_viscosity << endl;
-		fout_fit_visc_1 << pow(diametro[k], 2) << "\t" << speed << "\t" << err_speed << endl;
-		fout_fit_visc_2 << pow(diametro[k], -2) << "\t" << pow(speed, -1) << endl; //qui serve fare la propagazione errori?
+		fout_fit_visc_1 << pow(diametro[k], 2) << "\t" << v[k].v_lim << "\t" << v[k].err_v_lim << endl;
+		fout_fit_visc_2 << pow(diametro[k], -2) << "\t" << pow(v[k].v_lim, -1) << "\t" << sqrt(pow((-v[k].err_v_lim / pow(v[k].v_lim, 2)), 2)) << endl; //qui serve fare la propagazione errori?
 	}
-	//FINE CALCOLO VISCOSITÀ
-	cout << endl
-		 << endl;
+	//FINE CALCOLO VISCOSITÀ E VERIFICA LEGGE
 
 	return 0;
 }
