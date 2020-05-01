@@ -115,7 +115,7 @@ double comp(double a, double b, double sigma_a, double sigma_b)
 }
 
 /*
-INIZIO CHI QUADRO CON ERRORI TUTTI DIFFERENTI
+INIZIO CHI QUADRO CON ERRORI TUTTI DIFFERENTI*****************************************************
 */
 
 //Calcolo di Delta con errori tutti diversi
@@ -186,7 +186,7 @@ double sigma_b(vector<double> dati_x, vector<double> dati_y, vector<double> erro
 }
 
 /*
-INIZIO CHI QUADRO CON ERRORI ERRORI TUTTI UGUALI O ASSENTI
+INIZIO CHI QUADRO CON ERRORI ERRORI TUTTI UGUALI O ASSENTI********************************************************
 */
 
 //Delta (chi-quadro) [errori tutti uguali o del tutto assenti]
@@ -292,7 +292,7 @@ double sigma_b_err_uguali(vector<double> dati_x, vector<double> dati_y, double e
 }
 
 /*
-INIZIO CHI QUADRO CON SIGMA Y A POSTERIORI
+INIZIO CHI QUADRO CON SIGMA Y A POSTERIORI******************************************************+
 */
 
 //Sigma y a posteriori
@@ -356,7 +356,7 @@ double sigma_b_posteriori(vector<double> dati_x, vector<double> dati_y)
 
 
 /*
-FINE TUTTI I CHI QUADRO POSSIBILI 
+FINE TUTTI I CHI QUADRO POSSIBILI ************************************************************************************
 */
 
 
