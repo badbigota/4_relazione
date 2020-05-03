@@ -800,26 +800,79 @@ Si è realizzato il fit lineare di $v_L^-1$ vs $D^-2$
 
 \section{Discussione}
 \subsection{Errori misurazioni temporali $t_{i,j}$}
+Si è deciso di effettuare le misurazioni temporali in corrispondenza del momento in cui il centro della sfera attraversava la superficie identificata dalla tacca segnata sul cilindro. Questo protocollo è stato seguito da tutti e 3 gli operatori nonostante la diversa tecnica di presa dati, con cronometro o tramite software.
 Per tutte le misurazioni effettuate tramite il metodo frame-by-frame si sono valutati accortamente il numero di frame di indecisione per la misurazione ovvero il numero di frame nei quali era possibile che la sfera avesse oltrepassato la tacca.
-Le prime 4 sfere, avendo diametro comparabile allo spessore della tacca incisa sul cilindro dalla prospettiva della telecamera e avendo velocità molto bassa, presentano un alto numero di frame di incertezza.
-Le sfere a diametro maggiore, dalla quinta alla ottava, invece presentano come causa dei frame di incertezza sia sia il mancato allineamento fra obiettivo della telecamera e tacca sia un'incertezza sull'esatto frame di passaggio del centro della sfera per il livello segnato dalla tacca poiché diversi fotogrammi consecutivi ancora raffigurano il centro della sfera "dietro" lo spessore della tacca.
-Le sfere a diametro maggiore invece riportano come causa dei frame di incertezza l'assenza di uno specifico frame nel quale la sfera si trovi dietro la tacca, a causa della sua elevata velocità di discesa nel fluido e di alcuni errori sistematici del software VLC nella corretta visualizzazione del tempo e fotogramma associato. In questi casi si sono assunti 2 frame di incertezza come errore sistematico del software. Nei casi in cui la mancanza di un frame che immortalasse il passaggio della sfera in maniera soddisfacente per l'operatore, si è ricorso alla media fra i tempi dei due frame più verisimili. Il valore $t_i$ è talvolta per le sfere a diametro maggiore una media e di conseguenza l'errore sulla misurazione deriva da una propagazione. 
+Le differenti fonti di errore si identificano in
+\begin{itemize}
+    \item Errore sistematico del software/estensione impiegata $\approx 2 $ frame
+    \item Incertezza dovuta allo spessore della tacca
+    \item Errore di parallasse dovuto al mancato allineamento fra telecamera e tacca, variabile a seconda dei video e delle tacche considerate
+    \item Indecisione sull'esatto frame di passaggio nel momento in cui sia possibile una scelta fra diversi fotogrammi
+    \item Mancanza di un esatto frame in cui si osserva il passaggio della sfera per la tacca considerata
+\end{itemize}
+Per le prime 4 sfere presentano un elevato numero di frame di incertezza a causa della presenza di tutte le prime quattro componenti di errore, a causa della ridotta dimensione della sfera e della sua bassa velocità.
+Le sfere a diametro intermedio, ovvero dalla quinta all'ottava presentano come causa dei frame di incertezza sia sia il mancato allineamento fra obiettivo e tacca sia un'incertezza sull'esatto frame di passaggio del centro della sfera per il livello segnato in quanto la massa risulta per diversi fotogrammi consecutivi oscurata dalla tacca.
+
+Le sfere a diametro maggiore invece riportano come causa dei frame di incertezza soltanto l'errore sistematico del software e la mancanza di frame del momento esatto del passaggio per l'elevata velocità di discesa nel fluido.
+In alcuni casi la mancanza di un frame esatto che immortalasse il passaggio della sfera in maniera soddisfacente per l'operatore, si è ricorso alla media fra i tempi dei due frame più verisimili. Il valore $t_i$ è talvolta per le sfere a diametro maggiore una media fra due tempi e conseguentemente l'errore ad esso associato è maggiore poiché derivante da una propagazione.
+Viene riportato il numero opportunamente scelto di frame di incertezza in Tabella \ref{tab:frame_incertezza}.
+
+\begin{table}[]
+\caption{Frame di incertezza}
+\label{tab:frame_incertezza}
+\begin{tabular}{ll}
+Lancio & \# fps  \\ \hline
+1      & $9$ \\ \hline
+2      & $8$ \\ \hline
+3      & $4$ \\ \hline
+4      & $4$ \\ \hline
+5      & $3$ \\ \hline
+6      & $3$ \\ \hline
+7      & $2$ \\ \hline
+8      & $3$ \\ \hline
+9      & $2$ \\ \hline
+10     & $2$ \\ \hline
+11     & $2$
+\end{tabular}
+\end{table}
 
 
+Per le misurazioni effettuate tramite cronometro invece si sono valutate le possibili cause di errore in:
+\begin{itemize}
+    \item Imprecisioni dovute alla velocità di risposta dell'operatore nel avviare/bloccare il cronometro
+    \item Indecisioni dovute al mancato allineamento dell'obiettivo con la tacca incisa
+\end{itemize}
+Ogni misurazione risultava avere come incertezza la deviazione standard sulla media fra tutto il campione di misure riferito ad un unica tacca. Come errore associato alla prima tacca si è considerata la media fra i valori degli errori relativi a tutte le tacche.
+Seppur non sia un procedimento statisticamente corretto è ragionevole assumere che l'incertezza su questa misurazione sia comparabile alle misurazioni successive, prestando particolare attenzione nel caso in cui ci fossero dei valori di incertezza per alcune tacche di molto superiori alla media. 
 
-\subsection{Calcolo errore in $\Delta t$}
+
+\subsection*{Calcolo errore in $\Delta t$}
 %Citare il discorso di desalvador, perche un metodo o l'altro, evitare covarianza, citare standard JCGM, uso di media varianze
-Per l'analisi dei dati si è scelto di analizzare i $\Delta t$ e non le misurazioni dirette per differenti motivi. In primo luogo la scelta è direttamente collegata al fatto che, avendo utilizzato due metodi differenti, si è utilizzato un diverso zero dei tempi a seconda del metodo. Per il metodo frame by frame infatti lo zero dei tempo corrispondeva con l'inizio della visualizzazione di ogni video. Per il secondo metodo invece lo zero dei tempi si è arbitrariamente scelto nell'istante in cui ogni pallina transitava presso il primo traguardo segnata sul cilindro. La valutazione dei $\Delta t$ ha permesso di arginare il problema.\\
+Per l'analisi dei dati si è scelto di analizzare i $\Delta t$ e non le misurazioni dirette. Il vantaggio di questo approccio è l'evitare di dover rapportare i vari tempi ad un unico zero iniziale in quanto i due metodi impiegati usano origini temporali diverse: l'origine temporale per il metodo con il cronometro corrisponde al passaggio della sfera per la prima tacca mentre per il metodo frame by frame coincide con l'inizio del video.\\
+La valutazione dell'errore di $\Delta t$ per le misure effettuate tramite software hanno sfruttato la propagazione sui frame di incertezza, mentre per le misure con cronometro, come consigliato dalla guida JCGM, si sono dapprima calcolati i cinque $\Delta t$ relativi ad uno stesso intervallo fra tacche e per poi considerare come componente di errore la loro deviazione standard sulla media.
 
-In secondo luogo la motivazione è invece da attribuire alla valutazione dell'errore sullo zero dei tempi.In entrambi i metodi sappiamo che lo zero dei tempi è affetto da errore, ma, per il metodo frame by frame, risultava difficile attribuire un errore a quest'ultimo, in quanto non consapevoli dell'esatto funzionamento dell'estensione utilizzata. Si è evitato il problema, in quanto non necessario ai fini dell'esperimento, tramite l'analisi dei $\Delta t$.
+%In secondo luogo la motivazione è invece da attribuire alla valutazione dell'errore sullo zero dei tempi.In entrambi i metodi sappiamo che lo zero dei tempi è affetto da errore, ma, per il metodo frame by frame, risultava difficile attribuire un errore a quest'ultimo, in quanto non consapevoli dell'esatto funzionamento dell'estensione utilizzata. Si è evitato il problema, in quanto non necessario ai fini dell'esperimento, tramite l'analisi dei $\Delta t$.
 
 
-\subsection{Commenti sul confronto fra  le metodologie degli operatori - Viscosimetro 6}
-Come precedentemente affermato, la presa dati relativa al viscosimetro 6 effettuata da ciascun operatore ha permesso efficacemente di verificare la compatibilità tra i diversi metodi e i differenti membri del gruppo. I dati riportati nelle tabelle  \ref{tab:Confronto_tutte_le_compatibilità_per_ogni_misura} e  \ref{tab:Confronto_tutte_le_compatibilità} confermano che ogni campione e ogni singola misura di $\Delta t$ è compatibile con le corrispondenti di altri operatori. In particolare i campioni tra loro hanno tutti una compatibilità ottima, il che lecita i passaggi successivi descritti nell'analisi.\\
+\subsection*{Commenti sul confronto fra  le metodologie degli operatori - Viscosimetro 6 e 9}
+Si riporta il commento relativo alle prese dati per il sesto viscosimetro effettuate da tutti e tre gli operatori con le due procedure diverse per valutare la compatibilità fra i metodi impiegati.
+I dati riportati nelle tabelle \ref{tab:Confronto_tutte_le_compatibilità_per_ogni_misura} e  \ref{tab:Confronto_tutte_le_compatibilità} confermano che ogni campione e ogni singola misura di $\Delta t$ è compatibile con le corrispondenti degli altri operatori. In particolare i campioni tra loro hanno tutti una compatibilità ottima, il che legittima i passaggi descritti nell'analisi.\\
 Osservando la tabella \ref{tab:Confronto_tutte_le_compatibilità_per_ogni_misura} si nota inoltre che le compatibilità tra operatore C e operatore A e B per il primo intervallo risultano rispettivamente discrete e pessime. Dal grafico \ref{fig:andamento_delta_t} è osservabile che $\Delta t^C_1$ risulta essere inferiore ai corrispondenti. Si ipotizza quindi un ritardo nell'avvio del cronometro al passaggio della sferetta presso il primo traguardo.\\
 %Le misure relative agli intervalli 4, 6 e 10 hanno compatibilità più grande ed errore maggiore  
-Generalmente è possibile affermare che le misure dell'operatore A e B risultano più simili tra loro e con compatibilità ottime: ciò è giustificato dal fatto che è stato utilizzato il medesimo metodo di misura.
-Infine, l'errore di $\Delta t^C_i$ risulta maggiore di quello associato a $\Delta t^A_i$ e $\Delta t^B_i$. Tale fatto è giustificabile poiché il metodo frame by frame risulta più preciso rispetto al metodo di misure ripetute tramite cronometro. %Probabilmente con un numero maggiore di misure ripetute, il metodo cronometro sarebbe stato più preciso
+Generalmente è possibile affermare che le misure dell'operatore A e B risultano più simili tra loro e con compatibilità ottime, oltre ceh affette da errore minore rispetto a quelle effettuate dall'operatore C. Ciò è giustificabile dall'utilizzo del medesimo metodo di misura e dal fatto che generalmente il metodo frame-by-frame risulta più preciso del metodo con misure tramite cronometro.
+%Probabilmente con un numero maggiore di misure ripetute, il metodo cronometro sarebbe stato più preciso
+
+Risultati analoghi sono ottenibili tramite il confronto delle misure tra operatori A e B per il nono viscosimetro.
+
+\subsection*{Calcolo velocità}
+%errore stimato su delta x
+
+\subsection*{Velocità costanti o no, tre metodi e significato di ciascuno di loro}
+
+
+\subsection*{Verifica legge, ipotesi andamenti esponenziali di viscosità e chi su di loro}
+
+
 
 
 \section{Margini di miglioramento}
@@ -828,6 +881,7 @@ Infine, l'errore di $\Delta t^C_i$ risulta maggiore di quello associato a $\Delt
 
 
 \section{Conclusioni}
+%riportare viscosità rappresentativa
 
 \section{Appendice}
 
