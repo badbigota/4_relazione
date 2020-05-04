@@ -40,6 +40,7 @@
 \graphicspath{{Figure/}} 
 %https://www.overleaf.com/learn/latex/Indices
 %\makeindex[columns=3, title=Alphabetical Index, intoc]
+\setlength{\parindent}{0em}
 
 
 
@@ -62,11 +63,10 @@ L'obiettivo dell'esperienza è la stima della viscosità di un liquido saponoso 
 \section{Apparato Sperimentale}
 
 
-\begin{wrapfigure}{l}{4cm}
-    %\centering
-    \includegraphics[width=4cm]{ApparatoSperimentale.jpg}
-    \label{fig:apparato_sperimentale}
+\begin{wrapfigure}[16]{l}{4cm}
     \caption{Apparato Sperimentale}
+    \label{fig:apparato_sperimentale}
+    \includegraphics[width=4cm]{ApparatoSperimentale.jpg}
 \end{wrapfigure}
 
 L'apparato sperimentale risulta così composto:
@@ -78,7 +78,7 @@ L'apparato sperimentale risulta così composto:
     \item 10 sferette in acciaio di densità $\rho_S=(7.870\pm0.005)\si{\gram\per\cubic\centi\metre}$ per ogni misura di diametro disponibile come riportato in Tabella \ref{tab:diametri_sfere}
     \item Videocamera a 29.97 fps per registrare tutte le cadute delle sferette nel fluido 
 \end{enumerate}
-In questa tabella vengono presentate le caratteristiche delle palline utilizzate durante tutta l'esperienza.
+In questa tabella vengono presentate le caratteristiche delle sfere utilizzate durante tutta l'esperienza.
 
 
 
@@ -116,9 +116,6 @@ In questa tabella vengono presentate le caratteristiche delle palline utilizzate
 %\end{table}
 \bigskip
 \bigskip
-\bigskip
-\bigskip
-\bigskip
 \begin{table}[h!]
     \centering
     \makebox[\textwidth]{
@@ -127,25 +124,21 @@ In questa tabella vengono presentate le caratteristiche delle palline utilizzate
         \textbf{N pallina} & $1$ & $2$ & $3$ & $4$ & $5$ & $6$ & $7$ & $8$ & $9$ & $10$ \\ \hline
         \textbf{Diametro} $\pm 0.01$ mm & $1.5$ mm & $2"/32$ & $2$ mm & $3"/32$ & $4"/32$ & $5"/32$ & $6"/32$ & $7"/32$ & $8"/32$ & $9"/32$ \\ \hline
     \end{tabular}}
-    \caption{Diametri Sferette}
+    \caption{Diametri sfere}
     \label{tab:diametri_sfere}
 \end{table}
 
+Si specifica che la sfera 9 è stata usata per il nono e decimo lancio, mentre la sfera 10 è stata impiegata solo nell'undicesimo lancio.
 
-\clearpage
 \section{Presa Dati}
 I dati sono stati raccolti da 3 operatori analizzando i video forniti.
 Sono state utilizzate due metodologie differenti:
 
 \paragraph{Presa dati tramite software VLC}
-L'operatore A e l'operatore B hanno compiuto la presa dati tramite un'estensione del software VLC che visualizzava il tempo corrispondente al singolo frame visualizzato con una precisione fino al millesimo. In ogni video si è scelto di annotare la misurazione temporale nel momento in cui il centro della sfera era in corrispondenza del livello segnato dalla tacca incisa sul viscosimetro.
-Si rimanda la trattazione completa della scelta del frame più corretto ai paragrafi successivi.
-Si specifica che il video relativo alla nona sfera è stato analizzato soltanto tramite questa modalità.
-%video numero 9 solo per questa modalità
+L'operatore A e l'operatore B hanno compiuto la presa dati tramite un'estensione del software VLC che visualizza il tempo corrispondente al singolo frame visualizzato con sensibilità di $\SI{1e4}{\second^{-1}}$. In ogni video si è scelto di annotare la misurazione temporale nel momento in cui il centro della sfera era in corrispondenza del livello segnato dalla tacca incisa sul viscosimetro. Si specifica che il video relativo alla nona sfera è stato analizzato soltanto tramite questa modalità in quanto non si disponeva di sufficienti misure.
 
 \paragraph{Presa dati tramite cronometro manuale}
-Il terzo operatore (C) ha invece eseguito la presa dati tramite un cronometro manuale. Quest'ultimo è stato avviato in corrispondenza del passaggio della sferetta con la prima tacca di lettura del cilindro e sono stati trascritti i tempi parziali al passaggio di ciascuna tacca successiva. Si è posta particolare attenzione nel leggere i tempi dal cronometro nell'istante in cui il centro della sferetta passasse in corrispondenza della tacca incisa. Per ogni viscosimetro analizzato in questo modo sono state prese le misure 5 volte.
-
+Il terzo operatore (C) ha invece eseguito la presa dati tramite un cronometro manuale. Quest'ultimo è stato avviato in corrispondenza del passaggio della sferetta con la prima tacca di lettura del cilindro e sono stati trascritti i tempi parziali al passaggio di ciascuna tacca successiva. Si è posta particolare attenzione nel leggere i tempi dal cronometro nell'istante in cui il centro della sferetta passasse in corrispondenza della tacca incisa. Per ogni viscosimetro analizzato in questo modo sono state prese le misure 5 volte.\\ \newline
 Ogni operatore ha analizzato video differenti ad esclusione del video che riguardava la sesta pallina, che sono stati analizzati da tutti e tre gli operatori. 
 
 \section{Analisi}
@@ -153,6 +146,7 @@ Ogni operatore ha analizzato video differenti ad esclusione del video che riguar
 \subsection{Tempi di passaggio}
 %TABELLONE GRANDE DATI GREZZI, attenzione, bisogna unire le colonne valore-errore
 \begin{table}[h!]
+\scriptsize
 \caption{Tempi estratti dai video}
 \label{tab:dati_semi_grezzi}
 \makebox[\textwidth]{
@@ -190,33 +184,29 @@ $10^o$ & $52711 \pm 20$ & $52702 \pm 20$ & $45700 \pm 38$ & $10640 \pm 19$ & $10
 
 
 
-Vengono riportati in Tabella \ref{tab:dati_semi_grezzi} le misurazioni dei tempi effettuate dai diversi operatori per le diverse sfere in esame riassunti per colonne, in base alla numerazione dei video.
+Vengono riportati in Tabella \ref{tab:dati_semi_grezzi} le misurazioni dei tempi effettuate dai diversi operatori per le diverse sfere in esame riassunti per colonne, in base alla numerazione dei video/lanci.
 Per la sesta e per la nona sfera vengono riportate misurazioni differenti ciascuna derivante da un operatore diverso. La sesta sfera è stata analizzata da tutti e tre gli operatori, la nona soltanto dall'operatore A e B.
 La decima ed undicesima sfera riportano soltanto le misure dei tempi di passaggio in corrispondenza della seconda ed ultima tacca in quanto non è stato possibile effettuare altre misurazioni temporali a causa dell'elevata velocità di discesa della sfera nel fluido.
-Si precisa che le misure presenti nella tabella \ref{tab:dati_semi_grezzi} relative all'operatore C rappresentano la media delle misure relative a i 5 tempi di passaggio della sfera per lo stesso traguardo.
+Si precisa che le misure presenti nella Tabella \ref{tab:dati_semi_grezzi} relative all'operatore C rappresentano la media delle misure relative a i 5 tempi di passaggio della sfera per lo stesso traguardo.
 Si noti inoltre che le misure effettuate dagli operatori A e B indicano l'istante temporale di passaggio della sfera in corrispondenza della tacca avendo come origine temporale l'inizio del video analizzato. Le misure dell'operatore C invece hanno come origine temporale  del conteggio l'istante di passaggio della sfera per la prima tacca.
-Per una trattazione approfondita degli errori associati alle misure si rimanda alla sezione Discussione.\\
-
-
+%Per una trattazione approfondita degli errori associati alle misure si rimanda alla sezione Discussione.\\
 
 
 \subsection{Calcolo $\Delta t$}
-Si è proceduto al calcolo dei $\Delta t$ riferiti ad una stessa sfera, tra la misura $t_{i+1}$ e la misura $t_{i}$. Si rimanda alla discussione per la trattazione approfondita di questa metodologia.
-
 %DELTA T CON FBF
-Il calcolo di $\Delta t_{i}$ per le sfere analizzate soltanto da un operatore tramite il metodo del frame-by-frame. È stato sufficiente eseguire la differenza $t_{i+1}- t_{i}$ associandovi l'errore derivante dal teorema delle varianze. Non è stato possibile considerare il termine di covarianza a causa del ridotto numero di dati disponibili.\\
+Per il calcolo di $\Delta t_{i}$ per le sfere analizzate soltanto da un operatore tramite il metodo del frame-by-frame è stato sufficiente eseguire la differenza $t_{i+1}- t_{i}$ associandovi l'errore derivante dal teorema delle varianze. Non è stato possibile considerare il termine di covarianza a causa del ridotto numero di dati disponibili.\\
 \newline
 %DELTA T CON CRONOMETRO
-Per il computo dei $\Delta t_{i}$ relativi alle misure eseguite dal terzo operatore si sono calcolati cinque campioni $j$ di $\{\Delta t_{i=1\dots10}\}_{j=1\dots5}$. Ciascuno dei campioni comprende un'unica presa dati relativa allo stesso video.
-$\Delta t_{i=1}$, è stato ottenuto dalla media di $\{\Delta t_{i=1}\}_{j=1\dots5}$ di tutti i $\Delta t$ appartenenti ai 5 diversi campioni relative alle stesse misurazioni. Analogamente per $\Delta t_{i=k}$ si è considerata la media di $\{{\Delta t_{i=k}}\}_{j=1\dots5}$. L'errore associato è stato derivato dalla deviazione standard calcolata sulla media.
+Per il computo dei $\Delta t_{i}$ relativi alle misure eseguite dal terzo operatore si sono calcolati cinque campioni $j$ di $\{\Delta t_{i=1\dots10}\}_{j=1\dots5}$. Ciascuno dei campioni è riferito ad un'unica presa dati relativa ad uno stesso video.
+Nel campione riassuntivo di ${\Delta t_{i}}$, $\Delta t_{i=k}$ è stato ricavato dalla media di $\{\Delta t_{i=1}\}_{j=1\dots5}$ associando a ciascuno di essi l'errore derivante dalla deviazione standard calcolata sulla media.
 
 
 %SPIEGAZIONE DEL PERCHÈ QUESTO METODO NON NE ACCENNIAMO QUI? CITARE IN DISCUSSIONE - si ne scriviamo nella discussione (Marco)
 
 \subsubsection*{Confronto metodologie impiegate dai 3 operatori - $6^{\degree}$ viscosimetro}%Analisi del viscosimetro 6}
 Al fine di valutare la compatibilità tra i diversi metodi di misura e operatori, il viscosimetro 6 è stato analizzato da tutti i membri del gruppo.\\
-In primo luogo è stata calcolata la compatibilità $\lambda$ tra ciascun $\Delta t_i$ con i corrispondenti $\Delta t_i$ ottenuti dagli operatori come riportato nella tabella \ref{tab:Confronto_tutte_le_compatibilità_per_ogni_misura}.
-In seguito sono state ricavate delle $\lambda$ relative agli interi campioni, calcolate a partire dalla media e dalla deviazione standard della media di ciascun campione di misure. Tali $\lambda$ sono riportare nella tabella \ref{tab:Confronto_tutte_le_compatibilità}. Si è fatto riferimento alle seguenti per valutare $\lambda$ e la sua bontà:
+Si è calcolata la compatibilità $\lambda$ tra ciascun $\Delta t_i$ con i corrispondenti $\Delta t_i$ ottenuti dagli  altri operatori, come viene esposto riportato nella Tabella \ref{tab:Confronto_tutte_le_compatibilità_per_ogni_misura}.
+In seguito sono state ricavate delle $\lambda$ relative agli interi campioni, calcolate a partire dalla media e dalla deviazione standard della media di ciascun campione di misure, come mostrato in Tabella \ref{tab:Confronto_tutte_le_compatibilità}. Si è fatto riferimento alle seguenti per valutare $\lambda$ e la sua bontà:
 \begin{equation*}%Comp
     \label{eq:cases}
     \begin{cases}
@@ -229,9 +219,10 @@ In seguito sono state ricavate delle $\lambda$ relative agli interi campioni, ca
 
 
 \begin{figure}[h!]
+\small
     \centering
     \label{fig:comp}
-    \subfloat[Confronto delle compatibilità PARTICOLARE]{
+    \subfloat[Confronto $\lambda$ per i singoli $\Delta t$]{
     \label{tab:Confronto_tutte_le_compatibilità_per_ogni_misura}
         \begin{tabular}{|c|c|c|c|} 
             \hline
@@ -248,7 +239,7 @@ In seguito sono state ricavate delle $\lambda$ relative agli interi campioni, ca
             $10^a$ & $1.2$ & $1.2$ & $2.0$  \\ \hline
         \end{tabular}
     }
-    \subfloat[Confronto delle compatibilità]{
+    \subfloat[Confronto $\lambda$]{
         \label{tab:Confronto_tutte_le_compatibilità}
         \begin{tabular}{|c|c|} 
         \hline
@@ -266,22 +257,19 @@ Per un confronto visivo è stato realizzato il Grafico \ref{fig:andamento_delta_
 \begin{figure}[h!]
     \centering
     \includegraphics[width=1\textwidth]{delta_t_tutti_pdf.pdf}
-
-    \caption{Andamento $\Delta t_{i}$ per il sesto viscosimetro}
+    \caption{Andamento $\Delta t_{i}$ per il viscosimetro 6}
     \label{fig:andamento_delta_t}
 \end{figure}
 
-\subsubsection*{Generazione unico campione $\Delta t$}
-I 3 set di dati di $\{\Delta t_{i=1\dots10}\}_{j=A \dots C}$ relativi a ciascun operatore, riferiti alla pallina avente diametro 5"/32, sono stati riassunti in un unico campione di $\{\Delta t_{i}\}$ dove ogni $\Delta t_{i}$ risultava dalla media ponderata di $\{\Delta t_{i}\}_{j=A \dots C}$. L'errore associato ai singoli ${\Delta t_{i}}$ è stato calcolato tramite la propagazione derivante dalla media ponderata.\\
-
-Analogo procedimento è stato compiuto per le misure relative al $9^{\circ}$ viscosimetro.
+\subsubsection*{Generazione unico campione $\Delta t$ per viscosimetro 6 e 9}
+I 3 set di dati di $\{\Delta t_{i=1\dots10}\}_{j=A \dots C}$ relativi a ciascun operatore, riferiti alla pallina avente diametro 5"/32, sono stati riassunti in un unico campione di $\{\Delta t_{i}\}$ dove ogni $\Delta t_{i}$ risultava dalla media ponderata di $\{\Delta t_{i}\}_{j=A \dots C}$. L'errore associato ai singoli ${\Delta t_{i}}$ è stato calcolato tramite la propagazione derivante dalla media ponderata.\newline
+Analogo procedimento è stato compiuto per le misure relative al viscosimetro 9.
 Il campione $\{\Delta t\}$ riassuntivo delle varie misure è stato poi impiegato per la stima delle velocità.
 
 
 \subsection{Verifica del raggiungimento della $v_{lim}$}
 
-Per ciascun viscosimetro si è proceduto al calcolo di un campione di $\{v_{i=1\dots 10}\}$ in cui $v_{i} = \frac{\Delta x}{\Delta t_i}$ con $\Delta t_i$ la differenza tra i tempi appena calcolata e $\Delta x$ la distanza fra due tacche.\\
-Si riportano i grafici delle velocità di tutti i viscosimetri. I grafici delle velocità relative al viscosimetro numero 10 e 11 non vengono rappresentate graficamente, sono riportati i valori delle velocità nella Tabella \ref{tab:vel10} e \ref{tab:vel11}.
+Per ciascun viscosimetro si è proceduto al calcolo di un campione di $\{v_{i=1\dots 10}\}$ in cui $v_{i} = \frac{\Delta x}{\Delta t_i}$ con $\Delta t_i$ la differenza tra i tempi appena calcolata e $\Delta x$ la distanza fra due tacche. Si riportano i grafici delle velocità di tutti i viscosimetri eccetto per i lanci 10 e 11 di cui si riportano le velocità nelle Tabelle \ref{tab:vel10} e \ref{tab:vel11}.\\
 
 %TUTTI I GRAFICHETTI DELLE VELOCITa'
 \begin{figure}[h!]
@@ -564,17 +552,26 @@ Si riportano i grafici delle velocità di tutti i viscosimetri. I grafici delle 
 
 
 %Analizzando i grafici si è osservato l'andamento delle misurazioni. Al fine di poter stimare una velocità limite da cui poi derivare la viscosità $\eta$ si è dapprima verificato se le misure seguissero un andamento di tipo lineare, d'ora in poi assunta come ipotesi nulla.
-Assumendo una densità del fluido costante, l'equazione del moto prevede infatti un andamento della velocità di tipo esponenziale, assestandosi dopo un tempo caratteristico $\approx 3\tau$ ad un andamento di tipo lineare. Tale affermazione è giustificata tenendo in considerazione la variazione delle misurazioni dovuta alla componente di errore casuale, le caratteristiche fisiche delle sfere impiegate e le caratteristiche del fluido stesso.
-Si sono valutati vari metodi per determinare il tipo di andamento delle velocità al variare del tempo e se la velocità limite prevista dalla teoria fosse stata raggiunta per tutte le sfere considerate.
+Assumendo una densità del fluido costante, l'equazione del moto prevede un andamento della velocità di tipo esponenziale, che si assesta dopo un tempo caratteristico $\approx 3\tau$ ad un andamento di tipo lineare. Tale affermazione è giustificata tenendo in considerazione la variazione delle misurazioni dovuta alla componente di errore casuale, le caratteristiche fisiche delle sfere impiegate e le caratteristiche del fluido stesso.\newline
+Si sono impiegati vari metodi per determinare il tipo di andamento delle velocità al variare del tempo e se la velocità limite prevista dalla teoria fosse stata raggiunta per tutte le sfere considerate.
 
-\subsubsection*{Calcolo della t-Student per il coefficiente di correlazione $\rho$}
+\subsubsection*{Calcolo di t-Student per il coefficiente di correlazione $\rho$}
 %1a con tstudent PDF
-Si è dapprima calcolato il coefficiente di correlazione $\rho$ per le velocità tra loro statisticamente indipendenti, ovvero le dispari, al fine di valutare una dipendenza di queste ultime dal tempo.
-Se $\rho$ fosse risultato pari a $0$, ciò avrebbe implicato una indipendenza statistica delle velocità dal tempo, e dunque una costanza delle velocità. Infatti il variare del tempo non avrebbe su di esse influito in quanto in linea teorica ci si aspetta che la velocità limite sia stata raggiunta. L'ipotesi nulla da verificare dunque risulta essere la non correlazione delle velocità, ovvero $\rho=0$.
-Si è pertanto deciso di confrontare il coefficiente $\rho$ calcolato con quello previsto dall'ipotesi nulla tramite il test di Student a due code, determinando per ogni sfera il livello di confidenza entro il quale viene rigettata l'ipotesi.
+Si è calcolato il coefficiente di correlazione $\rho$ tra tempi intermedi e velocità statisticamente indipendenti $\{ v_{i=2n+1}\}$, al fine di valutare una dipendenza di queste ultime dal tempo.
+L'ipotesi nulla $H_{0}$ in cui $\rho=0$ qualora verificata avrebbe implicato un'indipendenza statistica dei valori delle velocità indipendenti $v_{i}$, dal passare del tempo e dunque nel caso specifico del moto in analisi una costanza delle stesse $v_{i}$, indicando il raggiungimento del valore asintotico di $v_{lim}$ entro gli errori casuali.  
+Si è pertanto deciso di confrontare il coefficiente $\rho$ calcolato con quello previsto da $H_{0}$ tramite il test di t-Student a due code, determinando per ogni sfera il livello di confidenza entro il quale veniva rigettata l'ipotesi di non-correlazione. \newline
+Come si riscontra in Tabella \ref{tab:t_student} si notano percentuali di rigetto dell'ipotesi nulla piuttosto alte, mai inferiori al 60\%.
+%Se $\rho$ fosse risultato pari a $0$, ciò avrebbe implicato una indipendenza statistica delle velocità dal tempo, e dunque una costanza delle velocità.
+%Infatti il variare del tempo non avrebbe su di esse influito in quanto in linea teorica ci si aspetta che la velocità limite sia stata raggiunta.
+%L'ipotesi nulla da verificare è la non correlazione delle velocità rispetto al tempo, ovvero $\rho=0$.
+
+
+
 
 
 \begin{table}[h!]
+\caption{t-student su rho pearson}
+\label{tab:t_student}
 \centering
 \begin{tabular}{|c|c|c|c|}
 \hline
@@ -600,14 +597,14 @@ Si è pertanto deciso di confrontare il coefficiente $\rho$ calcolato con quello
 
 \subsubsection*{Stima di $\tau$ tempo caratteristico del moto}
 %2 PDF
-Oltre al t-Student, per verificare in modo indipendente se la velocità limite fosse stata raggiunta si è stimato il tempo caratteristico $\tau$. L'equazione del moto infatti suggerisce che in un tempo pari a  $3\tau$ venga raggiunto il $\approx 95\%$ della velocità limite.
-Per il calcolo del $\tau$ si è assunto che $\eta$ fosse costante lungo la colonna di fluido, ma soprattutto si è assunto che la velocità limite fosse la media delle velocità statisticamente indipendenti.
+Per verificare se la velocità limite fosse stata raggiunta si è inoltre stimato il tempo caratteristico $\tau$. Come accennato l'equazione del moto infatti suggerisce che in un tempo pari a $3\tau$ venga raggiunto il $\approx 95\%$ della velocità limite.
+Per il calcolo di $\tau$ si è assunto che $\eta$ fosse costante lungo la colonna di fluido, ma soprattutto in prima approssimazione si è assunto che la velocità limite fosse la media delle velocità statisticamente indipendenti.
 Si è calcolato $\tau$ tramite la seguente:
 \begin{equation*}
     \tau = \frac{v_{lim} \cdot \rho_{S}}{g \cdot (\rho_{S} - \rho_{L})}
 \end{equation*}
-L'errore su $\tau$ non viene calcolato in quanto non necessario al fine di questa verifica.
-Si riportano i valori di $\tau$ ottenuti nella Tabella \ref{tab:tau}.
+In Tabella \ref{tab:tau} non viene riportato l'errore del tempo caratteristico in quanto superfluo per questa verifica. Si espongono inoltre le distanze percorse in $3\tau$, ottenute da $\Delta x=v_{lim} \cdot 3 \tau$, che risultano sempre minori della distanza fra livello del liquido e prima tacca incisa.
+Dai dati riportati si può verificare che in tutti i lanci la velocità limite è stata sempre raggiunta entro i primi $\SI{10}{\centi\meter}$ di caduta nel fluido del viscosimetro, ovvero lo spazio tra il livello del fluido e la prima tacca.% e che le velocità nei Grafici \ref{fig:vel1} \dots \ref{fig:vel9} rappresentano le velocità limite.
 \begin{table}[h!]
 \centering
 \makebox[\textwidth]{
@@ -630,12 +627,10 @@ Si riportano i valori di $\tau$ ottenuti nella Tabella \ref{tab:tau}.
     \label{tab:tau}
 \end{table}
 
-Dai dati riportati si può verificare che in tutti i lanci la velocità limite è stata sempre raggiunta entro i primi $\SI{10}{\centi\meter}$ di caduta nel fluido del viscosimetro, ovvero lo spazio prima della prima tacca.% e che le velocità nei Grafici \ref{fig:vel1} \dots \ref{fig:vel9} rappresentano le velocità limite.
 
 \subsubsection*{Variazione percentuale delle velocità}
 %3 PDF
-Per verificare ulteriormente il raggiungimento della velocità limite si è scelto di calcolare quanto percentualmente mancasse a ciascuna delle velocità statisticamente indipendenti al raggiungimento di quest'ultima.\\
-Si ha infatti, dall'equazione del moto, che la percentuale mancante è pari a:
+Per verificare ancor più approfonditamente il raggiungimento della velocità limite si è scelto di calcolare per ciascun viscosimetro quanto percentualmente mancasse a ciascuna delle velocità statisticamente indipendenti al raggiungimento di $v_{lim}$, variazione  che secondo l'equazione del moto è pari a:
 \begin{equation*}
     \frac{v_{lim} - v_{i}}{v_{i}}=\frac{v_{lim}}{v_i}-1=\frac{a_i}{g' - a_i}
 \end{equation*}
@@ -643,24 +638,27 @@ in cui $g'=g\cdot\frac{\rho_s-\rho_l}{\rho_l}$ è una costante ricavata dall'equ
 \begin{equation*}
     a_i=\frac{v_{i+1}-v_i}{t_{i+1}-t_{i}}
 \end{equation*}
-
-Il valore percentuale che descrive quanto manca alle singole velocità per raggiungere la velocità limite è di un ordine di grandezza compreso fra $\approx\num{1e-7}\%$ fino ad un valore massimo di $\approx\num{1e-3}\%$. Questi valori percentuali, considerando gli errori casuali delle quali sono affette le singole velocità, suggeriscono che le $v_{lim}$ sono state raggiunte in ogni lancio. 
+Si sono anche calcolati gli errori su $a_{i}$ in quanto necessari in una successiva fase dell'analisi.\newline
+Il valore percentuale che descrive quanto manca alle singole velocità per raggiungere la velocità limite è di un ordine di grandezza compreso fra $\approx\num{1e-7}\%$ fino ad un valore massimo di $\approx\num{1e-3}\%$. Questi valori percentuali, considerando gli errori casuali delle quali sono affette le $v_{i}$ suggeriscono che le $v_{lim}$ siano state raggiunte in ogni lancio ed per ogni $v_{i}$.
 
 
 \subsection{Stima di $v_{lim}$ per ogni viscosimetro}
-A seguito delle precedenti considerazioni si è proceduto alla miglior stima possibile della $v_{lim}$ per ogni sfera.
+Si è proceduto al computo della miglior stima possibile della $v_{lim}$ per ogni lancio.
 
 \subsubsection*{Compatibilità tra singole accelerazioni $a_i$ e accelerazione durante l'intero lancio}
-Sono state calcolate le accelerazioni relative a ciascun lancio ottenute dal coefficiente angolare della retta interpolante le velocità statisticamente indipendenti dei grafici $\Delta t$ vs $t$ e associandovi l'errore derivante dalla propagazione usando l'errore a posteriori.
-Avendo a disposizione le accelerazioni $a_i$ tra velocità statisticamente indipendenti sono stati calcolati gli errori ad esse relativi tramite la formula di propagazione degli errori.
-L'errore relativo ai tempi intermedi di ciascun intervallo è stato calcolato come propagazione tra i tempi $t_{i}$ e $t_{i+1}$ ottenuti dalle misurazioni al passaggio della sferetta in prossimità dei traguardi. In particolare per i viscosimetri 6 e 9 si è dapprima calcolato l'errore su ciascun $t_i$ come deviazione standard della media tra i tempi ottenuti da ciascun operatore in corrispondenza dell'i-esima tacca.
-Successivamente si sono calcolate le compatibilità tra i coefficienti angolari precedentemente calcolati e le accelerazioni relative ai singoli intervalli non consecutivi per ciascun viscosimetro. 
+Sono state calcolate le accelerazioni $a_{tot}$ relative a ciascun lancio ottenute dal coefficiente angolare della retta interpolante le velocità statisticamente indipendenti dei grafici $t$ vs $v_{i=2n+1}$, associandovi l'errore derivante dalla propagazione usando l'errore a posteriori.
+%L'errore relativo ai tempi intermedi di ciascun intervallo è stato calcolato come propagazione tra i tempi $t_{i}$ e $t_{i+1}$ ottenuti dalle misurazioni al passaggio della sferetta in prossimità dei traguardi. In particolare per i viscosimetri 6 e 9 si è dapprima calcolato l'errore su ciascun $t_i$ come deviazione standard della media tra i tempi ottenuti da ciascun operatore in corrispondenza dell'i-esima tacca. NON È RILEVANTE PER L'ANALISI
+
+Vengono riportate in Tabella \ref{tab:comp_acc} le compatibilità calcolate tra i coefficienti angolari $a_{tot}$ e le singole  accelerazioni $a_{i}$ relative gli intervalli non consecutivi per ciascun viscosimetro.
 
 \begin{table}[h!]
+\footnotesize
+\caption{$\lambda$ tra $a_{tot}$ e $a_{i}$}
+\label{tab:comp_acc}
     \centering
     \begin{tabular}{|c|c|c|c|}
         \hline
-        Viscosimetro & Acc. Generale & Acc. specifica & Compatibilità \\ \hline
+        Viscosimetro & Acc. Generale & Acc. specifica & $\lambda$ \\ \hline
     \multirow{4}{*}{1}& & $(-1.16489 \pm 8.7508)e-10$ & $8.64872$\\
     & & $(-2.59797e-10 \pm 1.71731e-10)$ & $3.7639$\\
     & & $(-2.42874e-11 \pm 9.38671e-11)$ & $1.03057$\\
