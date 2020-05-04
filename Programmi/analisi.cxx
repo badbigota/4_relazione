@@ -640,21 +640,25 @@ int main()
 
 	//misure uniformate
 	v[5].misura_fab.push_back(0);
-	for(int i=0;i<v[5].misura_fab.size()-1;i++){
-		v[5].misura_fab_uni.push_back(v[5].misura_fab[i+1]-v[5].misura_fab[i]);
+	for (int i = 0; i < v[5].misura_fab.size() - 1; i++)
+	{
+		v[5].misura_fab_uni.push_back(v[5].misura_fab[i + 1] - v[5].misura_fab[i]);
 	}
 	v[5].misura_tom.push_back(0);
-	for(int i=0;i<v[5].misura_tom.size()-1;i++){
-		v[5].misura_tom_uni.push_back(v[5].misura_tom[i+1]-v[5].misura_tom[i]);
+	for (int i = 0; i < v[5].misura_tom.size() - 1; i++)
+	{
+		v[5].misura_tom_uni.push_back(v[5].misura_tom[i + 1] - v[5].misura_tom[i]);
 	}
 
 	v[8].misura_fab.push_back(0);
-	for(int i=0;i<v[8].misura_fab.size()-1;i++){
-		v[8].misura_fab_uni.push_back(v[8].misura_fab[i+1]-v[8].misura_fab[i]);
+	for (int i = 0; i < v[8].misura_fab.size() - 1; i++)
+	{
+		v[8].misura_fab_uni.push_back(v[8].misura_fab[i + 1] - v[8].misura_fab[i]);
 	}
 	v[8].misura_tom.push_back(0);
-	for(int i=0;i<v[8].misura_tom.size()-1;i++){
-		v[8].misura_tom_uni.push_back(v[8].misura_tom[i+1]-v[8].misura_tom[i]);
+	for (int i = 0; i < v[8].misura_tom.size() - 1; i++)
+	{
+		v[8].misura_tom_uni.push_back(v[8].misura_tom[i + 1] - v[8].misura_tom[i]);
 	}
 
 	//sistema errori per i viscosimteri che non ne hanno
@@ -742,7 +746,7 @@ int main()
 		for (int f = 0; f < v[k].velocity.size() - 1; f++)
 		{
 			v[k].acc_istant.push_back((v[k].velocity[f + 1] - v[k].velocity[f]) / (asse_x_dispari[f + 1] - asse_x_dispari[f]));
-			v[k].err_acc_istant.push_back(sqrt(pow((-1. / pow(asse_x_dispari[f+1] - asse_x_dispari[f], 2)), 2) * pow(err_asse_x_dispari[f+1], 2) * (pow((v[k].velocity[f + 1] - v[k].velocity[f]), 2)) + pow((-1. / pow(asse_x_dispari[f+1] - asse_x_dispari[f], 2)), 2) * pow(err_asse_x_dispari[f], 2) * (pow((v[k].velocity[f + 1] - v[k].velocity[f]), 2)) + pow((1. / (asse_x_dispari[f+1] - asse_x_dispari[f])), 2) * pow(v[k].err_velocity[f + 1], 2) + pow((-1. / (asse_x_dispari[f+1] - asse_x_dispari[f])), 2) * pow(v[k].err_velocity[f], 2)));
+			v[k].err_acc_istant.push_back(sqrt(pow((-1. / pow(asse_x_dispari[f + 1] - asse_x_dispari[f], 2)), 2) * pow(err_asse_x_dispari[f + 1], 2) * (pow((v[k].velocity[f + 1] - v[k].velocity[f]), 2)) + pow((-1. / pow(asse_x_dispari[f + 1] - asse_x_dispari[f], 2)), 2) * pow(err_asse_x_dispari[f], 2) * (pow((v[k].velocity[f + 1] - v[k].velocity[f]), 2)) + pow((1. / (asse_x_dispari[f + 1] - asse_x_dispari[f])), 2) * pow(v[k].err_velocity[f + 1], 2) + pow((-1. / (asse_x_dispari[f + 1] - asse_x_dispari[f])), 2) * pow(v[k].err_velocity[f], 2)));
 		}
 
 		//INIZIO CALCOLO COMPATTIBILITÀ TRA ISTANTANEA E GENERALE
@@ -833,7 +837,7 @@ int main()
 		copia_tempi_passaggio.erase(copia_tempi_passaggio.begin(), copia_tempi_passaggio.begin() + quanti_ne_tolgo);
 		copia_err_tempi_passaggio.erase(copia_err_tempi_passaggio.begin(), copia_err_tempi_passaggio.begin() + quanti_ne_tolgo);
 		copia_pos_x_2.erase(copia_pos_x_2.begin(), copia_pos_x_2.begin() + quanti_ne_tolgo);
-		vector<double> errore_pos_x_2(11-quanti_ne_tolgo, err_x);
+		vector<double> errore_pos_x_2(11 - quanti_ne_tolgo, err_x);
 		cout << "ChiTest " << k + 1 << " : " << test_chi(copia_pos_x_2, copia_tempi_passaggio, copia_err_tempi_passaggio) << "\t" << test_chi(copia_tempi_passaggio, copia_pos_x_2, errore_pos_x_2) << endl;
 	}
 	//FINE GENERAZIONE GRAFICO SPAZIO TEMPO
@@ -910,6 +914,14 @@ int main()
 	fout_visc << "#N\t#Visc[kg/m/s]\t#Err_visc[kg/m/s]" << endl;
 	fout_fit_visc_1 << "#Diam^+2[mm^2]\t#Vel^+1[mm/ms]\t#Err_vel^+1[mm/ms]" << endl;
 	fout_fit_visc_2 << "#Diam^-2[1/mm^2]\t#Vel^-1[ms/mm]\t#Err_vel^-1[ms/mm]" << endl;
+	vector<double> vel_viscosimetro;
+	vector<double> err_vel_viscosimetro;
+	vector<double> diam_quad;
+
+	vector<double> vel_rec_viscosimetro;
+	vector<double> err_vel_rec_viscosimetro;
+	vector<double> diam_rec_quad;
+
 	for (int k = 0; k < v.size(); k++)
 	{
 		//double speed = v[k].v_media_dispari;		 //per ora è così da scegliere quella giusta secondo criterio
@@ -921,12 +933,52 @@ int main()
 		double d_vel = pow(diametro[k], 2) * g * (dens_acc - dens_sap) / (18.0 * pow(v[k].v_lim, 2));
 		v[k].viscosity = (pow(diametro[k], 2) * g * (dens_acc - dens_sap) / (18 * v[k].v_lim));
 		v[k].err_viscosity = sqrt(pow(d_diam * err_diametro, 2) + pow(d_g * err_g, 2) + pow(d_dens_sap * err_dens_sap, 2) + pow(d_dens_acc * err_dens_acc, 2) + pow(d_vel * v[k].err_v_lim, 2)); //propagazione
-		cout << k + 1 << "|\t" << v[k].viscosity << "\t" << v[k].err_viscosity << endl;
-		fout_visc << k + 1 << "\t" << v[k].viscosity << "\t" << v[k].err_viscosity << endl;
+		//cout << k + 1 << "|\t" << v[k].viscosity << "\t" << v[k].err_viscosity << endl;
+		fout_visc << k + 1 << "\t" << v[k].viscosity << "\t" << v[k].err_viscosity << "\t" << diametro[k] <<"\t"<< pow(diametro[k], 2) << endl;
 		fout_fit_visc_1 << pow(diametro[k], 2) << "\t" << v[k].v_lim << "\t" << v[k].err_v_lim << endl;
 		fout_fit_visc_2 << pow(diametro[k], -2) << "\t" << pow(v[k].v_lim, -1) << "\t" << sqrt(pow((-v[k].err_v_lim / pow(v[k].v_lim, 2)), 2)) << endl; //qui serve fare la propagazione errori?
+		cout << k + 1 << "\t" << v[k].err_v_lim / v[k].v_lim * 100 << "\t" << 2 * err_diametro / diametro[k] * 100 << "\t\t" << v[k].err_v_lim * 100 << "\t" << endl;
+		vel_viscosimetro.push_back(v[k].v_lim);
+		err_vel_viscosimetro.push_back(v[k].err_v_lim);
+		diam_quad.push_back(pow(diametro[k], 2));
+		vel_rec_viscosimetro.push_back(pow(v[k].v_lim, -1));
+		err_vel_rec_viscosimetro.push_back(sqrt(pow((-v[k].err_v_lim / pow(v[k].v_lim, 2)), 2)));
+		diam_rec_quad.push_back(pow(diametro[k], -2));
 	}
 	//FINE CALCOLO VISCOSITÀ E VERIFICA LEGGE
+	double b_ang_fit_1 = b_angolare(diam_quad, vel_viscosimetro, err_vel_viscosimetro);
+	double err_b_ang_fit_1 = sigma_b_posteriori(diam_quad, vel_viscosimetro);
+	double dp_g_1 = pow((dens_acc - dens_sap) * err_g / (18. * b_ang_fit_1), 2);
+	double dp_ds_1 = pow(g * err_dens_acc / (18. * b_ang_fit_1), 2);
+	double dp_dl_1 = pow(g * err_dens_sap / (18. * b_ang_fit_1), 2);
+	double dp_ba_1 = pow(g * (dens_acc - dens_sap) * err_b_ang_fit_1 / (18. * pow(b_ang_fit_1, 2)), 2);
+	double err_viscosity_1 = sqrt(dp_g_1 + dp_ds_1 + dp_dl_1 + dp_ba_1);
+
+	cout << "FIT 1 VERIFCIA LEGGE" << endl;
+	cout << "CHI TEST: " << test_chi(diam_quad, vel_viscosimetro, err_vel_viscosimetro) << endl;
+	cout << "Coeff ang: " << b_ang_fit_1 << " +/- " << err_b_ang_fit_1 << endl;
+	cout << "INtercett: " << a_intercetta(diam_quad, vel_viscosimetro, err_vel_viscosimetro) << " +/- " << sigma_a_posteriori(diam_quad, vel_viscosimetro) << endl;
+	cout << "VISCOSITà: " << g * (dens_acc - dens_sap) / (18. * b_ang_fit_1) << " +/- " << err_viscosity_1 << endl;
+
+	double b_ang_fit_2 = b_angolare(diam_rec_quad, vel_rec_viscosimetro, err_vel_rec_viscosimetro);
+	double err_b_ang_fit_2 = sigma_b_posteriori(diam_rec_quad, vel_rec_viscosimetro);
+	double dp_ba_2 = pow(g * (dens_acc - dens_sap) * err_b_ang_fit_2 / 18.0, 2);
+	double dp_g_2 = pow(b_ang_fit_2 * (dens_acc - dens_sap) * err_g / 18., 2);
+	double dp_ds_2 = pow(b_ang_fit_2 * g * err_dens_acc / 18., 2);
+	double dp_dl_2 = pow(b_ang_fit_2 * g * err_dens_sap / 18., 2);
+
+	double err_viscosity_2 = sqrt(dp_ba_2 + dp_g_2 + dp_ds_2 + dp_dl_2);
+	cout << "FIT 2 VERIFCIA LEGGE" << endl;
+	cout << "CHI TEST: " << test_chi(diam_rec_quad, vel_rec_viscosimetro, err_vel_rec_viscosimetro) << endl;
+	cout << "Coeff ang: " << b_ang_fit_2 << " +/- " << sigma_b_posteriori(diam_rec_quad, vel_rec_viscosimetro) << endl;
+	cout << "INtercett: " << a_intercetta(diam_rec_quad, vel_rec_viscosimetro, err_vel_rec_viscosimetro) << " +/- " << sigma_a_posteriori(diam_rec_quad, vel_rec_viscosimetro) << endl;
+	cout << "VISCOSITà: " << b_ang_fit_2 * g * (dens_acc - dens_sap) / 18. << " +/- " << err_viscosity_2 << endl;
+
+	cout << endl;
+	for (int i = 0; i < v.size(); i++)
+	{
+		cout << i << "\t" << v[i].accelerazione << "\t" << v[i].err_accelerazione << endl;
+	}
 
 	return 0;
 }
