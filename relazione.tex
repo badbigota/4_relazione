@@ -1,0 +1,953 @@
+% Marco l'Eccellente Dio della Modestia
+% !TeX encoding = utf8
+% !TeX program = pdflatex
+% !TeXpellcheck = it_IT
+
+\documentclass[a4paper,11pt,oneside]{article} 
+
+\usepackage{relazioni}
+\usepackage{imakeidx}
+\usepackage{colortbl}
+\usepackage{booktabs}
+\usepackage{blindtext}
+\usepackage{titletoc}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{wrapfig}
+\usepackage{geometry}
+\usepackage{array}
+\usepackage[export]{adjustbox}
+\usepackage{multirow}
+\usepackage{multicol}
+
+\usepackage{rccol}
+\usepackage[export]{adjustbox}
+\hypersetup{
+%    colorlinks=false,
+} 
+
+\graphicspath{{Figure/}} 
+%https://www.overleaf.com/learn/latex/Indices
+%\makeindex[columns=3, title=Alphabetical Index, intoc]
+\setlength{\parindent}{0em}
+
+
+
+\begin{document}
+\input{Front-matter/Frontespizio}
+
+\clearpage
+
+\tableofcontents
+\addtocontents{toc}{~\hfill{Pagina}\par}
+\contentsmargin{6em}
+\dottedcontents{section}[1em]{\bigskip}{2em}{1pc}
+\dottedcontents{subsection}[3em]{\smallskip}{3em}{1pc}
+\dottedcontents{subsubsection}[5em]{\smallskip}{4em}{1pc}
+\newpage
+
+\section{Obiettivo}
+L'obiettivo dell'esperienza è la stima della viscosità di un liquido saponoso di cui si conosce la densità.
+
+\section{Apparato Sperimentale}
+
+
+\begin{wrapfigure}[16]{l}{4cm}
+    \caption{Apparato Sperimentale}
+    \label{fig:apparato_sperimentale}
+    \includegraphics[width=4cm]{ApparatoSperimentale.jpg}
+\end{wrapfigure}
+
+L'apparato sperimentale risulta così composto:
+\begin{enumerate}[label={\alph*.}]
+    \item Dispositivo magnetico per il rilascio delle sferette metalliche posto sopra l'imboccatura superiore
+    \item Cilindro in plastica trasparente (dal diametro di $\SI{4.5}{cm}$ e altezza di $\approx\SI{70}{cm}$)
+    \item Liquido saponoso di densità ${\rho}_L=(1.032\pm0.001)\si{\gram\per\cubic\centi\metre}$, contenuto nel cilindro fino ad un livello di $\approx\SI{10}{cm}$ superiore alla tacca di referenza più alta
+    \item 11 tacche incise sul cilindro tra loro distanziate di $\SI{5}{cm}$
+    \item 10 sferette in acciaio di densità $\rho_S=(7.870\pm0.005)\si{\gram\per\cubic\centi\metre}$ per ogni misura di diametro disponibile come riportato in Tabella \ref{tab:diametri_sfere}
+    \item Videocamera a 29.97 fps per registrare tutte le cadute delle sferette nel fluido 
+\end{enumerate}
+In questa tabella vengono presentate le caratteristiche delle sfere utilizzate durante tutta l'esperienza.
+
+
+
+%AGGIUNGERE ERRORE DIAMETRO
+%\begin{table}[h!]
+%\centering
+%\begin{tabular}{|c|c|} 
+%\hline
+%\textbf{N pallina } & \textbf{Diametro } \\ 
+%\hline
+%\rowcolor[rgb]{0.85,0.85,0.85} \textbf{1 } & 1.5 mm\\ 
+%\hline
+%\textbf{2 } & 2”/32 \\ 
+%\hline
+%\rowcolor[rgb]{0.85,0.85,0.85} \textbf{3 } & 2.0 mm \\
+%\hline
+%\textbf{4 } & 3”/32 \\ 
+%\hline
+%\rowcolor[rgb]{0.85,0.85,0.85} \textbf{5 } & 4”/32 \\ 
+%\hline
+%\textbf{6 } & 5”/32 \\ 
+%\hline
+%\rowcolor[rgb]{0.85,0.85,0.85} \textbf{7 } & 6”/32 \\ 
+%\hline
+%\textbf{8 } & 7”/32 \\ 
+%\hline
+%\rowcolor[rgb]{0.85,0.85,0.85} \textbf{9 } & 8”/32 \\ 
+%\hline
+%\textbf{10 } & 9”/32 \\
+%\hline
+%\end{tabular}
+%\captionsetup{labelformat=empty}
+%\caption{Sferette Ebbasta}
+%\label{tab:diametri_sfere}
+%\end{table}
+\bigskip
+\bigskip
+\begin{table}[h!]
+    \centering
+    \makebox[\textwidth]{
+    \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
+        \hline
+        \textbf{N pallina} & $1$ & $2$ & $3$ & $4$ & $5$ & $6$ & $7$ & $8$ & $9$ & $10$ \\ \hline
+        \textbf{Diametro} $\pm 0.01$ mm & $1.5$ mm & $2"/32$ & $2$ mm & $3"/32$ & $4"/32$ & $5"/32$ & $6"/32$ & $7"/32$ & $8"/32$ & $9"/32$ \\ \hline
+    \end{tabular}}
+    \caption{Diametri sfere}
+    \label{tab:diametri_sfere}
+\end{table}
+
+Si specifica che la sfera 9 è stata usata per il nono e decimo lancio, mentre la sfera 10 è stata impiegata solo nell'undicesimo lancio.
+
+\section{Presa Dati}
+I dati sono stati raccolti da 3 operatori analizzando i video forniti.
+Sono state utilizzate due metodologie differenti:
+
+\paragraph{Presa dati tramite software VLC}
+L'operatore A e l'operatore B hanno compiuto la presa dati tramite un'estensione del software VLC che visualizza il tempo corrispondente al singolo frame visualizzato con sensibilità di $\SI{1e4}{\second^{-1}}$. In ogni video si è scelto di annotare la misurazione temporale nel momento in cui il centro della sfera era in corrispondenza del livello segnato dalla tacca incisa sul viscosimetro. Si specifica che il video relativo alla nona sfera è stato analizzato soltanto tramite questa modalità in quanto non si disponeva di sufficienti misure.
+
+\paragraph{Presa dati tramite cronometro manuale}
+Il terzo operatore (C) ha invece eseguito la presa dati tramite un cronometro manuale. Quest'ultimo è stato avviato in corrispondenza del passaggio della sferetta con la prima tacca di lettura del cilindro e sono stati trascritti i tempi parziali al passaggio di ciascuna tacca successiva. Si è posta particolare attenzione nel leggere i tempi dal cronometro nell'istante in cui il centro della sferetta passasse in corrispondenza della tacca incisa. Per ogni viscosimetro analizzato in questo modo sono state prese le misure 5 volte.\\ \newline
+Ogni operatore ha analizzato video differenti ad esclusione del video che riguardava la sesta pallina, che sono stati analizzati da tutti e tre gli operatori. 
+
+\section{Analisi}
+
+\subsection{Tempi di passaggio}
+%TABELLONE GRANDE DATI GREZZI, attenzione, bisogna unire le colonne valore-errore
+\begin{table}[h!]
+\scriptsize
+\makebox[\textwidth]{
+\begin{tabular}{|c|c|c|c|c|c|c|c|}
+\hline
+& 1 & 2 & 3 & 4 & 5 & 7 & 8 \\
+& \si{[ms]} & [ms] & [ms] & [ms] & [ms] & [ms] & [ms] \\ \hline
+{\rowcolor[rgb]{0.85,0.85,0.85}}$1^o$ & $63415 \pm 61$ & $57453 \pm 54$ & $0 \pm 0$ & $24020 \pm 27$ & $26174 \pm 20$ & $0 \pm 0$ & $0 \pm 0$ \\ \hline
+$2^o$ & $102383 \pm 61$ & $92344 \pm 54$ & $22064 \pm 85$ & $38755 \pm 27$ & $34120 \pm 20$ & $3102 \pm 13$ & $1672 \pm 34$ \\ \hline
+{\rowcolor[rgb]{0.85,0.85,0.85}}$3^o$ & $141856 \pm 61$ & $128619 \pm 54$ & $44056 \pm 101$ & $53411 \pm 27$ & $42461 \pm 20$ & $6284 \pm 22$ & $3578 \pm 53$ \\ \hline
+$4^o$ & $181104 \pm 61$ & $163108 \pm 54$ & $66034 \pm 59$ & $68254 \pm 27$ & $50648 \pm 20$ & $9486 \pm 14$ & $5382 \pm 44$ \\ \hline
+{\rowcolor[rgb]{0.85,0.85,0.85}}$5^o$ & $221178 \pm 61$ & $198367 \pm 54$ & $88114 \pm 55$ & $83044 \pm 27$ & $58820 \pm 20$ & $12628 \pm 31$ & $7320 \pm 54$ \\ \hline
+$6^o$ & $261074 \pm 61$ & $234132 \pm 54$ & $110248 \pm 60$ & $97691 \pm 27$ & $66990 \pm 20$ & $15728 \pm 53$ & $9206 \pm 48$ \\ \hline
+{\rowcolor[rgb]{0.85,0.85,0.85}}$7^o$ & $301213 \pm 61$ & $269735 \pm 54$ & $132260 \pm 112$ & $112475 \pm 27$ & $75233 \pm 20$ & $18784 \pm 22$ & $11102 \pm 35$ \\ \hline
+$8^o$ & $341171 \pm 61$ & $305387 \pm 54$ & $154530 \pm 118$ & $127363 \pm 27$ & $83368 \pm 20$ & $22146 \pm 44$ & $13014 \pm 25$ \\ \hline
+{\rowcolor[rgb]{0.85,0.85,0.85}}$9^o$ & $381196 \pm 61$ & $340954 \pm 54$ & $176914 \pm 51$ & $142164 \pm 27$ & $91720 \pm 20$ & $25234 \pm 17$ & $14870 \pm 27$ \\ \hline
+$10^o$ & $421205 \pm 61$ & $376724 \pm 54$ & $199198 \pm 66$ & $157075 \pm 27$ & $99974 \pm 20$ & $28440 \pm 41$ & $16890 \pm 53$ \\ \hline
+{\rowcolor[rgb]{0.85,0.85,0.85}}$11^o$ & $461549 \pm 61$ & $412758 \pm 54$ & $221638 \pm 29$ & $172167 \pm 27$ & $108361 \pm 20$ & $31612 \pm 18$ & $18728 \pm 33$ \\ \hline\hline
+
+& 6_A & 6_B & 6_C & 9_A & 9_B & 10 & 11\\
+& \si{[ms]} & [ms] & [ms] & [ms] & [ms] & [ms] & [ms]\\ \hline
+{\rowcolor[rgb]{0.85,0.85,0.85}}$1^o$ & $7005 \pm 20$ & $6987 \pm 20$ & $0 \pm 0$ & $2397 \pm 14$ & $2353 \pm 14$ & ND & ND \\ \hline
+$2^o$ & $12012 \pm 20$ & $12021 \pm 20$ & $4932 \pm 34$ & $3138 \pm 19$ & $3066 \pm 19$ & $10521 \pm 14$ & $9908 \pm 14$ \\ \hline
+{\rowcolor[rgb]{0.85,0.85,0.85}}$3^o$ & $17111 \pm 20$ & $17103 \pm 20$ & $10044 \pm 29$ & $3943 \pm 14$ & $3989 \pm 14$ & ND & ND \\ \hline
+$4^o$ & $22048 \pm 20$ & $22064 \pm 20$ & $15004 \pm 53$ & $4906 \pm 14$ & $4875 \pm 14$ & ND & ND \\ \hline
+{\rowcolor[rgb]{0.85,0.85,0.85}}$5^o$ & $27210 \pm 20$ & $27205 \pm 20$ & $20072 \pm 58$ & $5858 \pm 14$ & $5805 \pm 14$ & ND & ND \\ \hline
+$6^o$ & $32288 \pm 20$ & $32263 \pm 20$ & $25156 \pm 51$ & $6805 \pm 14$ & $6762 \pm 14$ & ND & ND \\ \hline
+{\rowcolor[rgb]{0.85,0.85,0.85}}$7^o$ & $37352 \pm 20$ & $37378 \pm 20$ & $30328 \pm 54$ & $7730 \pm 14$ & $7692 \pm 14$ & ND & ND \\ \hline
+$8^o$ & $42461 \pm 20$ & $42460 \pm 20$ & $35376 \pm 22$ & $8715 \pm 19$ & $8656 \pm 19$ & ND & ND \\ \hline
+{\rowcolor[rgb]{0.85,0.85,0.85}}$9^o$ & $47635 \pm 20$ & $47603 \pm 20$ & $40560 \pm 31$ & $9711 \pm 19$ & $9657 \pm 19$ & ND & ND \\ \hline
+$10^o$ & $52711 \pm 20$ & $52702 \pm 20$ & $45700 \pm 38$ & $10640 \pm 19$ & $10584.5 \pm 19$ & ND & ND \\ \hline
+{\rowcolor[rgb]{0.85,0.85,0.85}}$11^o$ & $57902 \pm 20$ & $57944 \pm 20$ & $50810 \pm 62$ & $11625 \pm 19$ & $11578 \pm 19$ & $18871 \pm 14$ & $14058 \pm 14$ \\ \hline
+\end{tabular}}
+\caption{Tempi estratti dai video}
+\label{tab:dati_semi_grezzi}
+\end{table}
+
+
+
+Vengono riportati in Tabella \ref{tab:dati_semi_grezzi} le misurazioni dei tempi effettuate dai diversi operatori per le diverse sfere in esame riassunti per colonne, in base alla numerazione dei video/lanci.
+Per la sesta e per la nona sfera vengono riportate misurazioni differenti ciascuna derivante da un operatore diverso. La sesta sfera è stata analizzata da tutti e tre gli operatori, la nona soltanto dall'operatore A e B.
+La decima ed undicesima sfera riportano soltanto le misure dei tempi di passaggio in corrispondenza della seconda ed ultima tacca in quanto non è stato possibile effettuare altre misurazioni temporali a causa dell'elevata velocità di discesa della sfera nel fluido.
+Si precisa che le misure presenti nella Tabella \ref{tab:dati_semi_grezzi} relative all'operatore C rappresentano la media delle misure relative a i 5 tempi di passaggio della sfera per lo stesso traguardo.
+Si noti inoltre che le misure effettuate dagli operatori A e B indicano l'istante temporale di passaggio della sfera in corrispondenza della tacca avendo come origine temporale l'inizio del video analizzato. Le misure dell'operatore C invece hanno come origine temporale  del conteggio l'istante di passaggio della sfera per la prima tacca.
+%Per una trattazione approfondita degli errori associati alle misure si rimanda alla sezione Discussione.\\
+
+
+\subsection{Calcolo $\Delta t$}
+%DELTA T CON FBF
+Per il calcolo di $\Delta t_{i}$ per le sfere analizzate soltanto da un operatore tramite il metodo del frame-by-frame è stato sufficiente eseguire la differenza $t_{i+1}- t_{i}$ associandovi l'errore derivante dal teorema delle varianze. Non è stato possibile considerare il termine di covarianza a causa del ridotto numero di dati disponibili.\\
+\newline
+%DELTA T CON CRONOMETRO
+Per il computo dei $\Delta t_{i}$ relativi alle misure eseguite dal terzo operatore si sono calcolati cinque campioni $j$ di $\{\Delta t_{i=1\dots10}\}_{j=1\dots5}$. Ciascuno dei campioni è riferito ad un'unica presa dati relativa ad uno stesso video.
+Nel campione riassuntivo di ${\Delta t_{i}}$, $\Delta t_{i=k}$ è stato ricavato dalla media di $\{\Delta t_{i=1}\}_{j=1\dots5}$ associando a ciascuno di essi l'errore derivante dalla deviazione standard calcolata sulla media.
+
+
+%SPIEGAZIONE DEL PERCHÈ QUESTO METODO NON NE ACCENNIAMO QUI? CITARE IN DISCUSSIONE - si ne scriviamo nella discussione (Marco)
+
+\subsubsection*{Confronto metodologie impiegate dai 3 operatori - $6^{\degree}$ viscosimetro}%Analisi del viscosimetro 6}
+Al fine di valutare la compatibilità tra i diversi metodi di misura e operatori, il viscosimetro 6 è stato analizzato da tutti i membri del gruppo.\\
+Si è calcolata la compatibilità $\lambda$ tra ciascun $\Delta t_i$ con i corrispondenti $\Delta t_i$ ottenuti dagli  altri operatori, come viene esposto riportato nella Tabella \ref{tab:Confronto_tutte_le_compatibilità_per_ogni_misura}.
+In seguito sono state ricavate delle $\lambda$ relative agli interi campioni, calcolate a partire dalla media e dalla deviazione standard della media di ciascun campione di misure, come mostrato in Tabella \ref{tab:Confronto_tutte_le_compatibilità}. Si è fatto riferimento alle seguenti per valutare $\lambda$ e la sua bontà:
+\begin{equation*}%Comp
+    \label{eq:cases}
+    \begin{cases}
+    0<\lambda\leq 1, & \text{Ottima}\\
+    1<\lambda\leq2, & \text{Discreta}\\
+    2<\lambda\leq3, & \text{Pessima}\\
+    3<\lambda, & \text{Non compatibile}\\
+    \end{cases}
+\end{equation*}
+
+
+\begin{figure}[h!]
+\small
+    \centering
+    \label{fig:comp}
+    \subfloat[Confronto $\lambda$ per i singoli $\Delta t$]{
+    \label{tab:Confronto_tutte_le_compatibilità_per_ogni_misura}
+    \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
+        \hline
+        & 1^a & 2^a & 3^a & 4^a & 5^a & 6^a & 7^a & 8^a & 9^a & 10^a\\ \hline
+        \rowcolor[rgb]{0.85,0.85,0.85}A - B & $0.66$ & $0.42$ & $0.59$ & $0.51$ & $0.49$ & $1.2$ & $0.66$ & $0.76$ & $0.56$ & $1.2$\\ \hline
+        A - C & $1.7$ & $0.33$ & $0.36$ & $1.0$ & $0.072$ & $1.9$ & $1.2$ & $0.27$ & $1.3$ & $1.2$\\ \hline
+        \rowcolor[rgb]{0.85,0.85,0.85}B - C & $2.3$ & $0.75$ & $0.016$ & $0.77$ & $0.31$ & $0.98$ & $0.64$ & $1.1$ & $0.85$ & $2.0$\\  \hline
+    \end{tabular}
+    }
+    \subfloat[Confronto $\lambda$]{
+        \label{tab:Confronto_tutte_le_compatibilità}
+        \begin{tabular}{|c|c|} 
+        \hline
+         & $\lambda$   \\ \hline
+        \rowcolor[rgb]{0.85,0.85,0.85} A - B & $0.18$  \\ \hline
+        A - C & $0.24$   \\ \hline
+        \rowcolor[rgb]{0.85,0.85,0.85} B - C & $0.42$  \\ \hline
+        \end{tabular}
+    }
+\end{figure}
+
+
+Per un confronto visivo è stato realizzato il Grafico \ref{fig:andamento_delta_t} relativo all'andamento dei $\Delta t_{i}$ per ciascun operatore.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=1\textwidth]{delta_t_tutti_pdf.pdf}
+    \caption{Andamento $\Delta t_{i}$ per il viscosimetro 6}
+    \label{fig:andamento_delta_t}
+\end{figure}
+
+\subsubsection*{Generazione unico campione $\Delta t$ per viscosimetro 6 e 9}
+I 3 set di dati di $\{\Delta t_{i=1\dots10}\}_{j=A \dots C}$ relativi a ciascun operatore, riferiti alla pallina avente diametro 5"/32, sono stati riassunti in un unico campione di $\{\Delta t_{i}\}$ dove ogni $\Delta t_{i}$ risultava dalla media ponderata di $\{\Delta t_{i}\}_{j=A \dots C}$. L'errore associato ai singoli ${\Delta t_{i}}$ è stato calcolato tramite la propagazione derivante dalla media ponderata.\newline
+Analogo procedimento è stato compiuto per le misure relative al viscosimetro 9.
+Il campione $\{\Delta t\}$ riassuntivo delle varie misure è stato poi impiegato per la stima delle velocità.
+
+
+\subsection{Verifica del raggiungimento della $v_{lim}$}
+
+Per ciascun viscosimetro si è proceduto al calcolo di un campione di $\{v_{i=1\dots 10}\}$ in cui $v_{i} = \frac{\Delta x}{\Delta t_i}$ con $\Delta t_i$ la differenza tra i tempi appena calcolata e $\Delta x$ la distanza fra due tacche. Si riportano i grafici delle velocità di tutti i viscosimetri eccetto per i lanci 10 e 11 di cui si riportano le velocità nelle Tabelle \ref{tab:vel10} e \ref{tab:vel11}.
+
+%TUTTI I GRAFICHETTI DELLE VELOCITa'
+\begin{figure}[h!]
+    \centering
+    \caption{Viscosimetro 1}
+    \makebox[\textwidth]{
+    \subfloat{
+        \includegraphics[width=9.5cm]{uno.pdf}
+        \label{fig:vel1}
+    }
+    \subfloat{
+        \begin{tabular}{|c|c|}
+        \hline
+        t_{int} [$ms$]& v $10^{-5}$ $[\si{\milli\metre / \milli\second}]$\\
+        \hline
+        \rowcolor[rgb]{0.85,0.85,0.85}$19484$ & $128 \pm 1$\\
+        $58704.5$ & $127 \pm 1$\\
+        \rowcolor[rgb]{0.85,0.85,0.85}$98065$ & $127 \pm 1$\\
+        $137726$ & $125 \pm 1$\\
+        \rowcolor[rgb]{0.85,0.85,0.85}$177711$ & $125 \pm 1$\\
+        $217728$ & $125 \pm 1$\\
+        \rowcolor[rgb]{0.85,0.85,0.85}$257777$ & $125 \pm 1$\\
+        $297768$ & $125 \pm 1$\\
+        \rowcolor[rgb]{0.85,0.85,0.85}$337786$ & $125 \pm 1$\\
+        $377962$ & $124 \pm 1$\\
+        \hline
+    \end{tabular}
+    }}
+\end{figure}
+
+\begin{figure}[h!]
+    \centering
+    \caption{Viscosimetro 2}
+    \makebox[\textwidth]{
+    \subfloat{
+        \includegraphics[width=9.5cm]{due.pdf}
+        \label{fig:vel2}
+    }
+    \subfloat{
+        \begin{tabular}{|c|c|}
+        \hline
+        t_{int} [$ms$]& v $10^{-5}$ $[\si{\milli\metre / \milli\second}]$\\
+        \hline
+        \rowcolor[rgb]{0.85,0.85,0.85}$17445.5$ & $143 \pm 1$\\
+        $53028.5$ & $138 \pm 1$\\
+        \rowcolor[rgb]{0.85,0.85,0.85}$88410.5$ & $145 \pm 1$\\
+        $123284$ & $142 \pm 1$\\
+        \rowcolor[rgb]{0.85,0.85,0.85}$158796$ & $140 \pm 1$\\
+        $194480$ & $140 \pm 1$\\
+        \rowcolor[rgb]{0.85,0.85,0.85}$230108$ & $140 \pm 1$\\
+        $265718$ & $141 \pm 1$\\
+        \rowcolor[rgb]{0.85,0.85,0.85}$301386$ & $140 \pm 1$\\
+        $337288$ & $139 \pm 1$\\
+        \hline
+    \end{tabular}
+    }}
+\end{figure}
+
+\begin{figure}[h!]
+    \centering
+    \caption{Viscosimetro 3}
+    \makebox[\textwidth]{
+    \subfloat{
+        \includegraphics[width=9.5cm]{tre.pdf}
+        \label{fig:vel3}
+    }
+    \subfloat{
+        \begin{tabular}{|c|c|}
+        \hline
+        t_{int} [$ms$]& v $10^{-5}$ $[\si{\milli\metre / \milli\second}]$\\
+        \hline
+        \rowcolor[rgb]{0.85,0.85,0.85}$11032$ & $227 \pm 2$\\
+        $33060$ & $227 \pm 2$\\
+        \rowcolor[rgb]{0.85,0.85,0.85}$55045$ & $228 \pm 2$\\
+        $77074$ & $226 \pm 2$\\
+        \rowcolor[rgb]{0.85,0.85,0.85}$99181$ & $226 \pm 2$\\
+        $121254$ & $227 \pm 2$\\
+        \rowcolor[rgb]{0.85,0.85,0.85}$143395$ & $225 \pm 2$\\
+        $165722$ & $223 \pm 2$\\
+        \rowcolor[rgb]{0.85,0.85,0.85}$188056$ & $224 \pm 2$\\
+        $210418$ & $223 \pm 2$\\
+        \hline
+    \end{tabular}
+    }}
+\end{figure}
+
+\begin{figure}[h!]
+    \centering
+    \caption{Viscosimetro 4}
+    \makebox[\textwidth]{
+    \subfloat{
+        \includegraphics[width=9.5cm]{quattro.pdf}
+        \label{fig:vel4}
+    }
+    \subfloat{
+        \begin{tabular}{|c|c|}
+        \hline
+        t_{int} [$ms$]& v $10^{-5}$ $[\si{\milli\metre / \milli\second}]$\\
+        \hline
+        \rowcolor[rgb]{0.85,0.85,0.85}$7367.5$ & $339 \pm 3$\\
+        $22063$ & $341 \pm 3$\\
+        \rowcolor[rgb]{0.85,0.85,0.85}$36812.5$ & $337 \pm 3$\\
+        $51629$ & $338 \pm 3$\\
+        \rowcolor[rgb]{0.85,0.85,0.85}$66347.5$ & $341 \pm 3$\\
+        $81063$ & $338 \pm 3$\\
+        \rowcolor[rgb]{0.85,0.85,0.85}$95899$ & $336 \pm 3$\\
+        $110744$ & $338 \pm 3$\\
+        \rowcolor[rgb]{0.85,0.85,0.85}$125600$ & $335 \pm 3$\\
+        $140601$ & $331 \pm 3$\\
+        \hline
+    \end{tabular}
+    }}
+\end{figure}
+
+\begin{figure}[h!]
+    \centering
+    \caption{Viscosimetro 5}
+    \makebox[\textwidth]{
+    \subfloat{
+        \includegraphics[width=9.5cm]{cinque.pdf}
+        \label{fig:vel5}
+    }
+    \subfloat{
+        \begin{tabular}{|c|c|}
+        \hline
+        t_{int} [$ms$]& v $10^{-5}$ $[\si{\milli\metre / \milli\second}]$\\
+        \hline
+        \rowcolor[rgb]{0.85,0.85,0.85}$3973$ & $629 \pm 6$\\
+        $12116.5$ & $599 \pm 6$\\
+        \rowcolor[rgb]{0.85,0.85,0.85}$20380.5$ & $611 \pm 6$\\
+        $28560$ & $612 \pm 6$\\
+        \rowcolor[rgb]{0.85,0.85,0.85}$36731$ & $612 \pm 6$\\
+        $44937.5$ & $607 \pm 6$\\
+        \rowcolor[rgb]{0.85,0.85,0.85}$53126.5$ & $615 \pm 6$\\
+        $61370$ & $599 \pm 6$\\
+        \rowcolor[rgb]{0.85,0.85,0.85}$69673$ & $606 \pm 6$\\
+        $77993.5$ & $596 \pm 6$\\
+        \hline
+    \end{tabular}
+    }}
+\end{figure}
+
+\begin{figure}[h!]
+    \centering
+    \caption{Viscosimetro 6}
+    \makebox[\textwidth]{
+    \subfloat{
+        \includegraphics[width=9.5cm]{sei.pdf}
+        \label{fig:vel6}
+    }
+    \subfloat{
+        \begin{tabular}{|c|c|}
+        \hline
+        t_{int} [$ms$]& v $10^{-5}$ $[\si{\milli\metre / \milli\second}]$\\
+        \hline
+        \rowcolor[rgb]{0.85,0.85,0.85}$2498.49$ & $1001 \pm 10$\\
+        $7546.07$ & $981 \pm 10$\\
+        \rowcolor[rgb]{0.85,0.85,0.85}$12570.3$ & $1010 \pm 10$\\
+        $17619.1$ & $971 \pm 10$\\
+        \rowcolor[rgb]{0.85,0.85,0.85}$22727.4$ & $986 \pm 10$\\
+        $27812.4$ & $980 \pm 10$\\
+        \rowcolor[rgb]{0.85,0.85,0.85}$32906.5$ & $983 \pm 10$\\
+        $38035.1$ & $967 \pm 9$\\
+        \rowcolor[rgb]{0.85,0.85,0.85}$43169.7$ & $981 \pm 10$\\
+        $48321.9$ & $961 \pm 9$\\
+        \hline
+    \end{tabular}
+    }}
+\end{figure}
+
+\begin{figure}[h!]
+    \centering
+    \caption{Viscosimetro 7}
+    \makebox[\textwidth]{
+    \subfloat{
+        \includegraphics[width=9.5cm]{sette.pdf}
+        \label{fig:vel7}
+    }
+    \subfloat{
+        \begin{tabular}{|c|c|}
+        \hline
+        t_{int} [$ms$]& v $10^{-4}$ $[\si{\milli\metre / \milli\second}]$\\
+        \hline
+        \rowcolor[rgb]{0.85,0.85,0.85}$1551$ & $161 \pm 2$\\
+        $4693$ & $157 \pm 2$\\
+        \rowcolor[rgb]{0.85,0.85,0.85}$7885$ & $156 \pm 2$\\
+        $11057$ & $159 \pm 2$\\
+        \rowcolor[rgb]{0.85,0.85,0.85}$14178$ & $161 \pm 3$\\
+        $17256$ & $164 \pm 3$\\
+        \rowcolor[rgb]{0.85,0.85,0.85}$20465$ & $149 \pm 3$\\
+        $23690$ & $162 \pm 3$\\
+        \rowcolor[rgb]{0.85,0.85,0.85}$26837$ & $156 \pm 3$\\
+        $30026$ & $158 \pm 2$\\
+        \hline
+        \end{tabular}
+    }}
+\end{figure}
+
+\begin{figure}[h!]
+    \centering
+    \caption{Viscosimetro 8}
+    \makebox[\textwidth]{
+    \subfloat{
+        \includegraphics[width=9.5cm]{otto.pdf}
+        \label{fig:vel8}
+    }
+    \subfloat{
+        \begin{tabular}{|c|c|}
+        \hline
+        t_{int} [$ms$]& v $10^{-4}$ $[\si{\milli\metre / \milli\second}]$\\
+        \hline
+        \rowcolor[rgb]{0.85,0.85,0.85}$836$ & $299 \pm 7$\\
+        $2625$ & $262 \pm 8$\\
+        \rowcolor[rgb]{0.85,0.85,0.85}$4480$ & $277 \pm 11$\\
+        $6351$ & $258 \pm 8$\\
+        \rowcolor[rgb]{0.85,0.85,0.85}$8263$ & $265 \pm 8$\\
+        $10154$ & $264 \pm 6$\\
+        \rowcolor[rgb]{0.85,0.85,0.85}$12058$ & $262 \pm 4$\\
+        $13942$ & $269 \pm 4$\\
+        \rowcolor[rgb]{0.85,0.85,0.85}$15880$ & $248 \pm 5$\\
+        $17809$ & $272 \pm 7$\\
+        \hline
+        \end{tabular}
+    }}
+\end{figure}
+
+\begin{figure}[h!]
+    \centering
+    \caption{Viscosimetro 9}
+    \makebox[\textwidth]{
+    \subfloat{
+        \includegraphics[width=9.5cm]{nove.pdf}
+        \label{fig:vel9}
+    }
+    \subfloat{
+        \begin{tabular}{|c|c|}
+        \hline
+        t_{int} [$ms$]& v $10^{-4}$ $[\si{\milli\metre / \milli\second}]$\\
+        \hline
+        \rowcolor[rgb]{0.85,0.85,0.85}$363.375$ & $688 \pm 13$\\
+        $1158.88$ & $579 \pm 10$\\
+        \rowcolor[rgb]{0.85,0.85,0.85}$2053.25$ & $541 \pm 9$\\
+        $2986$ & $531 \pm 9$\\
+        \rowcolor[rgb]{0.85,0.85,0.85}$3932.5$ & $525 \pm 9$\\
+        $4872.25$ & $539 \pm 9$\\
+        \rowcolor[rgb]{0.85,0.85,0.85}$5823.38$ & $513 \pm 8$\\
+        $6809.88$ & $501 \pm 7$\\
+        \rowcolor[rgb]{0.85,0.85,0.85}$7773.12$ & $539 \pm 7$\\
+        $8731.88$ & $505 \pm 7$\\
+        \hline
+    \end{tabular}
+    }}
+\end{figure}
+
+\newpage
+
+\begin{figure}
+    \centering
+    \subfloat[Tabella velocità viscosimetro 10]{
+    \begin{tabular}{|c|c|}
+        \hline
+        t_{int} [$ms$]& v $[\si{\milli\metre / \milli\second}]$\\
+        \hline
+        \rowcolor[rgb]{0.85,0.85,0.85} & $0.0538922 \pm 0.000135909$\\
+        \hline
+    \end{tabular}
+    }
+    \subfloat[Tabella velocità viscosimetro 11]{
+    \begin{tabular}{|c|c|}
+        \hline
+        t_{int} [$ms$]& v $[\si{\milli\metre / \milli\second}]$\\
+        \hline
+        \rowcolor[rgb]{0.85,0.85,0.85} & $0.108434 \pm 0.000515319$\\
+        \hline
+    \end{tabular}
+    }
+    \label{fig:my_label}
+\end{figure}
+
+
+%Analizzando i grafici si è osservato l'andamento delle misurazioni. Al fine di poter stimare una velocità limite da cui poi derivare la viscosità $\eta$ si è dapprima verificato se le misure seguissero un andamento di tipo lineare, d'ora in poi assunta come ipotesi nulla.
+Assumendo una densità del fluido costante, l'equazione del moto prevede un andamento della velocità di tipo esponenziale, che si assesta dopo un tempo caratteristico $\approx 3\tau$ ad un andamento di tipo lineare. Tale affermazione è giustificata tenendo in considerazione la variazione delle misurazioni dovuta alla componente di errore casuale, le caratteristiche fisiche delle sfere impiegate e le caratteristiche del fluido stesso.\newline
+Si sono impiegati vari metodi per determinare il tipo di andamento delle velocità al variare del tempo e se la velocità limite prevista dalla teoria fosse stata raggiunta per tutte le sfere considerate.
+
+\subsubsection*{Calcolo di t-Student per il coefficiente di correlazione $\rho$}
+%1a con tstudent PDF
+Si è calcolato il coefficiente di correlazione $\rho$ tra tempi intermedi e velocità statisticamente indipendenti $\{ v_{i=2n+1}\}$, al fine di valutare una dipendenza di queste ultime dal tempo.
+L'ipotesi nulla $H_{0}$ in cui $\rho=0$ qualora verificata avrebbe implicato un'indipendenza statistica dei valori delle velocità indipendenti $v_{i}$, dal passare del tempo e dunque nel caso specifico del moto in analisi una costanza delle stesse $v_{i}$, indicando il raggiungimento del valore asintotico di $v_{lim}$ entro gli errori casuali.  
+Si è pertanto deciso di confrontare il coefficiente $\rho$ calcolato con quello previsto da $H_{0}$ tramite il test di t-Student a due code, determinando per ogni sfera il livello di confidenza entro il quale veniva rigettata l'ipotesi di non-correlazione. \newline
+Come si riscontra in Tabella \ref{tab:t_student} si notano percentuali di rigetto dell'ipotesi nulla piuttosto alte, mai inferiori al 60\%.
+%Se $\rho$ fosse risultato pari a $0$, ciò avrebbe implicato una indipendenza statistica delle velocità dal tempo, e dunque una costanza delle velocità.
+%Infatti il variare del tempo non avrebbe su di esse influito in quanto in linea teorica ci si aspetta che la velocità limite sia stata raggiunta.
+%L'ipotesi nulla da verificare è la non correlazione delle velocità rispetto al tempo, ovvero $\rho=0$.
+
+
+
+
+
+\begin{table}[h!]
+\caption{t-student su rho pearson}
+\label{tab:t_student}
+\centering
+\begin{tabular}{|c|c|c|c|}
+\hline
+ \textbf{N pallina} & t-variable & \textbf{$\rho$} & \textbf{{$\%$ Rigetto ipotesi}} \\ \hline
+\rowcolor[rgb]{0.85,0.85,0.85}$1$ & $-4,268708947$ & $-0,9266263744$ & $96$ \\ \hline
+ $2$ & $-2,165256859$ & $-0,7808960208$ & $80$ \\ \hline
+\rowcolor[rgb]{0.85,0.85,0.85}$3$ & $-3,161807619$ & $-0,8770279297$ & $90$ \\ \hline
+ $4$ & $-1,17462206$ & $-0,5612729826$ & $60$ \\ \hline
+\rowcolor[rgb]{0.85,0.85,0.85}$5$ & $-2,078355718$ & $-0,7682053355$ & $80$ \\ \hline
+ $6$ & $-2,657393791$ & $-0,8377594445$ & $90$ \\ \hline
+\rowcolor[rgb]{0.85,0.85,0.85}$7$ & $-1,138150848$ & $-0,5491597001$ & $60$ \\ \hline
+ $8$ & $-6,747060187$ & $-0,9685935276$ & $99$ \\ \hline
+\rowcolor[rgb]{0.85,0.85,0.85}$9$ & $2,429132827$ & $-0,7011309171$ & $90$ \\ \hline
+\end{tabular}
+\end{table}
+
+%\subsubsection*{Test ${\chi}^{2}$ sulle velocità}
+% 1b test chi quadro  PDF
+%ovviamente ono quele PARI
+
+%test chi quadro su velocità pari con errore corretto  oppure su tutte con err originario da propagazione tempi
+%Si è pertanto eseguito un fit lineare sulle $v_{i}$ ad indice PARI e successivamente si è verificata l'ipotesi nulla di un andamento lineare tramite il test del chi %quadro con un livello di confidenza del 99.5\%. Da questo test è emerso che per le sfere 7, 8, e 9 l'ipotesi veniva rigettata. Si è pertanto dedotto che in questi %casi non fosse trascurabile il carattere esponenziale della legge del moto. Vengono riportati i risultati del test in Tabella \ref{tab:TABELLA CI QUADRO VELOCITÀ}.\\
+
+\subsubsection*{Stima di $\tau$ tempo caratteristico del moto}
+%2 PDF
+\begin{wraptable}{l}{4cm}
+\centering
+    \begin{tabular}{|c|c|}
+        \hline
+        \textbf{N pallina} & \textbf{$\tau [\si{\milli\second}]$} \\ \hline
+        \rowcolor[rgb]{0.85,0.85,0.85}$1$ & $0.148$ \\ \hline
+        $2$ & $0.166$ \\ \hline
+        \rowcolor[rgb]{0.85,0.85,0.85}$3$ & $0.264$ \\ \hline
+        $4$ & $0.396$ \\ \hline
+        \rowcolor[rgb]{0.85,0.85,0.85}$5$ & $0.721$ \\ \hline
+        $6$ & $1.164$ \\ \hline
+        \rowcolor[rgb]{0.85,0.85,0.85}$7$ & $1.83$ \\ \hline
+        $8$ & $3.169$ \\ \hline
+        \rowcolor[rgb]{0.85,0.85,0.85}$9$ & $6.58$ \\ \hline
+        $10$ & $6.32$ \\ \hline
+        \rowcolor[rgb]{0.85,0.85,0.85}$11$ & $12.72$ \\ \hline
+    \end{tabular}
+    \caption{Tempo $\tau$}
+    \label{tab:tau}
+\end{wraptable}
+Per verificare se la velocità limite fosse stata raggiunta si è inoltre stimato il tempo caratteristico $\tau$. Come accennato l'equazione del moto infatti suggerisce che in un tempo pari a $3\tau$ venga raggiunto il $\approx 95\%$ della velocità limite.
+Per il calcolo di $\tau$ si è assunto che $\eta$ fosse costante lungo la colonna di fluido, ma soprattutto in prima approssimazione si è assunto che la velocità limite fosse la media delle velocità statisticamente indipendenti.
+Si è calcolato $\tau$ tramite la seguente:
+\begin{equation*}
+    \tau = \frac{v_{lim} \cdot \rho_{S}}{g \cdot (\rho_{S} - \rho_{L})}
+\end{equation*}
+In Tabella \ref{tab:tau} non viene riportato l'errore del tempo caratteristico in quanto superfluo per questa verifica. Si espongono inoltre le distanze percorse in $3\tau$, ottenute da $\Delta x=v_{lim} \cdot 3 \tau$, che risultano sempre minori della distanza fra livello del liquido e prima tacca incisa.
+Dai dati riportati si può verificare che in tutti i lanci la velocità limite è stata sempre raggiunta entro i primi $\SI{10}{\centi\meter}$ di caduta nel fluido del viscosimetro, ovvero lo spazio tra il livello del fluido e la prima tacca.% e che le velocità nei Grafici \ref{fig:vel1} \dots \ref{fig:vel9} rappresentano le velocità limite.
+
+
+\subsubsection*{Variazione percentuale delle velocità}
+%3 PDF
+Per verificare ancor più approfonditamente il raggiungimento della velocità limite si è scelto di calcolare per ciascun viscosimetro quanto percentualmente mancasse a ciascuna delle velocità statisticamente indipendenti al raggiungimento di $v_{lim}$, variazione  che secondo l'equazione del moto è pari a:
+\begin{equation*}
+    \frac{v_{lim} - v_{i}}{v_{i}}=\frac{v_{lim}}{v_i}-1=\frac{a_i}{g' - a_i}
+\end{equation*}
+in cui $g'=g\cdot\frac{\rho_s-\rho_l}{\rho_l}$ è una costante ricavata dall'equazione del moto e le singole accelerazioni $a_i$ sono state calcolate prendendo in considerazione le velocità $v_{i}$ indipendenti e i relativi tempi intermedi $t_{i}$ tramite la seguente:
+\begin{equation*}
+    a_i=\frac{v_{i+1}-v_i}{t_{i+1}-t_{i}}
+\end{equation*}
+Si sono anche calcolati gli errori su $a_{i}$ in quanto necessari in una successiva fase dell'analisi.\newline
+Il valore percentuale che descrive quanto manca alle singole velocità per raggiungere la velocità limite è di un ordine di grandezza compreso fra $\approx\num{1e-7}\%$ fino ad un valore massimo di $\approx\num{1e-3}\%$. Questi valori percentuali, considerando gli errori casuali delle quali sono affette le $v_{i}$ suggeriscono che le $v_{lim}$ siano state raggiunte in ogni lancio ed per ogni $v_{i}$.
+
+
+\subsection{Stima di $v_{lim}$ per ogni viscosimetro}
+Si è proceduto al computo della miglior stima possibile della $v_{lim}$ per ogni lancio.
+
+\subsubsection*{Compatibilità tra singole accelerazioni $a_i$ e accelerazione $a_{tot}$ durante l'intero lancio}
+Sono state calcolate le accelerazioni $a_{tot}$ relative a ciascun lancio ottenute dal coefficiente angolare della retta interpolante le velocità statisticamente indipendenti dei grafici $t$ vs $v_{i=2n+1}$, associandovi l'errore derivante dalla propagazione usando l'errore a posteriori.
+%L'errore relativo ai tempi intermedi di ciascun intervallo è stato calcolato come propagazione tra i tempi $t_{i}$ e $t_{i+1}$ ottenuti dalle misurazioni al passaggio della sferetta in prossimità dei traguardi. In particolare per i viscosimetri 6 e 9 si è dapprima calcolato l'errore su ciascun $t_i$ come deviazione standard della media tra i tempi ottenuti da ciascun operatore in corrispondenza dell'i-esima tacca. NON È RILEVANTE PER L'ANALISI
+
+Vengono riportate in Tabella \ref{tab:comp_acc} le compatibilità calcolate tra i coefficienti angolari $a_{tot}$ e le singole  accelerazioni $a_{i}$ relative gli intervalli non consecutivi per ciascun viscosimetro.
+
+\begin{table}[h!]
+\footnotesize
+\caption{Accelerazioni $a_{tot}$, $a_{i}$ e $\lambda$}
+\label{tab:comp_acc}
+    \centering
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+        \textbf{Visc.} & \textbf{Acc. Generale} & \textbf{Acc. specifica} & \textbf{$\lambda$} \\ \hline
+        \multirow{4}{*}{1}& \multirow{4}{*}{$(-11 \pm 3)\cdot10^{-11}$}& $(-1 \pm 2)\cdot10^{-10}$ & $2.9$ \\
+        & & $(-3 \pm 2)\cdot10^{-10}$ & $4.1$ \\
+        & & $(-0.2 \pm 2)\cdot10^{-10}$ & $2.0$ \\
+        & & $(-0.2 \pm 2)\cdot10^{-10}$ & $2.0$ \\
+        \hline
+        \multirow{4}{*}{2}& \multirow{4}{*}{$(-16 \pm 8)\cdot10^{-11}$}& $(2 \pm 3)\cdot10^{-10}$ & $0.2$ \\
+        & & $(-7 \pm 3)\cdot10^{-10}$ & $5.5$ \\
+        & & $(0.6 \pm 3)\cdot10^{-10}$ & $1.1$ \\
+        & & $(-0.6 \pm 3)\cdot10^{-10}$ & $1.8$ \\
+        \hline
+        \multirow{4}{*}{3}& \multirow{4}{*}{$(-17 \pm 5)\cdot10^{-11}$}& $(2 \pm 7)\cdot10^{-10}$ & $3.0$ \\
+        & & $(-4 \pm 7)\cdot10^{-10}$ & $6.1$ \\
+        & & $(-3 \pm 7)\cdot10^{-10}$ & $5.8$ \\
+        & & $(-0.3 \pm 7)\cdot10^{-10}$ & $4.2$ \\
+        \hline
+        \multirow{4}{*}{4}& \multirow{4}{*}{$(-3 \pm 3)\cdot10^{-10}$}& $(-0.8 \pm 2)\cdot10^{-9}$ & $5.9$ \\
+        & & $(2 \pm 2)\cdot10^{-9}$ & $0.1$ \\
+        & & $(-2 \pm 2)\cdot10^{-9}$ & $8.5$ \\
+        & & $(-0.2 \pm 1)\cdot10^{-9}$ & $4.2$ \\
+        \hline
+        \multirow{4}{*}{5}& \multirow{4}{*}{$(-3 \pm 1)\cdot10^{-09}$}& $(-11 \pm 5)\cdot10^{-9}$ & $5.8$ \\
+        & & $(0.8 \pm 5)\cdot10^{-9}$ & $1.5$ \\
+        & & $(2 \pm 5)\cdot10^{-9}$ & $1.3$ \\
+        & & $(-5 \pm 5)\cdot10^{-9}$ & $3.7$ \\
+        \hline
+        \multirow{4}{*}{6}& \multirow{4}{*}{$(-7 \pm 2)\cdot10^{-09}$}& $(0.9 \pm 1)\cdot10^{-8}$ & $0.7$ \\
+        & & $(-2 \pm 2)\cdot10^{-8}$ & $6.1$ \\
+        & & $(-0.3 \pm 1)\cdot10^{-8}$ & $2.5$ \\
+        & & $(-0.2 \pm 1)\cdot10^{-8}$ & $2.3$ \\
+        \hline
+        \multirow{4}{*}{7}& \multirow{4}{*}{$(-3 \pm 2)\cdot10^{-08}$}& $(-8 \pm 4)\cdot10^{-8}$ & $3.0$ \\
+        & & $(8 \pm 6)\cdot10^{-8}$ & $0.6$ \\
+        & & $(-20 \pm 7)\cdot10^{-8}$ & $6.9$ \\
+        & & $(11 \pm 6)\cdot10^{-8}$ & $1.4$ \\
+        \hline
+        \multirow{4}{*}{8}& \multirow{4}{*}{$(-32 \pm 5)\cdot10^{-08}$}& $(-6 \pm 3)\cdot10^{-7}$ & $2.9$ \\
+        & & $(-3 \pm 4)\cdot10^{-7}$ & $2.1$ \\
+        & & $(-0.9 \pm 2)\cdot10^{-7}$ & $1.0$ \\
+        & & $(-4 \pm 2)\cdot10^{-7}$ & $1.6$ \\
+        \hline
+        \multirow{4}{*}{9}& \multirow{4}{*}{$(-1 \pm 1)\cdot10^{-6}$}& $(-9 \pm 1)\cdot10^{-6}$ & $6.4$ \\
+        & & $(-8 \pm 7)\cdot10^{-7}$ & $1.0$ \\
+        & & $(-6 \pm 6)\cdot10^{-7}$ & $0.8$ \\
+        & & $(13 \pm 6)\cdot10^{-7}$ & $0.5$ \\
+        \hline
+    \end{tabular}
+\end{table}
+
+Si osserva un andamento generale delle $\lambda$ variabile da viscosimetro a viscosimetro, suggerendo l'ipotesi che ogni sfera sia sottoposta a variazioni di velocità non facilmente prevedibili dalla sola equazione del moto, ma causate da variazioni di alcune proprietà fisiche del mezzo viscoso.
+
+\subsubsection*{Stima di $v_{lim}$ con interpolazione lineare su x vs. t }
+%Confrontando i dati ottenuti si è verificato che la velocità limite è sempre stata raggiunta nonostante la chiara presenza di fluttuazioni dovute alla variabilità della viscosità del mezzo. 
+
+Per stimare la velocità limite si è valutato il coefficiente angolare della retta interpolante i dati \textbf{x} posizione e \textbf{t} tempo di passaggio per ciascuna tacca. Essendo la velocità pressoché costante, essa corrisponde infatti, al coefficiente angolare della retta interpolante il diagramma spazio tempo.\newline
+Per evitare possibili perturbazioni presenti nelle prime misurazioni si è scelto di effettuare il fit trascurando le prime misurazioni. Si è optato per trascurare in tutti i lanci le prime 3 misurazioni temporali.\newline
+
+Per ogni grafico si sono valutati gli errori percentuali dei tempi e delle posizioni dei traguardi.
+Per i primi 6 lanci, essendo gli errori percentuali sulle posizioni sempre maggiori di quelli sui tempi, si è impostato il fit lineare su un grafico \textbf{x} vs. \textbf{t}. La stima della velocità deriva dal calcolo del coefficiente angolare della retta interpolante i dati. Gli ultimi 3 grafici invece hanno richiesto un grafico \textbf{t} vs. \textbf{x} in quanto gli errori sulle posizione erano maggiori di quelli sui tempi e dunque una stima delle velocità data dal reciproco del coefficiente angolare della retta interpolante. In entrambi i casi l'errore sulla velocità è stato ricavato impiegando nelle opportune propagazioni l'errore del coefficiente angolare derivato dall'errore a posteriori.\newline
+
+La scelta di effettuare un fit lineare trascurando i primi dati è stata motivata dal test del chi quadro che restituiva valori molto più ragionevoli che non includendoli. Vengono riportati in Tabella \ref{tab:test_chi_fit_x_t} i valori ottenuti, circa un ordine di grandezza inferiore rispetto al fit in cui tutti i valori venivano inclusi.
+
+
+Per il decimo ed undicesimo lancio si è assunta come $v_{lim}$ quella derivante dal rapporto fra spazio percorso nell'intervallo di tempo fra le due misurazioni disponibili. 
+
+%risolvo con questo : La lagge della velocità che regola il moto di un grave in un fluido che si muove in regime laminare segue una crescita esponenziale. (v(t) = vL + [v0 − vL]e − t τ ) Questo significa che la velocità aumenta repentinamente in un primo momento, per poi tendere asintoticamente a un valore limite. Per questo la velocità della sferetta, da un certo punto in poi diviene praticamente costante, consentendoci di approssimare il problema ad un moto a velocità costante. E’ provato che le sferette considerate raggiungeranno la velocità limite dopo un tempo t = 3τ . In questo caso infatti v(t) = 0.95vL, e che in t = 3τ percorreranno al più 10 cm
+
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|l|l|r|}
+\hline
+  & x\_t    & t\_x  \\ \hline
+1 & 9.49869 & 1.05992       \\ \hline
+2 & 39.6095 & 4.40331       \\ \hline
+3 & 47.097  & 9.75702       \\ \hline
+4 & 85.3216 & 13.7078       \\ \hline
+5 & 62.1757 & 18.208  \\ \hline
+6 & 18.0408 & 6.51956       \\ \hline
+7 & 61.4747 & 70.9052       \\ \hline
+8 & 4.65756 & 47.1486       \\ \hline
+9 & 18.2735 & 77.0358       \\ \hline
+\end{tabular}
+\caption{Risultato test $\chi^2$ fit \textbf{t} vs. \textbf{x}}
+\label{tab:test_chi_fit_x_t}
+\end{table}
+
+
+%FORSE QUI È BENE METTERE ANCHE LE V_LIM STIMATE?
+ 
+
+
+
+\subsection{Verifica della legge di Stokes - Verifica della dipendenza di $v_{lim}$ e $D^2$}
+Prima di poter offrire una stima di $\eta$ si è cercato di verificare la legge di Stokes:
+\begin{equation*}
+    v_{lim}= \frac{{D}^2g\left(\rho_S - \rho_L\right)}{18 \eta }
+\end{equation*}
+in cui $D$ è il diametro della sfera, $\rho_S$ la densità del materiale di cui la sfera è composta, $\rho_L$ la densità del fluido ed $\eta$ la viscosità.
+
+\subsubsection*{Calcolo di $\eta$ per tutti i viscosimetri}
+Si è realizzato il Grafico \ref{fig:eta} in cui nelle ascisse figurano i diametri delle sfere impiegate per ciascun lancio e nelle ordinate i valori delle viscosità $\eta$ calcolati con l'equazione riportata di seguito:
+\begin{equation*}
+    \eta= \frac{{D}^2g\left(\rho_S - \rho_L\right)}{18 v_{L}} 
+\end{equation*}
+L'errore della viscosità è stato calcolato tramite propagazione degli errori casuali.
+
+\begin{figure}[h!]
+    \centering
+    \makebox[\textwidth]{
+        \includegraphics[width=16cm]{grafico_ETA_2.pdf}
+    }
+    \caption{Andamento di $\eta$ in funzione del diametro}
+    \label{fig:eta}
+\end{figure}
+
+
+
+%METTIAMO UN FIT ESPONENZIALE? non funziona ahahahaha =)
+
+\subsubsection*{Fit lineari $v_{lim}$ vs. $D^2$ e calcolo di $\eta$}
+Si sono poi realizzati due grafici similari per informazioni contenute. Il primo Grafico \ref{fig:verifica_legge_1} riporta in ascissa i valori del diametro delle sfere al quadrato mentre in ordinata il valore delle $v_{lim}$ stimate. Il Grafico \ref{fig:verifica_legge_2} invece riporta in asse \textbf{x} il reciproco del diametro al quadrato, mentre in ordinata il reciproco della velocità limite. $\eta$ è stato stimato in entrambi i casi a partire dal coefficiente angolare della retta interpolante i dati. Nel primo caso il coefficiente angolare è stato ricavato da
+
+\begin{align*}
+\begin{split}
+  y=&x \cdot m \\
+  &\Updownarrow \\
+    v_{lim}=&D^{2} \cdot \frac{g (\rho_s - \rho_l)}{18 \eta}
+\end{split}
+\end{align*}
+pertanto è stato possibile stimare una $\eta$ media proprio a partire da questi valori e dalla relativa propagazione.
+
+Analogamente per il secondo metodo si sono usati i valori di $D^{-2}$ e di $v_{lim}^{-1}$ e $\eta$ è stato stimato dal coefficiente angolare.
+
+\begin{align*}
+\begin{split}
+  y=&x \cdot m \\
+  &\Updownarrow \\
+    \left( \frac{1}{v_{lim}} \right)=&\left ( \frac{1}{D^{2}} \right ) \cdot \frac{18 \eta}{g (\rho_s - \rho_l)}
+\end{split}
+\end{align*}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\textwidth]{plot_fit_1.pdf}
+    \caption{Fit $v_{lim}$ vs $D^2$}
+    \label{fig:verifica_legge_1}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\textwidth]{plot_fit_2.pdf}
+    \caption{Fit $v_{lim}^-1$ vs $D^-2$}
+    \label{fig:verifica_legge_2}
+\end{figure}
+
+
+
+\subsection{Calcolo di $\eta$}
+
+
+
+
+
+
+\section{Discussione}
+\subsection{Errori misurazioni temporali $t_{i,j}$}
+Si è deciso di effettuare le misurazioni temporali in corrispondenza del momento in cui il centro della sfera attraversava la superficie identificata dalla tacca segnata sul cilindro. Questo protocollo è stato seguito da tutti e 3 gli operatori nonostante la diversa tecnica di presa dati, con cronometro o tramite software.
+Per tutte le misurazioni effettuate tramite il metodo frame-by-frame si sono valutati accortamente il numero di frame di indecisione per la misurazione ovvero il numero di frame nei quali era possibile che la sfera avesse oltrepassato la tacca.
+Le differenti fonti di errore si identificano in
+\begin{itemize}
+    \item Errore sistematico del software/estensione impiegata $\approx 2 $ frame
+    \item Incertezza dovuta allo spessore della tacca
+    \item Errore di parallasse dovuto al mancato allineamento fra telecamera e tacca, variabile a seconda dei video e delle tacche considerate
+    \item Indecisione sull'esatto frame di passaggio nel momento in cui sia possibile una scelta fra diversi fotogrammi
+    \item Mancanza di un esatto frame in cui si osserva il passaggio della sfera per la tacca considerata
+\end{itemize}
+Per le prime 4 sfere presentano un elevato numero di frame di incertezza a causa della presenza di tutte le prime quattro componenti di errore, a causa della ridotta dimensione della sfera e della sua bassa velocità.
+Le sfere a diametro intermedio, ovvero dalla quinta all'ottava presentano come causa dei frame di incertezza sia sia il mancato allineamento fra obiettivo e tacca sia un'incertezza sull'esatto frame di passaggio del centro della sfera per il livello segnato in quanto la massa risulta per diversi fotogrammi consecutivi oscurata dalla tacca.
+
+Le sfere a diametro maggiore invece riportano come causa dei frame di incertezza soltanto l'errore sistematico del software e la mancanza di frame del momento esatto del passaggio per l'elevata velocità di discesa nel fluido.
+In alcuni casi la mancanza di un frame esatto che immortalasse il passaggio della sfera in maniera soddisfacente per l'operatore, si è ricorso alla media fra i tempi dei due frame più verisimili. Il valore $t_i$ è talvolta per le sfere a diametro maggiore una media fra due tempi e conseguentemente l'errore ad esso associato è maggiore poiché derivante da una propagazione.
+Viene riportato il numero opportunamente scelto di frame di incertezza in Tabella \ref{tab:frame_incertezza}.
+
+\begin{table}[]
+\caption{Frame di incertezza}
+\label{tab:frame_incertezza}
+\begin{tabular}{ll}
+Lancio & \# fps  \\ \hline
+1      & $9$ \\ \hline
+2      & $8$ \\ \hline
+3      & $4$ \\ \hline
+4      & $4$ \\ \hline
+5      & $3$ \\ \hline
+6      & $3$ \\ \hline
+7      & $2$ \\ \hline
+8      & $3$ \\ \hline
+9      & $2$ \\ \hline
+10     & $2$ \\ \hline
+11     & $2$
+\end{tabular}
+\end{table}
+
+
+Per le misurazioni effettuate tramite cronometro invece si sono valutate le possibili cause di errore in:
+\begin{itemize}
+    \item Imprecisioni dovute alla velocità di risposta dell'operatore nel avviare/bloccare il cronometro
+    \item Indecisioni dovute al mancato allineamento dell'obiettivo con la tacca incisa
+\end{itemize}
+Ogni misurazione risultava avere come incertezza la deviazione standard sulla media fra tutto il campione di misure riferito ad un unica tacca. Come errore associato alla prima tacca si è considerata la media fra i valori degli errori relativi a tutte le tacche.
+Seppur non sia un procedimento statisticamente corretto è ragionevole assumere che l'incertezza su questa misurazione sia comparabile alle misurazioni successive, prestando particolare attenzione nel caso in cui ci fossero dei valori di incertezza per alcune tacche di molto superiori alla media. 
+
+
+\subsection*{Calcolo errore in $\Delta t$}
+%Citare il discorso di desalvador, perche un metodo o l'altro, evitare covarianza, citare standard JCGM, uso di media varianze
+Per l'analisi dei dati si è scelto di analizzare i $\Delta t$ e non le misurazioni dirette. Il vantaggio di questo approccio è l'evitare di dover rapportare i vari tempi ad un unico zero iniziale in quanto i due metodi impiegati usano origini temporali diverse: l'origine temporale per il metodo con il cronometro corrisponde al passaggio della sfera per la prima tacca mentre per il metodo frame by frame coincide con l'inizio del video.\\
+La valutazione dell'errore di $\Delta t$ per le misure effettuate tramite software hanno sfruttato la propagazione sui frame di incertezza, mentre per le misure con cronometro, come consigliato dalla guida JCGM, si sono dapprima calcolati i cinque $\Delta t$ relativi ad uno stesso intervallo fra tacche e per poi considerare come componente di errore la loro deviazione standard sulla media.
+
+%In secondo luogo la motivazione è invece da attribuire alla valutazione dell'errore sullo zero dei tempi.In entrambi i metodi sappiamo che lo zero dei tempi è affetto da errore, ma, per il metodo frame by frame, risultava difficile attribuire un errore a quest'ultimo, in quanto non consapevoli dell'esatto funzionamento dell'estensione utilizzata. Si è evitato il problema, in quanto non necessario ai fini dell'esperimento, tramite l'analisi dei $\Delta t$.
+
+
+\subsection*{Commenti sul confronto fra  le metodologie degli operatori - Viscosimetro 6 e 9}
+Si riporta il commento relativo alle prese dati per il sesto viscosimetro effettuate da tutti e tre gli operatori con le due procedure diverse per valutare la compatibilità fra i metodi impiegati.
+I dati riportati nelle tabelle \ref{tab:Confronto_tutte_le_compatibilità_per_ogni_misura} e  \ref{tab:Confronto_tutte_le_compatibilità} confermano che ogni campione e ogni singola misura di $\Delta t$ è compatibile con le corrispondenti degli altri operatori. In particolare i campioni tra loro hanno tutti una compatibilità ottima, il che legittima i passaggi descritti nell'analisi.\\
+Osservando la tabella \ref{tab:Confronto_tutte_le_compatibilità_per_ogni_misura} si nota inoltre che le compatibilità tra operatore C e operatore A e B per il primo intervallo risultano rispettivamente discrete e pessime. Dal grafico \ref{fig:andamento_delta_t} è osservabile che $\Delta t^C_1$ risulta essere inferiore ai corrispondenti. Si ipotizza quindi un ritardo nell'avvio del cronometro al passaggio della sferetta presso il primo traguardo.\\
+%Le misure relative agli intervalli 4, 6 e 10 hanno compatibilità più grande ed errore maggiore  
+Generalmente è possibile affermare che le misure dell'operatore A e B risultano più simili tra loro e con compatibilità ottime, oltre ceh affette da errore minore rispetto a quelle effettuate dall'operatore C. Ciò è giustificabile dall'utilizzo del medesimo metodo di misura e dal fatto che generalmente il metodo frame-by-frame risulta più preciso del metodo con misure tramite cronometro.
+%Probabilmente con un numero maggiore di misure ripetute, il metodo cronometro sarebbe stato più preciso
+
+Risultati analoghi sono ottenibili tramite il confronto delle misure tra operatori A e B per il nono viscosimetro.
+
+\subsection*{Calcolo velocità}
+%errore stimato su delta x
+
+\subsection*{Velocità costanti o no, tre metodi e significato di ciascuno di loro}
+
+
+\subsection*{Verifica legge, ipotesi andamenti esponenziali di viscosità e chi su di loro}
+
+
+
+
+\section{Margini di miglioramento}
+%Cronometro con minore input lag
+%Errore di parallasse (video poco precisi a volte)
+
+
+\section{Conclusioni}
+%riportare viscosità rappresentativa
+
+\section{Appendice}
+
+\subsection{Formulario}
+\textbf{Media, deviazione standard, deviazione standard della media}
+\begin{align*}
+   % \begin{aligned}
+        \overline{x}&=\sum\limits_{i=1}^{N} \frac{x_{i}}{N}&
+        \sigma&=\sqrt{\frac{\sum\limits_{i=1}^{N} (x_{i}-\overline{x})}{N-1}}&
+        \sigma_{\overline{x}}&=\frac{\sigma}{\sqrt{N}}
+   % \end{aligned}
+\end{align*}\\
+
+\textbf{Media Ponderata}
+\begin{equation*}
+\label{eq:media_pond}
+    x_i=\frac{\sum_{i=1}^{N}\frac{x_i}{\sigma_{x_i}}}{\sum_{i=1}^{N}\frac{1}{\sigma_{x_i}}}
+\end{equation*}
+
+\textbf{Errore Media Ponderata}
+\begin{equation*}
+\label{eq:errore_media_pond}
+     \sigma_{x_i}=\sqrt{\frac{1}{\sum_{i=1}^{N}\frac{1}{\sigma_{i}^{2}}}}
+\end{equation*}
+
+\textbf{Formule per il ${\chi}^2$}
+\begin{equation*}
+        \begin{cases}
+    a=&\frac{1}{\Delta}[(\sum\limits_{i=1}^{N}{x_{i}^{2}})\cdot(\sum\limits_{i=1}^{N}{y_{i}})-(\sum\limits_{i=1}^{N}{x_{i}})\cdot(\sum\limits_{i=1}^{N}{x_{i}y_{i}})] \\ 
+    b=&\frac{1}{\Delta }\cdot \left [N\cdot \left ( \sum\limits_{i=1}^{N}x_i y_i \right )-\left ( \sum\limits_{i=1}^{N}x_i \right )\cdot \left ( \sum\limits_{i=1}^{N}y_i \right )  \right ]\\
+    \Delta=& N\cdot \sum\limits_{i=1}^{N} x_i^{2} - \left ( \sum\limits_{i=1}^{N}x_i \right )^{2}\\
+    \end{cases}
+\end{equation*}
+\begin{equation*}
+    \begin{cases}
+    \sigma_{a}=&\sigma_{y}\cdot\sqrt{\frac{\sum_{i=1}^{N}{x_{i}^{2}}}{\Delta}} \\
+    \sigma_{b}=&\sigma_y\cdot \sqrt{\frac{N}{\Delta }}\\
+    \end{cases}
+    \label{equation:err_chi_quadro}
+\end{equation*}
+\\
+\textbf{Formula di propagazione degli errori casuali}\\
+
+Sia z=($x_1$,...;$x_N$) funzione di N variabili casuali $x_1$,...,$x_N$ e sia ${x_i^\ast}$=($x_1^\ast$,...,$x_N^{\ast}$) l'insieme di tutti i valori veri associati a tali variabili, si ha 
+
+\begin{equation*}
+    \sigma_z^{2}\approx  \sum_{i=j=1}^{N}\left ( \frac{\partial z}{\partial x_i}\Big|_{x_i^{\ast}} \right )^{2}\cdot\sigma_{x_i}^{2} +\sum_{i=1,j=1,i\neq j}^{N}\left (\frac{\partial z }{\partial x_i}\Big|_{x_i^{\ast}} \right ) \cdot \left ( \frac{\partial z}{\partial x_j} \Big|_{x_j^{\ast}} \right )\cdot cov(x_i,x_j)\label{eq:prop_errori}
+\end{equation*}
+E' stato utilizzato il simbolo $\approx$ in quanto si è scelto di troncare al primo termine lo sviluppo in serie di Taylor.\\
+
+
+\textbf{Formula calcolo compatibilità}\\
+\begin{equation*}
+    \lambda=\frac{\left|a-b\right|}{\sqrt{\sigma^{2}_{a}+\sigma^{2}_{b}}}
+\end{equation*}\\
+\textbf{Coefficiente di correlazione di Pearson}\\
+\begin{equation*}
+    \rho=  \frac{\sum_{i=1}^{N}(x_i - \overline{x}
+    )(y_i - \overline{y})}{\sqrt{\sum_{i=1}^{N}(x_i -\overline{x})^2}\sqrt{\sum_{i=1}^{N}(y_i - \overline{y})^2}}
+\end{equation*}
+
+
+\end{document}
