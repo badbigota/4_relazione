@@ -578,7 +578,7 @@ Il dato appena riportato suggerisce che le possibili cause della variazione dell
 %test chi quadro su velocità pari con errore corretto  oppure su tutte con err originario da propagazione tempi
 %Si è pertanto eseguito un fit lineare sulle $v_{i}$ ad indice PARI e successivamente si è verificata l'ipotesi nulla di un andamento lineare tramite il test del chi %quadro con un livello di confidenza del 99.5\%. Da questo test è emerso che per le sfere 7, 8, e 9 l'ipotesi veniva rigettata. Si è pertanto dedotto che in questi %casi non fosse trascurabile il carattere esponenziale della legge del moto. Vengono riportati i risultati del test in Tabella \ref{tab:TABELLA CI QUADRO VELOCITÀ}.\\
 \newpage%
-\subsubsection*{Stima de tempo caratteristico $\tau$}
+\subsubsection*{Stima del tempo caratteristico $\tau$}
 %2 PDF
 \begin{wraptable}{l}{4cm}
 \centering
@@ -740,7 +740,7 @@ RIPORTARE TABELLA DEI CHI QUADRI OTTENUTI
 
 Per ottenere una miglior stima possibile della velocità limite si è dunque valutato il coefficiente angolare della retta interpolante i dati \textbf{x} posizione e \textbf{t} tempo di passaggio riferiti a ciascuna tacca considerando la reiezione effettuata. \newline
 Per ogni grafico si sono valutati gli errori percentuali dei tempi e delle posizioni dei traguardi.
-Per i primi 6 lanci, essendo gli errori percentuali sulle posizioni sempre maggiori di quelli sui tempi, si è impostato il fit lineare su un grafico \textbf{x} vs. \textbf{t}. La stima della velocità deriva dal calcolo del coefficiente angolare della retta interpolante i dati.\\
+Per i primi 6 lanci si è impostato il fit lineare su un grafico \textbf{x} vs. \textbf{t}, nei restanti casi si è eseguito il fit su un grafico \textbf{t} vs. \textbf{x}. La stima della velocità deriva dal calcolo del coefficiente angolare o dal reciproco di quest ultimo della retta interpolante i dati.\\
 
 \begin{wraptable}{r}{4cm}
 %\caption{Risultato test ${\chi}^{(2)}$ fit \textbf{t} vs. \textbf{x}}
@@ -761,12 +761,11 @@ Per i primi 6 lanci, essendo gli errori percentuali sulle posizioni sempre maggi
     \end{tabular}
 \end{wraptable}
 
-Gli ultimi 3 grafici invece hanno richiesto un grafico \textbf{t} vs. \textbf{x} in quanto gli errori sulle posizione erano maggiori di quelli sui tempi e dunque una stima delle velocità data dal reciproco del coefficiente angolare della retta interpolante. In entrambi i casi l'errore sulla velocità è stato ricavato impiegando nelle opportune propagazioni l'errore del coefficiente angolare derivato dall'errore a posteriori.\\
+In entrambi i casi l'errore sulla velocità è stato ricavato impiegando nelle opportune propagazioni l'errore del coefficiente angolare derivato dall'errore a posteriori.\\
 
 
 Per il decimo ed undicesimo lancio si è assunta come $v_{lim}$ quella derivante dal rapporto fra spazio percorso nell'intervallo di tempo fra le due misurazioni disponibili. 
 
-%risolvo con questo : La lagge della velocità che regola il moto di un grave in un fluido che si muove in regime laminare segue una crescita esponenziale. (v(t) = vL + [v0 − vL]e − t τ ) Questo significa che la velocità aumenta repentinamente in un primo momento, per poi tendere asintoticamente a un valore limite. Per questo la velocità della sferetta, da un certo punto in poi diviene praticamente costante, consentendoci di approssimare il problema ad un moto a velocità costante. E’ provato che le sferette considerate raggiungeranno la velocità limite dopo un tempo t = 3τ . In questo caso infatti v(t) = 0.95vL, e che in t = 3τ percorreranno al più 10 cm
 
 %FORSE QUI È BENE METTERE ANCHE LE V_LIM STIMATE?
  
@@ -1006,34 +1005,57 @@ Una spiegazione possibile di tali fenomeni viene fornita nel prossimo paragrafo.
 
 \subsubsection*{Commento compatibilità accelerazioni}
 Come si osserva dai valori di $\lambda$ riportati nella Tabella \ref{tab:comp_acc}, solo una parte delle accelerazioni specifiche risulta compatibile con le accelerazioni generali di ciascun viscosimetro.
-Le compatibilità inoltre sembrano non seguire una particolare distribuzione. Difatti questa casualità deriva dalla fluttuazione statistica delle misure dei tempi effettuate dagli operatori, oppure, più probabilmente, che il liquido risulta avere una viscosità non omogenea.
+Le compatibilità inoltre sembrano non seguire una particolare distribuzione. Difatti questa casualità deriva dalla fluttuazione statistica delle misure dei tempi effettuate dagli operatori, oppure, più probabilmente, da una non omogenea viscosità del liquido.\newline
 
-Inoltre, le accelerazioni risultano essere in modulo diverse l'una dall'altra seppur tutte particolarmente piccole. A partire da ciò si ipotizza una non omogenea viscosità del liquido saponoso. 
+Ulteriore prova a sostegno della non omogeneità del fluido è che le accelerazioni risultano essere in modulo diverse l'una dall'altra.
+Bisogna osservare infine che le accelerazioni generali fra il primo e l'ultimo lancio differiscono di 4 ordini di grandezza. Tali variazioni rimangono comunque trascurabili e si prova a fornire un giustificazione nel paragrafo dedicato alla discussione di $\eta$.\newline
 
-Si osserva inoltre che l'ordine di grandezza cresce al variare del viscosimetro. Ciò è da attribuire al crescente diametro delle sferette utilizzate, dal quale consegue un maggiore volume, una maggiore massa e dunque una maggiore forza peso.
+% Ciò è da attribuire al crescente diametro delle sferette utilizzate, dal quale consegue un maggiore volume, una maggiore massa e dunque una maggiore forza peso.
 
 
-
-
-Da un'analisi più approfondita della colonna di liquido, compiuta prima dell'ottavo lancio, si verifica la presenza di alcune bollicine d'aria generate dalla caduta delle sfere precedenti. Si ipotizza che l'interazione delle sfere alteri le caratteristiche del fluido e che dunque l'equazione del moto utilizzata costituisca solo un'approssimazione.
+Da un'analisi più approfondita del fluido contenuto nella colonna di liquido, compiuta prima dell' esecuzione dell'ottavo lancio, si verifica la presenza di alcune bollicine d'aria generate dalla caduta delle sfere precedenti. Si ipotizza che l'interazione delle sfere alteri le caratteristiche del fluido e che dunque l'equazione del moto utilizzata costituisca solo un'approssimazione.
 \begin{wrapfigure}{r}{3.5cm}
     \centering
     \includegraphics[width=0.2\textwidth]{fram3.jpg}
     \caption{Scia d'aria}
     \label{fig:scia_aria}
 \end{wrapfigure}
-Ulteriore assunzione, non applicabile soprattutto per gli ultimi lanci, è che le sfere siano completamente immerse nel fluido, mentre come accade per i diametri più grossi ciò non è verificato. Si forma infatti una scia d'aria a forma di cono dietro la sfera, dove il fluido non viene in contatto con la superficie metallica, come raffigurato in Figura \ref{fig:scia_aria}.
+ 
+Ulteriore assunzione è che le sfere siano completamente immerse nel fluido, ma ciò non è applicabile per gli ultimi lanci a diametro maggiore. A partire dall'ottavo lancio si forma infatti una scia d'aria a forma di cono dietro la sfera, dove il fluido non viene in contatto con la superficie metallica, come raffigurato in Figura \ref{fig:scia_aria}. \newline
 
 
 
-%interpolazioni x vs t per vleocità
+%interpolazioni x vs t per velocità
+\subsubsection*{Interpolazione su distanze e tempi per stima v lim}
+Una volta determinata la non omogeneità del mezzo, si è valutata l'ipotesi che nella prima parte del cilindro contenete il liquido saponoso si avesse una viscosità minore rispetto a quella nella parte finale. Tale ipotesi è suggerita dal fatto che le particelle più massive del fluido, essendo soggette alla forza di gravità, si accumulano nella parte inferiore del cilindro.
+Si è cercato di verificare tale ipotesi effettuando due volte il test del chi quadro.
+Per la valutazione di tale metodo è risultato doveroso analizzare gli errori percentuali fra gli spazi percorsi ed i tempi presi in esame. È emerso che nei primi 6 lanci del viscosimetro gli errori percentuali sui tempi sono inferiori di quelli delle posizioni, mentre per gli ultimi 3 lanci, ovvero il settimo, l'ottavo ed il nono, risultava il contrario. 
+%Basandosi su queste informazioni si è compiuto un fit lineare tramite il metodo del minimo chi quadro nei primi sei lanci con il tempo in ascissa e gli spazi in ordinata. Al contrario per gli ultimi 3 lanci si è effettuato un fit con posizioni in ascissa e tempi in ordinata, come già era stato accennato nell'analisi.  
+
+
+1 & $9.4986$ & $1.0599$
+2 & $39.609$ & $4.4033$
+3 & $47.097$ & $9.7570$
+4 & $85.321$ & $13.707$
+5 & $62.175$ & $18.208$
+6 & $18.040$ & $6.5195$
+7 & $61.474$ & $70.905$
+8 & $4.6575$ & $47.148$
+9 & $18.273$ & $77.035$
 
 
 
-%\subsection{Verifica legge, ipotesi andamenti esponenziali di viscosità e chi su di loro}
 
 
 
+In entrambi i casi di si è eseguito il test del chi quadro sull'inteprolazione lineare. Una prima volta considerando tutte le coppie di dati ed una seconda volta reiettando i primi 3 dati di ogni campione.
+La tabella \ref{} fa emergere che tale metodo risulta perfettamente giustificata, in quanto la somma degli scarti quadratici diminuisce di diversi ordini di grandezza, rendendo più verisimile l'ipotesi di un andamento lineare. 
+%il test del chi quadro riduce notevolmente.
+La reiezione dei primi dati è stata necessaria per poter stimare la vel lim in quanto essa è stimata dal coefficiente angolare. Se non venisse verificata l'ipotesi che i dati seguono un andamento lineare non sarebbe corretto impiegare questo approccio. Inoltre il calcolo risulta giustificato sapendo che la legge della velocità che regola il moto di un corpo nel liquido saponoso che si muove in un regime laminare segue un andamento esponenziale. Ciò implica che la velocità subisca forti variazioni nella prima parte del cilindro, per poi tendere asintoticamente ad un valore limite. Per questo la velocità della sferetta, da un certo punto in poi diviene praticamente costante, consentendo di approssimare il problema ad un moto a velocità costante.
+
+Si specifica che come stima della velocità limite per il grafico x vs t si è utilizzato il coefficiente angolare della retta interpolante, per il grafico t vs x corrisponde invece al reciproco del coefficiente angolare della medesima retta.
+
+\subsection{Verifica legge, ipotesi andamenti esponenziali di viscosità e chi su di loro} xdxdxd
 
 \section{Margini di miglioramento}
 %Cronometro con minore input lag
