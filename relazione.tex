@@ -177,7 +177,7 @@ $10^o$ & $52711 \pm 20$ & $52702 \pm 20$ & $45700 \pm 38$ & $10640 \pm 19$ & $10
 
 
 Vengono riportati in Tabella \ref{tab:dati_semi_grezzi} le misurazioni dei tempi effettuate dai diversi operatori per le diverse sfere in esame riassunti per colonne, in base alla numerazione dei video/lanci.
-Per la sesta e per la nona sfera vengono riportate misurazioni differenti ciascuna derivante da un operatore diverso. La sesta sfera è stata analizzata da tutti e tre gli operatori, la nona soltanto dall'operatore A e B.
+Per la sesta e per la nona sfera vengono riportate misurazioni differenti ciascuna derivante da un operatore diverso.
 La decima ed undicesima sfera riportano soltanto le misure dei tempi di passaggio in corrispondenza della seconda ed ultima tacca in quanto non è stato possibile effettuare altre misurazioni temporali a causa dell'elevata velocità di discesa della sfera nel fluido.
 Si precisa che le misure presenti nella Tabella \ref{tab:dati_semi_grezzi} relative all'operatore C rappresentano la media delle misure relative a i 5 tempi di passaggio della sfera per lo stesso traguardo.
 Si noti inoltre che le misure effettuate dagli operatori A e B indicano l'istante temporale di passaggio della sfera in corrispondenza della tacca avendo come origine temporale l'inizio del video analizzato. Le misure dell'operatore C invece hanno come origine temporale  del conteggio l'istante di passaggio della sfera per la prima tacca.
@@ -186,11 +186,11 @@ Si noti inoltre che le misure effettuate dagli operatori A e B indicano l'istant
 
 \subsection{Calcolo $\Delta t$}
 %DELTA T CON FBF
-Per il calcolo di $\Delta t_{i}$ per le sfere analizzate soltanto da un operatore tramite il metodo del frame-by-frame è stato sufficiente eseguire la differenza $t_{i+1}- t_{i}$ associandovi l'errore derivante dal teorema delle varianze. Non è stato possibile considerare il termine di covarianza a causa del ridotto numero di dati disponibili.\\
+Per il calcolo di $\Delta t_{i}$ per le sfere analizzate soltanto da un operatore tramite il metodo del frame-by-frame è stato sufficiente eseguire la differenza $t_{i+1}- t_{i}$ associandovi l'errore derivante dal teorema delle varianze.\\
 \newline
 %DELTA T CON CRONOMETRO
 Per il computo dei $\Delta t_{i}$ relativi alle misure eseguite dal terzo operatore si sono calcolati cinque campioni $j$ di $\{\Delta t_{i=1\dots10}\}_{j=1\dots5}$. Ciascuno dei campioni è riferito ad un'unica presa dati relativa ad uno stesso video.
-Nel campione riassuntivo di ${\Delta t_{i}}$, $\Delta t_{i=k}$ è stato ricavato dalla media di $\{\Delta t_{i=1}\}_{j=1\dots5}$ associando a ciascuno di essi l'errore derivante dalla deviazione standard calcolata sulla media.
+Nel campione riassuntivo di ${\Delta t_{i}}$, $\Delta t_{i=k}$ riassuntivo della singolo intervallo tra tacche è stato ricavato dalla media di $\{\Delta t_{i=k}\}_{j=1\dots5}$ associando a ciascuno di essi l'errore derivante dalla deviazione standard calcolata sulla media.
 
 
 %SPIEGAZIONE DEL PERCHÈ QUESTO METODO NON NE ACCENNIAMO QUI? CITARE IN DISCUSSIONE - si ne scriviamo nella discussione (Marco)
@@ -237,7 +237,7 @@ In seguito sono state ricavate delle $\lambda$ relative agli interi campioni, ca
 \end{figure}
 
 
-Per un confronto visivo è stato realizzato il Grafico \ref{fig:andamento_delta_t} relativo all'andamento dei $\Delta t_{i}$ per ciascun operatore.
+Per un confronto visivo è stato realizzato il Grafico \ref{fig:andamento_delta_t} relativo all'andamento dei $\Delta t_{i}$ per ciascun operatore. Si specifica che si è scelto di traslare i vari $\Delta t$ degli operatori al fine di agevolare la lettura del grafico.
 
 \begin{figure}[h!]
     \centering
@@ -246,15 +246,15 @@ Per un confronto visivo è stato realizzato il Grafico \ref{fig:andamento_delta_
     \label{fig:andamento_delta_t}
 \end{figure}
 
-\subsubsection*{Generazione unico campione $\Delta t$ per viscosimetro 6 e 9}
-I 3 set di dati di $\{\Delta t_{i=1\dots10}\}_{j=A \dots C}$ relativi a ciascun operatore, riferiti alla pallina avente diametro 5"/32, sono stati riassunti in un unico campione di $\{\Delta t_{i}\}$ dove ogni $\Delta t_{i}$ risultava dalla media ponderata di $\{\Delta t_{i}\}_{j=A \dots C}$. L'errore associato ai singoli ${\Delta t_{i}}$ è stato calcolato tramite la propagazione derivante dalla media ponderata.\newline
+\subsubsection*{Computo unico campione di  $\Delta t$ per i viscosimetri 6 e 9}
+I 3 set di dati di $\{\Delta t_{i=1\dots10}\}_{j=A \dots C}$ relativi a ciascun operatore, riferiti alla pallina avente diametro 5"/32, sono stati riassunti in un unico campione di $\{\Delta t_{i}\}$ dove ogni $\Delta t_{i}$ risultava dalla media ponderata di $\{\Delta t_{i}\}_{j=A \dots C}$. L'errore associato ai singoli ${\Delta t_{i}}$ è stato calcolato tramite l'errore relativo alla media ponderata.\newline
 Analogo procedimento è stato compiuto per le misure relative al viscosimetro 9.
 Il campione $\{\Delta t\}$ riassuntivo delle varie misure è stato poi impiegato per la stima delle velocità.
 
 
 \subsection{Verifica del raggiungimento della $v_{lim}$}
 
-Per ciascun viscosimetro si è proceduto al calcolo di un campione di $\{v_{i=1\dots 10}\}$ in cui $v_{i} = \frac{\Delta x}{\Delta t_i}$ con $\Delta t_i$ la differenza tra i tempi appena calcolata e $\Delta x$ la distanza fra due tacche. Si riportano i grafici delle velocità di tutti i viscosimetri eccetto per i lanci 10 e 11 di cui si riportano le velocità nelle Tabelle \ref{tab:vel10_11}.
+Per ciascun viscosimetro si è proceduto al calcolo di un campione di velocità $\{v_{i=1\dots 10}\}$ in cui $v_{i} = \frac{\Delta x}{\Delta t_i}$ con $\Delta t_i$ la differenza tra i tempi appena calcolata e $\Delta x$ la distanza fra due tacche. Si riportano i grafici delle velocità di tutti i viscosimetri, eccetto per i lanci 10 e 11 di cui si riportano le velocità nelle Tabelle \ref{tab:vel10_11}.
 
 %TUTTI I GRAFICHETTI DELLE VELOCITa'
 \begin{figure}[h!]
@@ -542,9 +542,8 @@ Si sono impiegati vari metodi per determinare il tipo di andamento delle velocit
 
 \subsubsection*{Calcolo di t-Student per il coefficiente di correlazione $\rho$}
 %1a con tstudent PDF
-Si è calcolato il coefficiente di correlazione $\rho$ tra tempi intermedi e velocità statisticamente indipendenti $\{ v_{i=2n+1}\}$, al fine di valutare una dipendenza di queste ultime dal tempo.
-L'ipotesi nulla $H_{0}$ in cui $\rho=0$ qualora verificata avrebbe implicato un'indipendenza statistica dei valori delle velocità indipendenti $v_{i}$, dal passare del tempo e dunque nel caso specifico del moto in analisi una costanza delle stesse $v_{i}$, indicando il raggiungimento del valore asintotico di $v_{lim}$ entro gli errori casuali.  
-Si è pertanto deciso di confrontare il coefficiente $\rho$ calcolato con quello previsto da $H_{0}$ tramite il test di t-Student a due code, determinando per ogni sfera il livello di confidenza entro il quale veniva rigettata l'ipotesi di non-correlazione. \newline
+Si è calcolato il coefficiente di correlazione $\rho$ tra tempi intermedi e velocità statisticamente indipendenti $\{ v_{i=2n+1}\}$, al fine di valutare una correlazione statistica di queste ultime con il tempo.
+Ponendo come ipotesi nulla $H_{0}$ che $\rho=0$, si è eseguito il test di t-Student a due code determinando per ogni sfera il livello di confidenza entro il quale veniva rigettata l'ipotesi di non-correlazione. \newline
 Come si riscontra in Tabella \ref{tab:t_student} si notano percentuali di rigetto dell'ipotesi nulla piuttosto alte, mai inferiori al 60\%.
 %Se $\rho$ fosse risultato pari a $0$, ciò avrebbe implicato una indipendenza statistica delle velocità dal tempo, e dunque una costanza delle velocità.
 %Infatti il variare del tempo non avrebbe su di esse influito in quanto in linea teorica ci si aspetta che la velocità limite sia stata raggiunta.
@@ -606,7 +605,7 @@ Si è calcolato $\tau$ tramite la seguente:
 \begin{equation*}
     \tau = \frac{v_{lim} \cdot \rho_{S}}{g \cdot (\rho_{S} - \rho_{L})}
 \end{equation*}
-In Tabella \ref{tab:tau} non viene riportato l'errore del tempo caratteristico in quanto superfluo per questa verifica. Si è verificato che le distanze percorse in $3\tau$, ottenute in modo approssimato da $\Delta x=v_{lim} \cdot 3 \tau$ risultano sempre minori della distanza fra livello del liquido e prima tacca incisa. Il più grande $\Delta x$ ottenuto è $\approx \SI{4}{\milli\metre}$, ovvero che in tutti i lanci la velocità limite è stata sempre raggiunta entro lo spazio tra il livello del fluido e la prima tacca.% e che le velocità nei Grafici \ref{fig:vel1} \dots \ref{fig:vel9} rappresentano le velocità limite.
+In Tabella \ref{tab:tau} non viene riportato l'errore del tempo caratteristico in quanto superfluo per questa verifica. Si è verificato che le distanze percorse in $3\tau$, ottenute in modo approssimato da $\Delta x=v_{lim} \cdot 3 \tau$ risultano sempre minori della distanza fra la superficie del liquido e la prima tacca incisa. Il più grande $\Delta x$ ottenuto è $\approx \SI{4}{\milli\metre}$, ciò significa che in tutti i lanci la velocità limite è stata sempre raggiunta entro lo spazio tra la superficie del fluido e la prima tacca.% e che le velocità nei Grafici \ref{fig:vel1} \dots \ref{fig:vel9} rappresentano le velocità limite.
 
 
 \subsubsection*{Variazione percentuale delle velocità}
@@ -698,17 +697,17 @@ Si osserva un andamento generale delle $\lambda$ variabile da viscosimetro a vis
     \begin{tabular}{|c|c|c|c||c|c|c|c|}
         \hline
         \textbf{Visc.} & \textbf{Acc. Generale} & \textbf{Acc. specifica} & \textbf{$\lambda$} & \textbf{Visc.} & \textbf{Acc. Generale} & \textbf{Acc. specifica} & \textbf{$\lambda$} \\ \hline
-        \multirow{4}{*}{1}& \multirow{4}{*}{$(-11 \pm 3)\cdot10^{-11}$}& {\cellcolor[rgb]{0.85,0.85,0.85}}$(-1 \pm 2)\cdot10^{-10}$ & {\cellcolor[rgb]{0.85,0.85,0.85}}$2.9$ & \multirow{4}{*}{6}& \multirow{4}{*}{$(-7 \pm 2)\cdot10^{-09}$}& {\cellcolor[rgb]{0.85,0.85,0.85}}$(0.9 \pm 1)\cdot10^{-8}$ & {\cellcolor[rgb]{0.85,0.85,0.85}}$0.7$\\
+        \multirow{4}{*}{1}& \multirow{4}{*}{$(-11 \pm 3)\cdot10^{-11}$}& {\cellcolor[rgb]{0.85,0.85,0.85}}$(-1 \pm 2)\cdot10^{-10}$ & {\cellcolor[rgb]{0.85,0.85,0.85}}$2.9$ & \multirow{4}{*}{6}& \multirow{4}{*}{$(-7 \pm 2)\cdot10^{-9}$}& {\cellcolor[rgb]{0.85,0.85,0.85}}$(0.9 \pm 1)\cdot10^{-8}$ & {\cellcolor[rgb]{0.85,0.85,0.85}}$0.7$\\
         & & $(-3 \pm 2)\cdot10^{-10}$ & $4.1$ & & & $(-2 \pm 2)\cdot10^{-8}$ & $6.1$ \\
         & & {\cellcolor[rgb]{0.85,0.85,0.85}}$(-0.2 \pm 2)\cdot10^{-10}$ & {\cellcolor[rgb]{0.85,0.85,0.85}}$2.0$ & & & {\cellcolor[rgb]{0.85,0.85,0.85}}$(-0.3 \pm 1)\cdot10^{-8}$ & {\cellcolor[rgb]{0.85,0.85,0.85}}$2.5$ \\
         & & $(-0.2 \pm 2)\cdot10^{-10}$ & $2.0$ & & & $(-0.2 \pm 1)\cdot10^{-8}$ & $2.3$ \\
         \hline
-        \multirow{4}{*}{2}& \multirow{4}{*}{$(-16 \pm 8)\cdot10^{-11}$}& {\cellcolor[rgb]{0.85,0.85,0.85}}$(2 \pm 3)\cdot10^{-10}$ & {\cellcolor[rgb]{0.85,0.85,0.85}}$0.2$ & \multirow{4}{*}{7}& \multirow{4}{*}{$(-3 \pm 2)\cdot10^{-08}$}& {\cellcolor[rgb]{0.85,0.85,0.85}}$(-8 \pm 4)\cdot10^{-8}$ & {\cellcolor[rgb]{0.85,0.85,0.85}}$3.0$ \\
+        \multirow{4}{*}{2}& \multirow{4}{*}{$(-16 \pm 8)\cdot10^{-11}$}& {\cellcolor[rgb]{0.85,0.85,0.85}}$(2 \pm 3)\cdot10^{-10}$ & {\cellcolor[rgb]{0.85,0.85,0.85}}$0.2$ & \multirow{4}{*}{7}& \multirow{4}{*}{$(-3 \pm 2)\cdot10^{-8}$}& {\cellcolor[rgb]{0.85,0.85,0.85}}$(-8 \pm 4)\cdot10^{-8}$ & {\cellcolor[rgb]{0.85,0.85,0.85}}$3.0$ \\
         & & $(-7 \pm 3)\cdot10^{-10}$ & $5.5$ & & & $(8 \pm 6)\cdot10^{-8}$ & $0.6$ \\
         & & {\cellcolor[rgb]{0.85,0.85,0.85}}$(0.6 \pm 3)\cdot10^{-10}$ & {\cellcolor[rgb]{0.85,0.85,0.85}}$1.1$ & & & {\cellcolor[rgb]{0.85,0.85,0.85}}$(-20 \pm 7)\cdot10^{-8}$ & {\cellcolor[rgb]{0.85,0.85,0.85}}{\cellcolor[rgb]{0.85,0.85,0.85}}$6.9$ \\
         & & $(-0.6 \pm 3)\cdot10^{-10}$ & $1.8$ & & & $(11 \pm 6)\cdot10^{-8}$ & $1.4$ \\
         \hline
-        \multirow{4}{*}{3}& \multirow{4}{*}{$(-17 \pm 5)\cdot10^{-11}$}& {\cellcolor[rgb]{0.85,0.85,0.85}}$(2 \pm 7)\cdot10^{-10}$ & {\cellcolor[rgb]{0.85,0.85,0.85}}$3.0$ & \multirow{4}{*}{8}& \multirow{4}{*}{$(-32 \pm 5)\cdot10^{-08}$}& {\cellcolor[rgb]{0.85,0.85,0.85}}$(-6 \pm 3)\cdot10^{-7}$ & {\cellcolor[rgb]{0.85,0.85,0.85}}$2.9$ \\
+        \multirow{4}{*}{3}& \multirow{4}{*}{$(-17 \pm 5)\cdot10^{-11}$}& {\cellcolor[rgb]{0.85,0.85,0.85}}$(2 \pm 7)\cdot10^{-10}$ & {\cellcolor[rgb]{0.85,0.85,0.85}}$3.0$ & \multirow{4}{*}{8}& \multirow{4}{*}{$(-32 \pm 5)\cdot10^{-8}$}& {\cellcolor[rgb]{0.85,0.85,0.85}}$(-6 \pm 3)\cdot10^{-7}$ & {\cellcolor[rgb]{0.85,0.85,0.85}}$2.9$ \\
         & & $(-4 \pm 7)\cdot10^{-10}$ & $6.1$ & & & $(-3 \pm 4)\cdot10^{-7}$ & $2.1$ \\
         & & {\cellcolor[rgb]{0.85,0.85,0.85}}$(-3 \pm 7)\cdot10^{-10}$ & {\cellcolor[rgb]{0.85,0.85,0.85}}$5.8$ & & & {\cellcolor[rgb]{0.85,0.85,0.85}}$(-0.9 \pm 2)\cdot10^{-7}$ & {\cellcolor[rgb]{0.85,0.85,0.85}}$1.0$ \\
         & & $(-0.3 \pm 7)\cdot10^{-10}$ & $4.2$ & & & $(-4 \pm 2)\cdot10^{-7}$ & $1.6$ \\
@@ -784,15 +783,14 @@ Si è realizzato il Grafico \ref{fig:eta} in cui nelle ascisse figurano i diamet
 \end{equation*}
 L'errore della viscosità è stato calcolato tramite propagazione degli errori casuali.
 
-\begin{figure}[h!]
+\begin{figure}
     \centering
     \makebox[\textwidth]{
-        \includegraphics[width=16cm]{grafico_ETA_2.pdf}
+    \includegraphics[width=16cm]{ETA_DEFINITIVO_per_latex.pdf}
     }
     \caption{Viscosità $\eta$ in funzione del diametro}
     \label{fig:eta}
 \end{figure}
-
 
 
 %METTIAMO UN FIT ESPONENZIALE? non funziona ahahahaha =)
@@ -802,7 +800,7 @@ Si sono poi realizzati due grafici similari per informazioni contenute. Il primo
 Nel primo caso il coefficiente angolare è stato ricavato dalla seguente
 \begin{align*}
 \begin{split}
-    \underbrace{v_{lim}}_{y}=&\underbrace{D^{2}}_{x} \cdot \underbrace{\frac{g (\rho_s - \rho_l)}{18 \eta}}_\text{Coeff. ang.}
+    v_{lim}=D^{2} \cdot \underbrace{\frac{g (\rho_s - \rho_l)}{18 \eta}}_\text{Coeff. ang.}
 \end{split}
 \end{align*}
 pertanto è stato possibile stimare una $\eta$ media proprio a partire da questi valori e dalla relativa propagazione.
@@ -811,13 +809,13 @@ Analogamente, per il secondo metodo si sono usati i valori di $D^{-2}$ e di $v_{
 
 \begin{align*}
 \begin{split}
-    \underbrace{\left( \frac{1}{v_{lim}} \right)}_{y}=&\underbrace{\left ( \frac{1}{D^{2}} \right )}_{x} \cdot \underbrace{\frac{18 \eta}{g (\rho_s - \rho_l)}}_\text{Coeff. ang.}
+     \frac{1}{v_{lim}}= \frac{1}{D^{2}} \cdot \underbrace{\frac{18 \eta}{g (\rho_s - \rho_l)}}_\text{Coeff. ang.}
 \end{split}
 \end{align*}
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.5\textwidth]{plot_fit_1.pdf}
+    \includegraphics[width=0.5\textwidth]{diam_quad_vel.pdf}
     \caption{Fit $v_{lim}$ vs $D^{2}$}
     \label{fig:verifica_legge_1}
 \end{figure}
@@ -933,19 +931,77 @@ La stessa valutazione sulle compatibilità è ottenibile dal confronto delle mis
 %tmepi intermedi su grafico delle velocità 
 %se ci sono dati che oscillano
 %fit che si fa su gli indipendenti
-Avendo già a disposizione dell'errore sul $\Delta t$, per il calcolo dell'errore sulle velocità i-esime tramite propagazione degli errori si necessitava dell'errore sull'intervallo di spazio percorso. Per stimare $\sigma_x$ si è utilizzata l' errore derivante dalla distribuzione triangolare utilizzando come PTL lo spessore della tacca incisa, grandezza stimata mediante un confronto tra la più grande sfera che veniva totalmente eclissata dalla tacca stessa. Si è pertanto assunto che lo spessore della tacca incisa fosse pari al diametro della sfera numero 2, avente diametro pari a 2''/32. Per stimare infine l'errore $\sigma_{\Delta x}$ si è utilizzata la formula di propagazione degli errori casuali.  Si stima che l'errore su $\delta x$ è $\approx \si{0.4}{\milli\metre}$.\\
+Avendo già a disposizione l'errore sui $\Delta t_{i}$, per il calcolo dell'errore sulle velocità i-esime tramite propagazione degli errori si necessitava dell'errore sull'intervallo di spazio percorso. Per stimare $\sigma_x$ si è utilizzato l' errore derivante dalla distribuzione triangolare utilizzando come PTL lo spessore della tacca incisa, grandezza stimata mediante un confronto tra la più grande sfera che veniva totalmente eclissata dalla tacca stessa. Si è pertanto assunto che lo spessore della tacca incisa fosse pari al diametro della sfera numero 2, avente diametro pari a 2''/32. Per stimare infine l'errore $\sigma_{\Delta x}$ si è utilizzata la formula di propagazione degli errori casuali.  Si stima che l'errore su $\Delta x$ è $\approx \si{0.4}{\milli\metre}$.\\
 
 %commentino grafici
-Osservando l'andamento generale dei Grafici \ref{fig:vel1},....,\ref{fig:vel9}, si nota che le prime 3 misurazioni variano leggermente rispetto all'andamento generale. Nello specifico per il secondo grafico, la seconda misurazione risulta molto minore rispetto al trend generale. Si ipotizza che una variazione così importante sia dovuta al fatto che il software utilizzato per la presa dati sottostimasse il tempo relativo a ciascun frame visualizzato. Si è cercato di ridurre tale componete di errore analizzando le velocità $v_{1, 3, 5, 7, 9}$, ovvero le velocità ad indice dispari in quanto non influenzate drasticamente e da tale errore, come si può osservare intuitivamente dai Grafici.\\
-Per il Grafico \ref{fig:vel5} si ripresenta lo stesso problema individuato nel Grafico \ref{fig:vel2}. Si attribuisce la causa di tale comportamento al fenomeno appena descritto. Si presta maggiore attenzione al grafico numero 6, che non mostra evidenti differenti da gli altri grafici anche se la metodologia utilizzata per il computo delle velocità è differente.\\
-Analizzando i Grafici \ref{fig:vel7} e \ref{fig:vel8}, realizzati con i dati raccolti dall'operatore C, si osserva un andamento disordinato degli stessi. Ciò è imputabile al fatto che l'andamento dei dati è soggetto soprattutto al tempo di reazione dell'operatore, componente di errore fortemente ridotta nel metodo frame by frame. Si osserva inoltre una forte variazione negli errori delle velocità dei grafici \ref{fig:vel3}, \ref{fig:vel7}, \ref{fig:vel8}, analizzato solamente dall'operatore C, dovuta probabilmente alla stessa componente di errore.\\
-Il Grafico \ref{fig:vel9} presenta invece un andamento anomalo rispetto agli altri grafici. Si ipotizza che ciò sia dovuto probabilmente alla sedimentazione del liquido saponoso.\\
-Non è possibile compiere inferenze sui dati dei lanci 10 e 11 in quanto non sia hanno a disposizione sufficienti dati per valutare l'andamento delle velocità. Si specifica che lo spazio utilizzato per il computo della velocità in tali lanci è di $\SI{450}{\milli\meter}$, ovvero quello che intercorre tra la seconda e l'ultima tacca. Questa accortezza è stata presa per essere certi che le sfere avessero già raggiunto la $v_{lim}$.\\
+\subsubsection*{Commento ai grafici}
+Osservando l'andamento generale dei Grafici \ref{fig:vel1}, ...., \ref{fig:vel9}, si nota che le prime 3 misurazioni variano leggermente rispetto all'andamento generale. Nello specifico per il secondo grafico, la seconda misurazione risulta molto minore rispetto al trend generale. Si ipotizza che una variazione così importante sia dovuta al fatto che il software utilizzato per la presa dati sottostimasse il tempo relativo a ciascun frame visualizzato.
+Si è cercato di ridurre tale componente di errore analizzando le velocità $v_{1, 3, 5, 7, 9}$, ovvero le velocità ad indice dispari in quanto non influenzate drasticamente da tale errore, come si può osservare intuitivamente dai Grafici. Fenomeno analogo si ripresenta per il Grafico \ref{fig:vel5}
+
+
+%Si presta maggiore attenzione al grafico \ref{fig:vel6}, che non mostra evidenti differenze da gli altri grafici anche se la metodologia utilizzata per il computo delle velocità è differente.\\ %NON CHIARO< INUTILE E PROLISSO. COSA VUOLE INDICARE?
+
+\begin{wraptable}{l}{5cm}
+    \centering
+    \begin{tabular}{|c|c|}
+        \hline
+        & Dispersione \% \\ \hline
+        1& 3.5311 \\ \hline
+        2& 5.1784 \\ \hline
+        3& 2.1021 \\ \hline
+        4& 3.0381 \\ \hline
+        5& 5.5499 \\ \hline
+        6& 5.1490 \\ \hline
+        7& 10.013 \\ \hline
+        8& 20.813 \\ \hline
+        9& 37.358 \\ \hline
+    \end{tabular}
+    \caption{Dispersioni Percentuali}
+    \label{tab:dispers_perc}
+\end{wraptable}
+
+
+La Tabella \ref{tab:dispers_perc} quantifica la variazione percentuale delle velocità nel corso dell'intero lancio. Questa stima è stata effettuata tramite la seguente equazione:
+\begin{equation*}
+    \text{Dispersione \%.} = \frac{v_{Max}- v_{Min}}{v_{Min}} \cdot 100
+\end{equation*}
+
+Confrontando i Grafici \ref{fig:vel7} e \ref{fig:vel8}, realizzati con i dai dati raccolti dall'operatore C, e le variazione percentuali, si osservano delle significative fluttuazioni delle $v_{i}$.
+La variazione percentuale per il nono lancio risulta molto maggiore dei due lanci precedenti, probabilmente a causa della di un errore dovuto alla presa dati del primo tempo di passaggio, e anche alla variazione delle proprietà del fluido, quali sedimentazione del liquido saponoso o presenza di perturbazione nel fluido. Rivalutando tale variazione escludendo la prima velocità si ottiene infatti un valore di $\approx 15.5\%$, comunque comparabile ai lanci 7 ed 8.
+
+Non è possibile compiere inferenze sui dati dei lanci 10 e 11 in quanto non si hanno a disposizione sufficienti dati per valutare l'andamento delle velocità. Si specifica che lo spazio utilizzato per il computo della velocità in tali lanci è di $\SI{450}{\milli\meter}$, ovvero quello che intercorre tra la seconda e l'ultima tacca.\\
 
 %tstudent
+\subsubsection*{Commento a t-Student} %CORREGGERE T STUDENT SU INDIPENDENTI
+Si è effettuato il test di t-Student sulla stima del coefficiente di Pearson ottenuto dalle misure $v_{i}$ indipendenti considerando come ipotesi nulla $H_{0}$ la loro non-correlazione in funzione dei tempi $t_{i}$ ovvero $\rho=0$
+Assunte vere sia la legge oraria nel un fluido sia la viscosità come uniforme in tutto lo spazio percorso, qualora l'ipotesi nulla fosse accettata ($|t| < \tau_{2}$), le $v_{i}$ sarebbero risultate statisticamente non-correlate ai $t_{i}$ e dunque nel caso specifico del moto in analisi ciò avrebbe implicato il raggiungimento del valore asintotico della $v_{lim}$ entro gli errori casuali. Viceversa, nel caso di un rigetto dell'ipotesi nulla, si sarebbe dimostrata una correlazione fra le grandezze, dunque una loro dipendenza dal tempo, dunque o un non raggiungimento della $v_{lim}$ o una non uniformità del mezzo.\\
+Dopo il calcolo del parametro t si sono ricercati i livelli di confidenza ad essi corrispondenti, ovvero le soglie oltre le quali l'ipotesi sarebbe risultata falsificata, come viene esposto nell'ultima colonna della Tabella \ref{tab:t_student}.
+Si osserva che $H_{0}$ è falsificata con livelli di confidenza piuttosto alti e mai inferiori al 60 \% il che suggerisce con buone probabilità che le misure siano correlate.\newline
+I bassi livelli di confidenza per il rigetto di $H_{0}$ in corrispondenza del quarto e settimo lancio fanno sospettare che le velocità siano in questi due casi scorrelate dai tempi e dunque, seguendo il ragionamento riportato, che $v_{lim}$ sia più probabilmente stata raggiunta. La causa di questi bassi livelli di confidenza potrebbe essere causata da un effettivo raggiungimento di $v_{lim}$.\newline
+Si è scelto arbitrariamente di eseguire il computo del parametro t di Student soltanto sulle velocità indipendenti %non so che cazzo dire 
+
+\subsubsection*{Commento a $\tau$}
+% tau NON C'`e UN CAZO DA DIRE
+Come già anticipato, non si è stimato l'errore di $\tau$ poiché la valutazione del tempo caratteristico fornisce solo una possibile indicazione per verificare se la velocità limite è stata raggiunta.
+Analogamente a quanto riportato per il test di t-Student, per il computo esatto di $\tau$ sarebbe necessario considerare la $v_{lim}$. Nell'approssimazione usata invece si considera la media delle velocità indipendenti che pur essendo una forte approssimazione, permette di affermare che la velocità limite in tutti i lanci è ampiamente raggiunta entro i primi $\SI{100}{\milli\metre}$ che intercorrono fra la superficie del fluido e la prima tacca incisa.\newline
+Ulteriore assunzione è che la densità e le caratteristiche del fluido, quali per esempio la sua viscosità, siano costanti e non presentino fluttuazioni.
+Da un'analisi più approfondita della colonna di liquido, compiuta prima dell'ottavo lancio, si verifica la presenza di alcune bollicine d'aria generate dalla caduta delle sfere precedenti. Si ipotizza che l'interazione delle sfere alteri le caratteristiche del fluido. 
 
 
-% tau
+
+
+
+
+
+%variazione percentuale
+\subsection{Calcolo di v_{lim}}
+\subsubsection*{Commento compatibilità accelerazioni}
+Come si osserva dai valori di $\lambda$ riportati nella tabella \ref{tab:comp_acc}, la maggior parte delle accelerazioni specifiche risulta compatibile con le accelerazioni generali di ciascun viscosimetro. 
+%compatibilità accelerazioni
+
+
+%interpolazioni x vs t per vleocità
+
 
 %\subsection{Velocità costanti o no, tre metodi e significato di ciascuno di loro}
 
