@@ -159,7 +159,7 @@ double delta(vector<double> dati_x, vector<double> errori_y)
     double sum_1 = 0, sum_2 = 0, sum_3 = 0;
     for (int i = 0; i < dati_x.size(); i++)
     {
-        sum_1 = sum_1 + (1 / pow(errori_y[i], 2));
+        sum_1 = sum_1 + (1. / pow(errori_y[i], 2));
         sum_2 = sum_2 + (pow(dati_x[i], 2) / pow(errori_y[i], 2));
         sum_3 = sum_3 + (dati_x[i] / pow(errori_y[i], 2));
     }
@@ -179,7 +179,7 @@ double a_intercetta(vector<double> dati_x, vector<double> dati_y, vector<double>
         sum_3 = sum_3 + (dati_x[i] / pow(errori_y[i], 2));
         sum_4 = sum_4 + ((dati_x[i] * dati_y[i]) / pow(errori_y[i], 2));
     }
-    a_intercetta_d_ = (1 / delta(dati_x, errori_y)) * (sum_1 * sum_2 - sum_3 * sum_4);
+    a_intercetta_d_ = (1. / delta(dati_x, errori_y)) * (sum_1 * sum_2 - sum_3 * sum_4);
     return a_intercetta_d_;
 }
 //Coeff. b di y=a+bx con errori tutti diversi (coeff. ang.)
@@ -366,3 +366,28 @@ double sigma_b(vector<double> dati_x, vector<double> dati_y, vector<double> erro
 /*
 FINE TUTTI I CHI QUADRO POSSIBILI 
 */
+
+double pearson(vector<double> x, vector<double> y)
+{
+    double mean_x = media(x);
+    double mean_y = media(y);
+    double sum_1 = 0;
+    double sum_2 = 0;
+    double sum_3 = 0;
+    for (int i = 0; i < y.size(); i++)
+    {
+        sum_1 = sum_1 + ((y[i] - mean_y) * (x[i] - mean_x));
+        sum_2 = sum_2 + pow((x[i] - mean_x), 2);
+        sum_3 = sum_3 + pow((y[i] - mean_y), 2);
+    }
+    double pearson = sum_1 / (sqrt(sum_2) * sqrt(sum_3));
+
+    return pearson;
+}
+
+double student(vector<double> x, vector<double> y)
+{
+    double pearson_1 = pearson(x, y);
+    double t = pearson_1 * sqrt(y.size() - 2) / sqrt(1. - pow(pearson_1, 2));
+    return t;
+}
