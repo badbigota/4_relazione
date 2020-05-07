@@ -1033,17 +1033,23 @@ Per la valutazione di tale metodo è risultato doveroso analizzare gli errori pe
 %Basandosi su queste informazioni si è compiuto un fit lineare tramite il metodo del minimo chi quadro nei primi sei lanci con il tempo in ascissa e gli spazi in ordinata. Al contrario per gli ultimi 3 lanci si è effettuato un fit con posizioni in ascissa e tempi in ordinata, come già era stato accennato nell'analisi.  
 
 
-1 & $9.4986$ & $1.0599$
-2 & $39.609$ & $4.4033$
-3 & $47.097$ & $9.7570$
-4 & $85.321$ & $13.707$
-5 & $62.175$ & $18.208$
-6 & $18.040$ & $6.5195$
-7 & $61.474$ & $70.905$
-8 & $4.6575$ & $47.148$
-9 & $18.273$ & $77.035$
-
-
+%tabella chi quadri 
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|c|c|c|} \hline
+        $1$ & $9.4986$ & $1.0599$\\ \hline
+        $2$ & $39.609$ & $4.4033$\\ \hline
+        $3$ & $47.097$ & $9.7570$\\ \hline
+        $4$ & $85.321$ & $13.707$\\ \hline
+        $5$ & $62.175$ & $18.208$\\ \hline
+        $6$ & $18.040$ & $6.5195$\\ \hline
+        $7$ & $61.474$ & $70.905$\\ \hline
+        $8$ & $4.6575$ & $47.148$\\ \hline
+        $9$ & $18.273$ & $77.035$\\ \hline
+    \end{tabular}
+    \caption{$\chi^2$}
+    \label{tab:chi_quadro}
+\end{table}
 
 
 
@@ -1055,7 +1061,43 @@ La reiezione dei primi dati è stata necessaria per poter stimare la vel lim in 
 
 Si specifica che come stima della velocità limite per il grafico x vs t si è utilizzato il coefficiente angolare della retta interpolante, per il grafico t vs x corrisponde invece al reciproco del coefficiente angolare della medesima retta.
 
-\subsection{Verifica legge, ipotesi andamenti esponenziali di viscosità e chi su di loro} xdxdxd
+\subsection{Verifica legge, ipotesi andamenti esponenziali di viscosità e chi su di loro} 
+Una osservazione qualitativa dei grafici fa emergere un andamento non costante delle viscosità del mezzo, in contrasto con l'aspettativa teorica. 
+
+%commento andamento grafici
+Il primo grafico sembra riportare un andamento di $\eta$ dipendente dal diametro considerato. Per i primi diametri $\eta$ rimane costante, mentre già dal quarto diametro si osserva una forte diminuzione.
+
+Il Grafico \ref{fig:verifica_legge_1} riporta un repentino aumento della $v_{lim}$ rispetto a quanto stimato dalla retta interpolante generata stimata tramite il metodo del minimo chi quadro. Non accade lo stesso per il Grafico \ref{fig:verifica_legge_2} nel quale invece tutti i punti vengono bene 
+
+
+
+
+
+%confronto degli andamenti
+
+%parlare degli errori
+
+%dire che la legge non è verificata, almeno per tutte non è verificata, ma per le prime sì
+Si riscontra che per le prime sfere, nello specifico le sfere avente diametro minore o uguale a 2mm, $\eta$ rimanga costante. Tale affermazione risulta giustificata calcolando le compatibilità dei primi 3 valori tra loro che risultano sempre ottime, ed infine la compatibilità fra terzo e quarto che risultano tra loro non compatibili.Questa affermazione trova ulteriore fondamento nel calcolo del test del chi quadro
+
+%dire che è verificata solamente per i primi 3 viscosimetri
+
+%trattare delle cazzate varie dei regimi turbinosi e laminari ecc...
+
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|c|c|}
+        \hline
+        & Compatibilità\\ \hline
+        $1-2$ & $0.136661$\\ \hline
+        $2-3$ & $0.667946$\\ \hline
+        $1-3$ & $0.794965$\\ \hline
+        $3-4$ & $4.16755$\\ \hline
+    \end{tabular}
+    \caption{Compatibilità viscosimetri}
+    \label{tab:comp_eta}
+\end{table}
+
 
 \section{Margini di miglioramento}
 %Cronometro con minore input lag
